@@ -9,7 +9,6 @@
 ![Project Website](https://img.shields.io/badge/Project%20Website-coming%20soon-lightgrey.svg)
 ![Paper](https://img.shields.io/badge/Paper-coming%20soon-lightgrey.svg)
 [![Apache-2.0](https://img.shields.io/badge/Apache--2.0-blue.svg)](LICENSE)
-[![CI](https://github.com/codewayco/Inkinesis/actions/workflows/ci.yml/badge.svg)](https://github.com/codewayco/Inkinesis/actions/workflows/ci.yml)
 [![Export: Inochi2D, Live2D](https://img.shields.io/badge/Export-Inochi2D%2C%20Live2D-6b4fbb.svg)](docs/instructions/live2d_export.md)
 <!-- When published: link the Project Website badge and replace the Paper badge with the arXiv link. -->
 
