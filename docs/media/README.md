@@ -11,7 +11,7 @@ The gallery and browser motion frames are rendered from existing example avatars
 | `pipeline.webp` | The report's pipeline figure: source, See-through layers, registered expressions, VLM joints, composed rig, and the Live2D export, labelled by reused, ours, and verification. Rasterized from the figure PDF. |
 | `gallery.webp` | All 27 example previews from `example-avatars/previews/` composed into one labelled grid, so the README gallery renders at a uniform size. |
 | `characters.webp` | Neutral renders of `04-purple-couture`, `06-ultramarine-tempo`, `07-saffron-orbit`, `12-desert-ranger`, `09-neon-skater`, and `08-lichen-starweaver`. |
-| `motion.gif` | A four-second, 12 fps loop of the first three rigs above. Head yaw/pitch/roll, arm parameters, hip and knee angles, eye openness, and mouth openness vary; geometry and textures are evaluated by the player. |
+| `motion.gif` | A four-second, 12 fps loop of Purple Couture, Solstice Mosaic, and Saffron Orbit. Head yaw/pitch/roll, arm parameters, hip and knee angles, eye openness, and mouth openness vary; geometry and textures are evaluated by the player. |
 | `face.gif` | Close-up of Purple Couture from the same renderer, showing head and expression controls over a four-second loop. |
 | `vtube-face.gif` | Continuous face-tracking excerpt from the existing Purple Couture VTube Studio session: 21.5–25.5 seconds. |
 | `vtube-hands.gif` | Continuous face and hand-driven arm excerpt from the existing VTube Studio session: 26–30 seconds. |

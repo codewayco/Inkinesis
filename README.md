@@ -25,7 +25,7 @@ https://github.com/user-attachments/assets/1be8c51f-5301-4c25-a2aa-9c6d5d08ef7f
 
 <table>
 <tr>
-<td width="67%"><img src="docs/media/motion.gif" alt="Purple Couture, Ultramarine Tempo, and Saffron Orbit showing head, arm, hip, and knee motion in the Inkinesis renderer." width="100%"></td>
+<td width="67%"><img src="docs/media/motion.gif" alt="Purple Couture, Solstice Mosaic, and Saffron Orbit showing head, arm, hip, and knee motion in the Inkinesis renderer." width="100%"></td>
 <td width="33%"><img src="docs/media/face.gif" alt="Close-up of Purple Couture turning and tilting her head, blinking, and opening her mouth." width="100%"></td>
 </tr>
 </table>
