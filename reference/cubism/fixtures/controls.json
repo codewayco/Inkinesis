@@ -1,0 +1,4 @@
+[
+  { "id": "synthetic.horizontal", "minimum": -2, "maximum": 2, "defaultValue": 0 },
+  { "id": "synthetic.open", "minimum": 0, "maximum": 1, "defaultValue": 0.25 }
+]

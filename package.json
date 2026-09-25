@@ -1,0 +1,48 @@
+{
+  "name": "inkinesis",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Image and text to animated character rigs: automatic analysis, semantic layers, measured expressions, articulated limbs, Inochi and Live2D exports.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit && tsc --noEmit -p engine/tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "dev": "vite",
+    "build:player": "vite build",
+    "rig:combined": "tsx tools/rig/buildCombined.ts",
+    "image-to-rig": "tsx tools/imageToRig/pipeline.ts",
+    "inkinesis": "tsx tools/imageToRig/pipeline.ts",
+    "export:live2d": "tsx tools/rig/live2d/export.ts",
+    "reference:dev": "vite --config reference/cubism/vite.config.ts",
+    "reference:check": "tsc --noEmit -p reference/cubism/tsconfig.json",
+    "reference:combined": "tsx reference/cubism/runCombinedCapture.ts",
+    "build": "vite build",
+    "preview": "vite preview",
+    "verify:ui": "tsx tools/verify/imageToRigSmoke.ts",
+    "prepare:inochi": "sh tools/verify/inochi-puppet/prepare.sh && dub build --root tools/verify/inochi-puppet",
+    "check:setup": "tsx tools/imageToRig/pipeline.ts --check",
+    "test:python": ".venv/bin/python -m unittest discover -s tools/generate/test -p test_prepare_character.py",
+    "verify:examples": "tsx tools/verify/exampleLibrarySmoke.ts",
+    "prepare:avatar-release": "tsx tools/distribution/prepareAvatarRelease.ts",
+    "verify:example-download": "tsx tools/verify/exampleDownloadSmoke.ts"
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^0.126.0",
+    "@eslint/js": "^9.13.0",
+    "@types/node": "^22.7.5",
+    "ag-psd": "^31.0.2",
+    "eslint": "^9.13.0",
+    "playwright": "^1.63.0",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.10.0",
+    "vite": "^8.3.1",
+    "vitest": "^4.1.11"
+  }
+}

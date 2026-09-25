@@ -1,0 +1,42 @@
+[
+  {
+    "file": "vtube-face.gif",
+    "sourceRecording": "Screen Recording 2026-09-23 at 21.07.44.mov",
+    "sourceSha256": "ff39a1ab989655d26a6838b9cfc628abb0ab14db88b93041330c4165c1fc8694",
+    "startSeconds": 21.5,
+    "endSeconds": 25.5,
+    "cropLTRB": [
+      0,
+      15,
+      1012,
+      1446
+    ],
+    "outputSize": [
+      400,
+      566
+    ],
+    "frames": 48,
+    "fps": 12,
+    "playback": "Original speed, continuous excerpt; loop resets at the end. Cropped and downsampled only; no retiming, interpolation, or generated replacement frames."
+  },
+  {
+    "file": "vtube-hands.gif",
+    "sourceRecording": "Screen Recording 2026-09-23 at 21.17.59.mov",
+    "sourceSha256": "b0839af515d64c682ef69b03bece07762ba1b805c88d76e819f354ad4cf554b4",
+    "startSeconds": 26,
+    "endSeconds": 30,
+    "cropLTRB": [
+      0,
+      15,
+      2038,
+      2016
+    ],
+    "outputSize": [
+      576,
+      566
+    ],
+    "frames": 48,
+    "fps": 12,
+    "playback": "Original speed, continuous excerpt; loop resets at the end. Cropped and downsampled only; no retiming, interpolation, or generated replacement frames."
+  }
+]

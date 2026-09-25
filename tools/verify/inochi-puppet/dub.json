@@ -1,0 +1,15 @@
+{
+  "name": "inochi-puppet-check",
+  "description": "Reads the .inp this pipeline writes with Inochi2D's own puppet loader and reports what it saw.",
+  "license": "MIT",
+  "targetType": "executable",
+  "targetName": "inochi-puppet-check",
+  "dependencies": {
+    "inochi2d": {
+      "path": ".inochi2d"
+    }
+  },
+  "subConfigurations": {
+    "inochi2d": "renderless"
+  }
+}

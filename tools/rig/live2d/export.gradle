@@ -1,0 +1,14 @@
+// Compiles the isolated GPL adapter without changing the external engine build.
+allprojects { project ->
+    afterEvaluate {
+        if (!project.pluginManager.hasPlugin('org.jetbrains.kotlin.jvm')) return
+        project.extensions.getByName('kotlin').sourceSets.getByName('main').kotlin.srcDir(project.property('combinedAdapterDir').toString())
+        project.tasks.register('exportCombinedLive2D', JavaExec) {
+            dependsOn project.tasks.named('classes')
+            classpath = project.sourceSets.main.output + project.configurations.compileClasspath
+            mainClass = 'io.github.psd2live.combinedexport.CombinedExportKt'
+            jvmArgs '-Xmx8g', '-Dfile.encoding=UTF-8', '-Djava.awt.headless=true'
+            args project.property('combinedInput').toString(), project.property('combinedOutput').toString()
+        }
+    }
+}

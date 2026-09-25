@@ -1,0 +1,212 @@
+{
+  "width": 1440,
+  "height": 1000,
+  "fps": 24,
+  "durationSeconds": 81,
+  "frameCount": 1944,
+  "layout": "Synchronized two-row right-to-left scrolling strip: neutral above, animated below",
+  "controls": {
+    "limbs": "Exported parameter min/max: outward shoulders and hips, inward elbows, positive knee flexion; separate hip/knee/arm phases",
+    "yaw": 30,
+    "pitch": 10,
+    "roll": 15,
+    "mouth": 0.65,
+    "periodSeconds": 3
+  },
+  "seen": [
+    "01-tidal-glass",
+    "02-nocturne-cartographer",
+    "03-ember-waltz",
+    "04-purple-couture",
+    "05-solstice-mosaic",
+    "06-ultramarine-tempo",
+    "07-saffron-orbit",
+    "08-lichen-starweaver",
+    "09-neon-skater",
+    "11-bubblegum-idol",
+    "12-desert-ranger",
+    "13-voltage-mechanic",
+    "14-coral-diver",
+    "15-silver-fencer",
+    "16-tangerine-chef",
+    "17-sakura-kendo",
+    "18-obsidian-rogue",
+    "19-lemon-scientist",
+    "20-maroon-boxer",
+    "23-fennec-aeronaut",
+    "27-splitlight-atelier",
+    "28-teal-drummer",
+    "29-ochre-nomad",
+    "30-frost-goalie",
+    "31-papaya-broadcaster",
+    "32-inkblue-locksmith",
+    "37-periwinkle-glassblower"
+  ],
+  "errors": [],
+  "reviewScales": {
+    "06-ultramarine-tempo": 0.7,
+    "07-saffron-orbit": 0.7,
+    "09-neon-skater": 0.7,
+    "14-coral-diver": 0.7,
+    "16-tangerine-chef": 0.7,
+    "19-lemon-scientist": 0.7
+  },
+  "reviewReason": "Six presentation-only 70% motion scales after visible sleeve/shoulder texture pulling at the exported limits. Rig data is unchanged.",
+  "assets": [
+    {
+      "id": "01-tidal-glass",
+      "label": "Tidal Glass",
+      "sourceSha256": "c4c953747f1430af5361bcbabc6b65ca8c7af5e4937c8d16f55c39223d43d382"
+    },
+    {
+      "id": "02-nocturne-cartographer",
+      "label": "Nocturne Cartographer",
+      "sourceSha256": "9bedb4650b63fa58fd141036f099aa51a15d72b17cee6be9a0b9bbbce4a74d42"
+    },
+    {
+      "id": "03-ember-waltz",
+      "label": "Ember Waltz",
+      "sourceSha256": "99c8621c0a0a48a12e36be8145e6f3edd64f1cadbfb3d070ab50f3b79dfc56ea"
+    },
+    {
+      "id": "04-purple-couture",
+      "label": "Purple Couture",
+      "sourceSha256": "15ef34ebf9a30b98c57eb86af8c3c6e2bfa40180d9d726e80f6049e405bc74b0"
+    },
+    {
+      "id": "05-solstice-mosaic",
+      "label": "Solstice Mosaic",
+      "sourceSha256": "7a11abf6451fb771d5025f79b60526c9761531f86a932098ac3c8304daeb4126"
+    },
+    {
+      "id": "06-ultramarine-tempo",
+      "label": "Ultramarine Tempo",
+      "sourceSha256": "ecb93265dd84e8bbe92aa41a08dc4ac6e60c79be64684227a1afb363c354d613"
+    },
+    {
+      "id": "07-saffron-orbit",
+      "label": "Saffron Orbit",
+      "sourceSha256": "438ef6ad481b8c69e6dfbf5246236b821d778e726d152d1a8d68247dd08bb0a7"
+    },
+    {
+      "id": "08-lichen-starweaver",
+      "label": "Lichen Starweaver",
+      "sourceSha256": "2bd6f9d6e318303ff211819dbcc33e4147ecdd5bc115321041e1d0c773e39a7d"
+    },
+    {
+      "id": "09-neon-skater",
+      "label": "Neon Skater",
+      "sourceSha256": "ab230dd2b0aa0ae284ae9c8bbb81237d11d8c7b3967ff4588df62e2d5e27671b"
+    },
+    {
+      "id": "11-bubblegum-idol",
+      "label": "Bubblegum Idol",
+      "sourceSha256": "0a7dcf1279ef84d8d010496f041134200bf507db94a23e72d05154c550a19b05"
+    },
+    {
+      "id": "12-desert-ranger",
+      "label": "Desert Ranger",
+      "sourceSha256": "5a685a93a060449608e6f66bf3cc64f60134c7b9d37349fb45489ca6b0a06a2c"
+    },
+    {
+      "id": "13-voltage-mechanic",
+      "label": "Voltage Mechanic",
+      "sourceSha256": "d47701d7e2fa7f179f9014e3bb29c6039f3b7c46fc1c0684663bc702a67dd6e0"
+    },
+    {
+      "id": "14-coral-diver",
+      "label": "Coral Diver",
+      "sourceSha256": "9358533a72c95ef0cbb9292fd32c63f4f5c739d352cfb1e91b6d09b62178e33d"
+    },
+    {
+      "id": "15-silver-fencer",
+      "label": "Silver Fencer",
+      "sourceSha256": "f77113a837be585ba4d2c4694f9fa1a5e100ca295999e6eb0226f4a1fdff4934"
+    },
+    {
+      "id": "16-tangerine-chef",
+      "label": "Tangerine Chef",
+      "sourceSha256": "817ef6eec9d31e0f091bba671dc338a7bd81cb1959af8269d263e496a0d4658b"
+    },
+    {
+      "id": "17-sakura-kendo",
+      "label": "Sakura Kendo",
+      "sourceSha256": "9ee07269d06b32b287a85b1f5196a568064479ffd93ef20509dce41a44c075a8"
+    },
+    {
+      "id": "18-obsidian-rogue",
+      "label": "Obsidian Rogue",
+      "sourceSha256": "fd7c2762379b03ce5ef9a31fcdd88c53232017abe3944985da3a943245ad4f51"
+    },
+    {
+      "id": "19-lemon-scientist",
+      "label": "Lemon Scientist",
+      "sourceSha256": "9edd5c10e56aa16a089eb85d32c3bcf5ed5a1fcc993633f94c283300440432ec"
+    },
+    {
+      "id": "20-maroon-boxer",
+      "label": "Maroon Boxer",
+      "sourceSha256": "8084e048c592965e7b32208c5fbdf33db5983da4ce8c30c274acb9e9695641e9"
+    },
+    {
+      "id": "23-fennec-aeronaut",
+      "label": "Fennec Aeronaut",
+      "sourceSha256": "873e22ce0ba257ea9996744ce0d0fc00ba8999c0d394b382e5a7cd2c5406556a"
+    },
+    {
+      "id": "27-splitlight-atelier",
+      "label": "Splitlight Atelier",
+      "sourceSha256": "6f380a8bcd1b03113c2cba48a8b11cc7ec7db8d0364ae0ad6ad94a7e0f5b0d81"
+    },
+    {
+      "id": "28-teal-drummer",
+      "label": "Teal Drummer",
+      "sourceSha256": "45130d7bb7ddbcf01c688f0bf1f149761e4473ec80ae0fb485e802cf6691e495"
+    },
+    {
+      "id": "29-ochre-nomad",
+      "label": "Ochre Nomad",
+      "sourceSha256": "a5289f441e601f5169c7b87474fe4a3578da6ee66d29ae8d1545c5af332d2c55"
+    },
+    {
+      "id": "30-frost-goalie",
+      "label": "Frost Goalie",
+      "sourceSha256": "3cf5cab90fb462e70e14d99bdc3ccebf23f0f0750fd07adbf33d07afc4916fc3"
+    },
+    {
+      "id": "31-papaya-broadcaster",
+      "label": "Papaya Broadcaster",
+      "sourceSha256": "5be54b92515f68dceabd0332db70b4e6c6904c0ffb7ff511229eb6121d8fb337"
+    },
+    {
+      "id": "32-inkblue-locksmith",
+      "label": "Inkblue Locksmith",
+      "sourceSha256": "3c643a56f543cfefbcf69316fad9c4cbbb38b0c70e03f23dc2ab96e22fa98257"
+    },
+    {
+      "id": "37-periwinkle-glassblower",
+      "label": "Periwinkle Glassblower",
+      "sourceSha256": "82751fc1851c82efbe491f038ff4d1e625fad15bdc1b4076a2926656d26527cd"
+    }
+  ],
+  "audio": false,
+  "codec": "H.264, yuv420p, 900 kbit/s target, two-pass",
+  "scroll": "One character-width every three seconds; multiple characters remain visible together. Both rows share identical horizontal positions.",
+  "source": "Existing INP geometry and textures evaluated by the same browser renderer as the UI. Top row is cached neutral renders; bottom row is evaluated every frame. No synthesized video frames or rig modifications.",
+  "review": "All 27 rigs inspected at 0, 0.75, 1.5 and 2.25 seconds of the presentation cycle, including limb endpoints. Six reduced-amplitude clips reinspected. Presentation review is not an exhaustive visual certification or a claim of pose-for-pose equivalence to the paper validation suite.",
+  "rangeHandling": "Every command is clamped to the exported parameter range. Limited ranges are already encoded in rig min/max and are not halved again. Missing or fixed chains remain still. Limb movement uses the outward shoulder/hip and inward elbow endpoints, and zero-to-maximum knee flexion, with phase offsets.",
+  "rendererSources": {
+    "player/src/combinedRuntime.ts": "f5aa94ba048b302be925fa26a83959345c4a2a60984b18605de83e6f738459d7",
+    "player/src/combinedRenderer.ts": "7bdce56fcdbe55af3287a7c00d7e20b765f3c45d4669c8e61de010f7ed1d7a37"
+  },
+  "files": {
+    "showcase.mp4": {
+      "bytes": 9105848,
+      "sha256": "622b98c10ee6eefea27714ed5f3ab7315ba99f724f3affb8d41761a9f2d56ee2"
+    },
+    "showcase-poster.png": {
+      "bytes": 985602,
+      "sha256": "2a70b85c8189ccea637427f273678d5f26ab38cb16f8200eb1b25b2d609a2aa6"
+    }
+  }
+}

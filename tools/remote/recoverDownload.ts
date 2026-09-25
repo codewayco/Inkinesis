@@ -1,0 +1,12 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {dirname,resolve,join} from 'node:path';
+import {chunkedDownload} from './chunkedDownload';
+import {promoteH100Artifacts} from './decompose';
+import {loadEnvironment} from '../imageToRig/config';
+loadEnvironment();
+const request=resolve(process.argv[2]),spec=JSON.parse(readFileSync(request,'utf8'));
+const queue=dirname(request),attempt=dirname(spec.downloads[0].local),output=dirname(dirname(attempt));
+const recovery=await chunkedDownload(queue,spec.downloads,process.env.RIG_REMOTE_CONTENTS_ROOT??'');
+promoteH100Artifacts(spec.uploads[0].local,output,attempt);
+writeFileSync(join(output,'remote-transfer-recovery.json'),JSON.stringify({originalRequest:request,status:'complete',...recovery},null,2)+'\n');
+console.log('Recovered and identity-verified completed H100 artifacts: '+output);

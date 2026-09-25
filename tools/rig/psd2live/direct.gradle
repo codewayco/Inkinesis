@@ -1,0 +1,14 @@
+// This adapter uses the engine's public Kotlin API without modifying its sources.
+allprojects { project ->
+    afterEvaluate {
+        if (!project.pluginManager.hasPlugin('org.jetbrains.kotlin.jvm')) return
+        project.extensions.getByName('kotlin').sourceSets.getByName('main').kotlin.srcDir(project.property('directAdapterDir').toString())
+        project.tasks.register('evaluateDirectBust', JavaExec) {
+            dependsOn project.tasks.named('classes')
+            classpath = project.sourceSets.main.output + project.configurations.compileClasspath
+            mainClass = 'io.github.psd2live.directbust.DirectBustKt'
+            jvmArgs '-Xmx8g', '-Dfile.encoding=UTF-8', '-Djava.awt.headless=true'
+            args project.property('preparedPsd').toString(), project.property('poseOutput').toString()
+        }
+    }
+}

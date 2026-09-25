@@ -1,0 +1,6 @@
+# Local preparation and tests; separate from See-through's GPU environment.
+numpy==2.5.3
+Pillow==12.3.0
+psd-tools==1.19.0
+opencv-python-headless==5.0.0.93
+scipy==1.18.1

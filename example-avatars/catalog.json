@@ -1,0 +1,655 @@
+{
+  "release": {
+    "baseUrl": null
+  },
+  "entries": [
+    {
+      "id": "01-tidal-glass",
+      "label": "Tidal Glass",
+      "base": "/example-avatars/01-tidal-glass",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/01-tidal-glass.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "01-tidal-glass.inp",
+          "bytes": 19095461,
+          "sha256": "c4c953747f1430af5361bcbabc6b65ca8c7af5e4937c8d16f55c39223d43d382"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "01-tidal-glass-live2d.zip",
+          "bytes": 40935738,
+          "sha256": "2ca2469473fa036fe1dae720b11cb8fbf78ec3f8c4f455f031f38b2f3dc57ae2"
+        }
+      ]
+    },
+    {
+      "id": "02-nocturne-cartographer",
+      "label": "Nocturne Cartographer",
+      "base": "/example-avatars/02-nocturne-cartographer",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/02-nocturne-cartographer.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "02-nocturne-cartographer.inp",
+          "bytes": 11207220,
+          "sha256": "9bedb4650b63fa58fd141036f099aa51a15d72b17cee6be9a0b9bbbce4a74d42"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "02-nocturne-cartographer-live2d.zip",
+          "bytes": 26419478,
+          "sha256": "3af9456d1f2c03e3e6fae9e35abb89cf8c5d151173f57ec60e4de3027c297809"
+        }
+      ]
+    },
+    {
+      "id": "03-ember-waltz",
+      "label": "Ember Waltz",
+      "base": "/example-avatars/03-ember-waltz",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/03-ember-waltz.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "03-ember-waltz.inp",
+          "bytes": 17149778,
+          "sha256": "99c8621c0a0a48a12e36be8145e6f3edd64f1cadbfb3d070ab50f3b79dfc56ea"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "03-ember-waltz-live2d.zip",
+          "bytes": 39802780,
+          "sha256": "66c3e7ec9e8061098920b4f581a8edf3630de49b0608f30c0f87e934be9305cc"
+        }
+      ]
+    },
+    {
+      "id": "04-purple-couture",
+      "label": "Purple Couture",
+      "base": "/example-avatars/04-purple-couture",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/04-purple-couture.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "04-purple-couture.inp",
+          "bytes": 13923787,
+          "sha256": "15ef34ebf9a30b98c57eb86af8c3c6e2bfa40180d9d726e80f6049e405bc74b0"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "04-purple-couture-live2d.zip",
+          "bytes": 23882761,
+          "sha256": "b08dc8f9d23ab02adc881d81f4fd97f4adf064e5962bedb05f03ac3961391116"
+        }
+      ]
+    },
+    {
+      "id": "05-solstice-mosaic",
+      "label": "Solstice Mosaic",
+      "base": "/example-avatars/05-solstice-mosaic",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/05-solstice-mosaic.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "05-solstice-mosaic.inp",
+          "bytes": 15315291,
+          "sha256": "7a11abf6451fb771d5025f79b60526c9761531f86a932098ac3c8304daeb4126"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "05-solstice-mosaic-live2d.zip",
+          "bytes": 27031706,
+          "sha256": "934135380a545080ca3976e21aceedb5895a573de533d0d8d9d55c4caee07473"
+        }
+      ]
+    },
+    {
+      "id": "06-ultramarine-tempo",
+      "label": "Ultramarine Tempo",
+      "base": "/example-avatars/06-ultramarine-tempo",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/06-ultramarine-tempo.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "06-ultramarine-tempo.inp",
+          "bytes": 14691890,
+          "sha256": "ecb93265dd84e8bbe92aa41a08dc4ac6e60c79be64684227a1afb363c354d613"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "06-ultramarine-tempo-live2d.zip",
+          "bytes": 24828955,
+          "sha256": "66b2b25b5ecdf294dd8cc94084a9aff4b2a2a4ef591abfe51b6ac7679b34ec5d"
+        }
+      ]
+    },
+    {
+      "id": "07-saffron-orbit",
+      "label": "Saffron Orbit",
+      "base": "/example-avatars/07-saffron-orbit",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/07-saffron-orbit.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "07-saffron-orbit.inp",
+          "bytes": 15427580,
+          "sha256": "438ef6ad481b8c69e6dfbf5246236b821d778e726d152d1a8d68247dd08bb0a7"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "07-saffron-orbit-live2d.zip",
+          "bytes": 24453570,
+          "sha256": "8c2ed78a47f18f18a4ec1dbb833a3bbec4c589f07da4c147d5f001f0515a6cda"
+        }
+      ]
+    },
+    {
+      "id": "08-lichen-starweaver",
+      "label": "Lichen Starweaver",
+      "base": "/example-avatars/08-lichen-starweaver",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/08-lichen-starweaver.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "08-lichen-starweaver.inp",
+          "bytes": 16762922,
+          "sha256": "2bd6f9d6e318303ff211819dbcc33e4147ecdd5bc115321041e1d0c773e39a7d"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "08-lichen-starweaver-live2d.zip",
+          "bytes": 30134218,
+          "sha256": "df5a29a335c911f9375df878dafbe566ce72e6e501a101285ec6823cc409bf10"
+        }
+      ]
+    },
+    {
+      "id": "09-neon-skater",
+      "label": "Neon Skater",
+      "base": "/example-avatars/09-neon-skater",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/09-neon-skater.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "09-neon-skater.inp",
+          "bytes": 13788751,
+          "sha256": "ab230dd2b0aa0ae284ae9c8bbb81237d11d8c7b3967ff4588df62e2d5e27671b"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "09-neon-skater-live2d.zip",
+          "bytes": 23787253,
+          "sha256": "145bb9521c7edeec34467f800e1647ae069a12d3c63e0411ad9ac7ab9d5256ac"
+        }
+      ]
+    },
+    {
+      "id": "11-bubblegum-idol",
+      "label": "Bubblegum Idol",
+      "base": "/example-avatars/11-bubblegum-idol",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/11-bubblegum-idol.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "11-bubblegum-idol.inp",
+          "bytes": 13878574,
+          "sha256": "0a7dcf1279ef84d8d010496f041134200bf507db94a23e72d05154c550a19b05"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "11-bubblegum-idol-live2d.zip",
+          "bytes": 24641995,
+          "sha256": "92bf9235e6af3be56148e30a40ad54cbcb5a395fb9a454507e53a9e2badfd00e"
+        }
+      ]
+    },
+    {
+      "id": "12-desert-ranger",
+      "label": "Desert Ranger",
+      "base": "/example-avatars/12-desert-ranger",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/12-desert-ranger.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "12-desert-ranger.inp",
+          "bytes": 15737379,
+          "sha256": "5a685a93a060449608e6f66bf3cc64f60134c7b9d37349fb45489ca6b0a06a2c"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "12-desert-ranger-live2d.zip",
+          "bytes": 26388212,
+          "sha256": "491187ea8c376f62f30f5bce8cecd2afd3bc117a7cabbfd3d51a99ff474526ca"
+        }
+      ]
+    },
+    {
+      "id": "13-voltage-mechanic",
+      "label": "Voltage Mechanic",
+      "base": "/example-avatars/13-voltage-mechanic",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/13-voltage-mechanic.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "13-voltage-mechanic.inp",
+          "bytes": 15986507,
+          "sha256": "d47701d7e2fa7f179f9014e3bb29c6039f3b7c46fc1c0684663bc702a67dd6e0"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "13-voltage-mechanic-live2d.zip",
+          "bytes": 29411741,
+          "sha256": "78846f9edc474c7d6aa20ec780c0faf124a7d76acc46bf0ccf054187549ceeeb"
+        }
+      ]
+    },
+    {
+      "id": "14-coral-diver",
+      "label": "Coral Diver",
+      "base": "/example-avatars/14-coral-diver",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/14-coral-diver.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "14-coral-diver.inp",
+          "bytes": 13763541,
+          "sha256": "9358533a72c95ef0cbb9292fd32c63f4f5c739d352cfb1e91b6d09b62178e33d"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "14-coral-diver-live2d.zip",
+          "bytes": 24163879,
+          "sha256": "5f503b01579a5c720407a3b0f20f03209f4b22a7a1479c16e8024d9082168463"
+        }
+      ]
+    },
+    {
+      "id": "15-silver-fencer",
+      "label": "Silver Fencer",
+      "base": "/example-avatars/15-silver-fencer",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/15-silver-fencer.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "15-silver-fencer.inp",
+          "bytes": 14318692,
+          "sha256": "f77113a837be585ba4d2c4694f9fa1a5e100ca295999e6eb0226f4a1fdff4934"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "15-silver-fencer-live2d.zip",
+          "bytes": 22570660,
+          "sha256": "4657fb03da1ffbd04886efca6fcceec26e364cb960ed5626d6292594dc270790"
+        }
+      ]
+    },
+    {
+      "id": "16-tangerine-chef",
+      "label": "Tangerine Chef",
+      "base": "/example-avatars/16-tangerine-chef",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/16-tangerine-chef.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "16-tangerine-chef.inp",
+          "bytes": 15712484,
+          "sha256": "817ef6eec9d31e0f091bba671dc338a7bd81cb1959af8269d263e496a0d4658b"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "16-tangerine-chef-live2d.zip",
+          "bytes": 28558109,
+          "sha256": "62de2823e9f871ef80144b20fc526c0bf4caed45db6536c0d2bb1da0077f00ab"
+        }
+      ]
+    },
+    {
+      "id": "17-sakura-kendo",
+      "label": "Sakura Kendo",
+      "base": "/example-avatars/17-sakura-kendo",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/17-sakura-kendo.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "17-sakura-kendo.inp",
+          "bytes": 13851158,
+          "sha256": "9ee07269d06b32b287a85b1f5196a568064479ffd93ef20509dce41a44c075a8"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "17-sakura-kendo-live2d.zip",
+          "bytes": 22802716,
+          "sha256": "fdb0bccc9c9ea3fa6f4df1fc96e97868c65f033faa860331b0744d3bd0cd9178"
+        }
+      ]
+    },
+    {
+      "id": "18-obsidian-rogue",
+      "label": "Obsidian Rogue",
+      "base": "/example-avatars/18-obsidian-rogue",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/18-obsidian-rogue.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "18-obsidian-rogue.inp",
+          "bytes": 14854593,
+          "sha256": "fd7c2762379b03ce5ef9a31fcdd88c53232017abe3944985da3a943245ad4f51"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "18-obsidian-rogue-live2d.zip",
+          "bytes": 23991777,
+          "sha256": "aeba62d69f5c88bba28b8418c0078dca372ed599ae2ab4340b1db17d90bc2ebf"
+        }
+      ]
+    },
+    {
+      "id": "19-lemon-scientist",
+      "label": "Lemon Scientist",
+      "base": "/example-avatars/19-lemon-scientist",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/19-lemon-scientist.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "19-lemon-scientist.inp",
+          "bytes": 13216445,
+          "sha256": "9edd5c10e56aa16a089eb85d32c3bcf5ed5a1fcc993633f94c283300440432ec"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "19-lemon-scientist-live2d.zip",
+          "bytes": 23310182,
+          "sha256": "f88ed5886f8f52757fa4ef998cb90316688c4cc650e4b6bf87bd3e7a2314b1ae"
+        }
+      ]
+    },
+    {
+      "id": "20-maroon-boxer",
+      "label": "Maroon Boxer",
+      "base": "/example-avatars/20-maroon-boxer",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/20-maroon-boxer.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "20-maroon-boxer.inp",
+          "bytes": 14975650,
+          "sha256": "8084e048c592965e7b32208c5fbdf33db5983da4ce8c30c274acb9e9695641e9"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "20-maroon-boxer-live2d.zip",
+          "bytes": 26298941,
+          "sha256": "a1a7ac799b44528beb74063b25d13dcdd05263f244a08e1f120b1452c4bcbb7e"
+        }
+      ]
+    },
+    {
+      "id": "23-fennec-aeronaut",
+      "label": "Fennec Aeronaut",
+      "base": "/example-avatars/23-fennec-aeronaut",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/23-fennec-aeronaut.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "23-fennec-aeronaut.inp",
+          "bytes": 14205831,
+          "sha256": "873e22ce0ba257ea9996744ce0d0fc00ba8999c0d394b382e5a7cd2c5406556a"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "23-fennec-aeronaut-live2d.zip",
+          "bytes": 25711433,
+          "sha256": "a2eef34ef92beaa02dcbc2228cd631d9f4232f46e984e9bc42df9dd696a3e146"
+        }
+      ]
+    },
+    {
+      "id": "27-splitlight-atelier",
+      "label": "Splitlight Atelier",
+      "base": "/example-avatars/27-splitlight-atelier",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/27-splitlight-atelier.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "27-splitlight-atelier.inp",
+          "bytes": 12793734,
+          "sha256": "6f380a8bcd1b03113c2cba48a8b11cc7ec7db8d0364ae0ad6ad94a7e0f5b0d81"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "27-splitlight-atelier-live2d.zip",
+          "bytes": 22020836,
+          "sha256": "68333b1115508c8b1c457396e92378aa6c37bbd41c0f2e5367428b9f430b63d1"
+        }
+      ]
+    },
+    {
+      "id": "28-teal-drummer",
+      "label": "Teal Drummer",
+      "base": "/example-avatars/28-teal-drummer",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/28-teal-drummer.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "28-teal-drummer.inp",
+          "bytes": 18686916,
+          "sha256": "45130d7bb7ddbcf01c688f0bf1f149761e4473ec80ae0fb485e802cf6691e495"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "28-teal-drummer-live2d.zip",
+          "bytes": 32671778,
+          "sha256": "c6e8c5449565db4adfa4244f909461584e3d49d32c5668c2f22895616d0533c4"
+        }
+      ]
+    },
+    {
+      "id": "29-ochre-nomad",
+      "label": "Ochre Nomad",
+      "base": "/example-avatars/29-ochre-nomad",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/29-ochre-nomad.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "29-ochre-nomad.inp",
+          "bytes": 15628844,
+          "sha256": "a5289f441e601f5169c7b87474fe4a3578da6ee66d29ae8d1545c5af332d2c55"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "29-ochre-nomad-live2d.zip",
+          "bytes": 28232325,
+          "sha256": "219da3b6c297eaf0a1d107191385eeb423e3f13453cb1276f9b664e72deeb60b"
+        }
+      ]
+    },
+    {
+      "id": "30-frost-goalie",
+      "label": "Frost Goalie",
+      "base": "/example-avatars/30-frost-goalie",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/30-frost-goalie.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "30-frost-goalie.inp",
+          "bytes": 13735035,
+          "sha256": "3cf5cab90fb462e70e14d99bdc3ccebf23f0f0750fd07adbf33d07afc4916fc3"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "30-frost-goalie-live2d.zip",
+          "bytes": 23850171,
+          "sha256": "eef8f7b5b3e674d19d83d524390e4eb8be27f1b75f8526e5349b01d5423d394f"
+        }
+      ]
+    },
+    {
+      "id": "31-papaya-broadcaster",
+      "label": "Papaya Broadcaster",
+      "base": "/example-avatars/31-papaya-broadcaster",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/31-papaya-broadcaster.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "31-papaya-broadcaster.inp",
+          "bytes": 9709710,
+          "sha256": "5be54b92515f68dceabd0332db70b4e6c6904c0ffb7ff511229eb6121d8fb337"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "31-papaya-broadcaster-live2d.zip",
+          "bytes": 16609683,
+          "sha256": "8d7530ee925e1381ffcf9a906b92f880ec1493ddc50e3c9e4b22ebc7cda8515e"
+        }
+      ]
+    },
+    {
+      "id": "32-inkblue-locksmith",
+      "label": "Inkblue Locksmith",
+      "base": "/example-avatars/32-inkblue-locksmith",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/32-inkblue-locksmith.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "32-inkblue-locksmith.inp",
+          "bytes": 12816278,
+          "sha256": "3c643a56f543cfefbcf69316fad9c4cbbb38b0c70e03f23dc2ab96e22fa98257"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "32-inkblue-locksmith-live2d.zip",
+          "bytes": 22384524,
+          "sha256": "5f3e1c9540734f2c2e6d8fb506148f75d7d311aeb3546dce794920d41df37108"
+        }
+      ]
+    },
+    {
+      "id": "37-periwinkle-glassblower",
+      "label": "Periwinkle Glassblower",
+      "base": "/example-avatars/37-periwinkle-glassblower",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/37-periwinkle-glassblower.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "37-periwinkle-glassblower.inp",
+          "bytes": 12596363,
+          "sha256": "82751fc1851c82efbe491f038ff4d1e625fad15bdc1b4076a2926656d26527cd"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "37-periwinkle-glassblower-live2d.zip",
+          "bytes": 21902149,
+          "sha256": "025b2e8a7a1a658407576f624c47cd5409c948cd218ea1c371fc3b60432ff7cc"
+        }
+      ]
+    }
+  ]
+}

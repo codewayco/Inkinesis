@@ -1,0 +1,2 @@
+# Local JupyterHub bridge client only. No GPU runtime is installed here.
+websocket-client==1.9.0

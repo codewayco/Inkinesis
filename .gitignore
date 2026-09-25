@@ -1,0 +1,34 @@
+# Dependencies, generated files, and private credentials
+node_modules/
+dist/
+.venv*/
+__pycache__/
+*.pyc
+.DS_Store
+.vite/
+.cache/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+# Optional private models, downloads, and authoring outputs
+assets/thirdparty/
+public/avatars/
+outputs/
+tmp/
+
+# Native verifier build products and staged upstream source
+**/.dub/
+tools/verify/inochi-puppet/.inochi2d/
+tools/verify/inochi-puppet/inochi-puppet-check
+*.o
+*.obj
+
+# Optional example payloads are downloaded from Releases, never committed.
+example-avatars/**/*.inp
+example-avatars/**/*.zip
+example-avatars/.downloads/
+
+# Private, temporary visual diversity review; not a published avatar catalog.
+new-avatars/

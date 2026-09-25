@@ -1,0 +1,282 @@
+[
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": ".gitattributes",
+    "size": 1519,
+    "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "README.md",
+    "size": 182,
+    "sha256": "5cb2f7d9857683c7471aae1481ec110681c977664f5c0150f14a9a911ffda9d7"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "model_index.json",
+    "size": 668,
+    "sha256": "694e1737bd7fadbefbd09cc26f30add5d5101ec0f877f3cc546471b130362ecf"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "scheduler/scheduler_config.json",
+    "size": 992,
+    "sha256": "5e6ec01fb7a66422914d3c082504d0912ba6611aa2b5c6bb1da1038bf58d423e"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "text_encoder/config.json",
+    "size": 561,
+    "sha256": "1dfd8a8a934ab14483bb5127bc4fe9bd26e3d8aaa6798e6ede950fee54975ebf"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "text_encoder/model.safetensors",
+    "size": 246144352,
+    "sha256": "e4c36502d1f3fca20e6a8db3af2ab8213bb59178a5ff77aab086f0992cd0237d"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "text_encoder_2/config.json",
+    "size": 571,
+    "sha256": "f441ebed4168e0fde5fbac6fee15da75d65ade0f2f497bd1f8c2ab2640dcb2dd"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "text_encoder_2/model.safetensors",
+    "size": 1389382688,
+    "sha256": "b361da6fb93514411949c779d3abd7684e19900a6e566eaf64ea5a3697b23a21"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "tokenizer/merges.txt",
+    "size": 524619,
+    "sha256": "9fd691f7c8039210e0fced15865466c65820d09b63988b0174bfe25de299051a"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "tokenizer/special_tokens_map.json",
+    "size": 585,
+    "sha256": "a46982c1c09487f4ba4118d4d491a01d7e1b3a9e457662aa93f7c7159f11eaf7"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "tokenizer/tokenizer_config.json",
+    "size": 755,
+    "sha256": "d650e9eaa38ed46fc61c1d218f8133101c552ebf4d752d8c1707479d361943ed"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "tokenizer/vocab.json",
+    "size": 1059962,
+    "sha256": "e089ad92ba36837a0d31433e555c8f45fe601ab5c221d4f607ded32d9f7a4349"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "tokenizer_2/merges.txt",
+    "size": 524619,
+    "sha256": "9fd691f7c8039210e0fced15865466c65820d09b63988b0174bfe25de299051a"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "tokenizer_2/special_tokens_map.json",
+    "size": 574,
+    "sha256": "c2d0fb8b86ad86b1f46134d4a5f93fd1e688c932a78efc8d149087c33a53ad06"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "tokenizer_2/tokenizer_config.json",
+    "size": 906,
+    "sha256": "a7cda9f488d12f08f294d50f65472feb1d74b2e31be386a79ec621d0212f86d9"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "tokenizer_2/vocab.json",
+    "size": 1059962,
+    "sha256": "e089ad92ba36837a0d31433e555c8f45fe601ab5c221d4f607ded32d9f7a4349"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "trans_vae/config.json",
+    "size": 139,
+    "sha256": "4dcb702898f532ecd92be3f9a6b592dd3da25331fbcc7257e3064feb9ef22b8d"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "trans_vae/diffusion_pytorch_model.safetensors",
+    "size": 210639792,
+    "sha256": "925ffed4df7b2f57dbb549ac1ef374a26a1ead8d247eaf054dab641f82a8e0b7"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "unet/config.json",
+    "size": 1985,
+    "sha256": "4eb52473870c393883bf38967b9f3c4cf0883ab86f43458e19e7d0152c6a2e1e"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "unet/diffusion_pytorch_model.safetensors",
+    "size": 8142919672,
+    "sha256": "05b5cd5ee2cbd7cd9c23008b7f76918cfc8e75aa0c45e7ce4cd1c741629b8f1d"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "vae/config.json",
+    "size": 932,
+    "sha256": "0084b76f6221d3aa992053b06249fa932bdc55b2fb1b5590560e02bda2f7821c"
+  },
+  {
+    "model": "layer",
+    "repo": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+    "revision": "966721bb4ef2ddc3af3696862fa10b3f78d9785d",
+    "path": "vae/diffusion_pytorch_model.safetensors",
+    "size": 167335590,
+    "sha256": "ce4b137acad050c9072769cfb02fdc6ecb8dc0957586db5f6fab71d18103ccc1"
+  },
+  {
+    "model": "depth",
+    "repo": "24yearsold/seethroughv0.0.1_marigold",
+    "revision": "aa7a892f83ff68d7b09186a405ba08d5d33f770f",
+    "path": ".gitattributes",
+    "size": 1519,
+    "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361"
+  },
+  {
+    "model": "depth",
+    "repo": "24yearsold/seethroughv0.0.1_marigold",
+    "revision": "aa7a892f83ff68d7b09186a405ba08d5d33f770f",
+    "path": "model_index.json",
+    "size": 499,
+    "sha256": "4afb86d401903499497af0d0d9202ecc341b321b23a42e42867e8cc50c1df4cf"
+  },
+  {
+    "model": "depth",
+    "repo": "24yearsold/seethroughv0.0.1_marigold",
+    "revision": "aa7a892f83ff68d7b09186a405ba08d5d33f770f",
+    "path": "scheduler/scheduler_config.json",
+    "size": 538,
+    "sha256": "5cc63ea04344def32977bf0a049a1c4b4f1453f63ce4913afca103c717cc4b5c"
+  },
+  {
+    "model": "depth",
+    "repo": "24yearsold/seethroughv0.0.1_marigold",
+    "revision": "aa7a892f83ff68d7b09186a405ba08d5d33f770f",
+    "path": "text_encoder/config.json",
+    "size": 556,
+    "sha256": "21b605929e6d88dab311763cc2f0c67aedc05889c143b82614ff681af234d239"
+  },
+  {
+    "model": "depth",
+    "repo": "24yearsold/seethroughv0.0.1_marigold",
+    "revision": "aa7a892f83ff68d7b09186a405ba08d5d33f770f",
+    "path": "text_encoder/model.safetensors",
+    "size": 680820760,
+    "sha256": "305b018799a2e1dba83e9db17654309814ff4212e40b8096b237ce2e3794a132"
+  },
+  {
+    "model": "depth",
+    "repo": "24yearsold/seethroughv0.0.1_marigold",
+    "revision": "aa7a892f83ff68d7b09186a405ba08d5d33f770f",
+    "path": "tokenizer/merges.txt",
+    "size": 524619,
+    "sha256": "9fd691f7c8039210e0fced15865466c65820d09b63988b0174bfe25de299051a"
+  },
+  {
+    "model": "depth",
+    "repo": "24yearsold/seethroughv0.0.1_marigold",
+    "revision": "aa7a892f83ff68d7b09186a405ba08d5d33f770f",
+    "path": "tokenizer/special_tokens_map.json",
+    "size": 460,
+    "sha256": "f118ab3a983206e4f32583448de6bd6aae4ee21869135cef1f5848a753cdaab6"
+  },
+  {
+    "model": "depth",
+    "repo": "24yearsold/seethroughv0.0.1_marigold",
+    "revision": "aa7a892f83ff68d7b09186a405ba08d5d33f770f",
+    "path": "tokenizer/tokenizer_config.json",
+    "size": 886,
+    "sha256": "cb591546bf1d3135b59adc6da78326e03a3d6b067c26cb81960fef8ef491708f"
+  },
+  {
+    "model": "depth",
+    "repo": "24yearsold/seethroughv0.0.1_marigold",
+    "revision": "aa7a892f83ff68d7b09186a405ba08d5d33f770f",
+    "path": "tokenizer/vocab.json",
+    "size": 1059962,
+    "sha256": "e089ad92ba36837a0d31433e555c8f45fe601ab5c221d4f607ded32d9f7a4349"
+  },
+  {
+    "model": "depth",
+    "repo": "24yearsold/seethroughv0.0.1_marigold",
+    "revision": "aa7a892f83ff68d7b09186a405ba08d5d33f770f",
+    "path": "unet/config.json",
+    "size": 1890,
+    "sha256": "0c892bfa328adef668e93abc931ba10449429c8d20e0500d28164c3ef648ff29"
+  },
+  {
+    "model": "depth",
+    "repo": "24yearsold/seethroughv0.0.1_marigold",
+    "revision": "aa7a892f83ff68d7b09186a405ba08d5d33f770f",
+    "path": "unet/diffusion_pytorch_model.safetensors",
+    "size": 2426482432,
+    "sha256": "baf19abcc3b59af0e9a32b19781bf062aa99ced5d6f7d661902b59b0b4e1fb29"
+  },
+  {
+    "model": "depth",
+    "repo": "24yearsold/seethroughv0.0.1_marigold",
+    "revision": "aa7a892f83ff68d7b09186a405ba08d5d33f770f",
+    "path": "vae/config.json",
+    "size": 919,
+    "sha256": "c96018ba17135cf0d34ddc3b73653f75393a3a0406bdc363234cda5b40ae3296"
+  },
+  {
+    "model": "depth",
+    "repo": "24yearsold/seethroughv0.0.1_marigold",
+    "revision": "aa7a892f83ff68d7b09186a405ba08d5d33f770f",
+    "path": "vae/diffusion_pytorch_model.safetensors",
+    "size": 167335590,
+    "sha256": "8d0c34f57abe50f323040f2366c8e22b941068dcdf53c8eb1d6fafb838afecb7"
+  }
+]

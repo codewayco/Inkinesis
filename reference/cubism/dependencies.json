@@ -1,0 +1,18 @@
+{
+  "sdk": "Cubism SDK for Web",
+  "release": "5-r.5",
+  "downloadPage": "https://www.live2d.com/en/sdk/download/web/",
+  "archiveUrl": "https://cubism.live2d.com/sdk-web/bin/CubismSdkForWeb-5-r.5.zip",
+  "archiveSha256": "67064a7fb1812cf502f5c4a03bfe12cc638c75a621bb4acf06bb28763df06ba0",
+  "frameworkTagCommit": "198a3769c26ca3d7b600e932590433badd392edd",
+  "installation": "Extract Core and Framework with their licenses into assets/thirdparty/cubism_sdk/CubismSdkForWeb-5-r.5/; do not vendor sample art.",
+  "license": {
+    "scope": "Private development and verification; no publication or redistribution rights asserted.",
+    "officialGuidance": "https://www.live2d.com/en/sdk/license/",
+    "reliedOnText": "License only required upon releasing your content. Not during trial or development.",
+    "agreement": "https://www.live2d.com/eula/live2d-proprietary-software-license-agreement_en.html",
+    "clause": "Section 2.1, non-exclusive development/use license subject to the agreement; release is separately restricted.",
+    "framework": "Live2D Open Software License; retain the bundled license and notices."
+  },
+  "tooling": "Use the repository package-lock.json pins; the engine and player do not import this app."
+}

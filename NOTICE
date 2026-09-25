@@ -1,0 +1,15 @@
+# Notice
+
+Inkinesis is licensed under Apache-2.0 (see `LICENSE`), but not everything it runs with is. This file states which parts of the repository and its external dependencies carry other terms, so that anyone redistributing or building on the project knows where the Apache license stops. Thanks to the projects themselves are in the README's Acknowledgements; this file is about licensing.
+
+## Third-party components
+
+The pipeline uses repository-owned preparation and connects directly to pristine psd2live and See-through. The root Apache-2.0 license does not override third-party licenses.
+
+- **psd2live**: GPL-3.0, separately installed and executed. `tools/rig/psd2live/PoseDump.kt`, `tools/rig/psd2live/DirectBust.kt` and `tools/rig/live2d/CombinedExport.kt` carry their own GPL-3.0-only SPDX headers and are not covered by the root Apache license. The adapters compile into the separate engine process, not the browser bundle. The direct preparation adapter verifies the exact engine revision and rejects modified engine sources.
+- **See-through**: external Apache-2.0 code. Model licenses are separate; the depth-weight license remains an unresolved item in the retained provenance. Do not treat the code license as blanket permission for all weights.
+- **Inochi2D 0.8.7**: external native verifier dependency, staged locally with the checked-in renderless patch. Its upstream license remains with the staged source; the patch changes build guards, not evaluation semantics.
+- **eSpeak NG**: GPL software, optionally invoked as a separate local process for speech. No eSpeak implementation is embedded or redistributed.
+- **Live2D Cubism SDK for Web**: optional proprietary Core plus Framework under their respective Live2D terms. Installed privately under ignored `assets/thirdparty/cubism_sdk/`, used only by the isolated reference harness. No SDK binaries or sample artwork are redistributed. See `reference/cubism/dependencies.json` for the pinned SDK and license references.
+- **Anthropic and OpenAI services**: external API services configured by the user. No provider model implementation is shipped with this repository.
+

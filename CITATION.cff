@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use Inkinesis in your work, please cite it as below. A technical report is in preparation; this entry will be updated with its identifier when it is published."
+title: "Inkinesis: Turning Illustrations into Portable 2D Character Rigs"
+type: software
+authors:
+  - family-names: "Çeliktenyıldız"
+    given-names: "Mehmet Salih"
+    affiliation: "Codeway"
+year: 2026
+license: Apache-2.0
+keywords:
+  - 2D character rigging
+  - Live2D
+  - Inochi2D
+  - illustration animation
+  - virtual avatars
+abstract: "Inkinesis turns a text prompt or a character illustration into a layered, animated 2D rig with head, expression and limb controls, previews it in the browser, and exports it for Inochi2D and Live2D runtimes."

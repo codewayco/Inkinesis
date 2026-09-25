@@ -1,0 +1,12 @@
+{
+  "scope": "isolated-axes",
+  "axes": [{
+    "axis": "yaw",
+    "parameterId": "synthetic.horizontal",
+    "anchors": [
+      { "degrees": -20, "value": -2, "source": "synthetic declared fixture", "intendedView": "left endpoint" },
+      { "degrees": 0, "value": 0, "source": "synthetic declared fixture", "intendedView": "neutral" },
+      { "degrees": 30, "value": 1, "source": "synthetic declared fixture", "intendedView": "right endpoint" }
+    ]
+  }]
+}
