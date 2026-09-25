@@ -9,6 +9,7 @@ The gallery and browser motion frames are rendered from existing example avatars
 | `showcase-provenance.json` | Source rig and renderer hashes, motion recipe, per-character presentation scales, reviewed sample times, output hashes and encoding settings. |
 | `stages.webp` | Top row of the technical report's teaser figure: Purple Couture's source illustration beside renders of the generated rig with arms, legs, both combined, and a closed-eye open-mouth expression. Rasterized from the figure PDF; panels are the same saved runtime renders used in the report. |
 | `pipeline.webp` | The report's pipeline figure: source, See-through layers, registered expressions, VLM joints, composed rig, and the Live2D export, labelled by reused, ours, and verification. Rasterized from the figure PDF. |
+| `gallery.webp` | All 27 example previews from `example-avatars/previews/` composed into one labelled grid, so the README gallery renders at a uniform size. |
 | `characters.webp` | Neutral renders of `04-purple-couture`, `06-ultramarine-tempo`, `07-saffron-orbit`, `12-desert-ranger`, `09-neon-skater`, and `08-lichen-starweaver`. |
 | `motion.gif` | A four-second, 12 fps loop of the first three rigs above. Head yaw/pitch/roll, arm parameters, hip and knee angles, eye openness, and mouth openness vary; geometry and textures are evaluated by the player. |
 | `face.gif` | Close-up of Purple Couture from the same renderer, showing head and expression controls over a four-second loop. |
