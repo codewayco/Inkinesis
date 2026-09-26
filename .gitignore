@@ -32,3 +32,6 @@ example-avatars/.downloads/
 
 # Private, temporary visual diversity review; not a published avatar catalog.
 new-avatars/
+
+# Local paper drafts and publication materials
+/paper/
