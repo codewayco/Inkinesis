@@ -1,7 +1,7 @@
 import {beforeEach, afterAll, afterEach, describe, expect, it, vi} from 'vitest';
 import {EventEmitter} from 'node:events';
 import type {IncomingMessage, ServerResponse} from 'node:http';
-import {mkdtempSync, readFileSync, rmSync} from 'node:fs';
+import {mkdtempSync, rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import type {ViteDevServer} from 'vite';
@@ -35,15 +35,14 @@ describe('Generate API backend selection',()=>{
         expect(response.statusCode).toBe(202);
         expect(mocks.run.mock.calls[0][0].out).toContain('inkinesis-preview-');
         expect(mocks.run.mock.calls[0][0].out).not.toContain(mocks.root.path);
-        expect(mocks.run).toHaveBeenCalledWith(expect.objectContaining({prompt:'An original character',image:undefined,remoteQueue:'.cache/rig/h100-queue',allowLocalFallback:true}),expect.any(Function));
+        expect(mocks.run).toHaveBeenCalledWith(expect.objectContaining({prompt:'An original character',remoteQueue:'.cache/rig/h100-queue',allowLocalFallback:true}),expect.any(Function));
+        expect(mocks.run.mock.calls[0][0].image).toBeUndefined();
     });
-    it('routes image uploads through the same policy and preserves input bytes',()=>{
+    it('requires image review instead of silently rigging a raw upload',()=>{
         vi.stubEnv('RIG_H100_QUEUE','/tmp/custom-h100-queue');
         const bytes=Buffer.from('upload fixture'),response=request('POST','image/png',bytes);
-        expect(response.statusCode).toBe(202);
-        const options=mocks.run.mock.calls[0][0];
-        expect(options).toMatchObject({prompt:undefined,remoteQueue:'/tmp/custom-h100-queue',allowLocalFallback:true});
-        expect(readFileSync(options.image)).toEqual(bytes);
+        expect(response.statusCode).toBe(409);
+        expect(mocks.run).not.toHaveBeenCalled();
     });
     it('reports local fallback availability when the bridge is absent',()=>{
         vi.stubEnv('RIG_H100_QUEUE',join(mocks.root.path,'absent'));

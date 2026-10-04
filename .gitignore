@@ -29,9 +29,22 @@ tools/verify/inochi-puppet/inochi-puppet-check
 example-avatars/**/*.inp
 example-avatars/**/*.zip
 example-avatars/.downloads/
+# Local export workspaces include large models, textures and private build reports.
+example-avatars/*/export-*/
 
 # Private, temporary visual diversity review; not a published avatar catalog.
 new-avatars/
+new-avatars-update/
+old-avatars-update/
 
 # Local paper drafts and publication materials
 /paper/
+
+# Private research workspace; excluded from publication.
+/research/
+old-avatars-update-v2/
+old-avatars-update-v3/
+new-avatars-update-v3/
+old-avatars-v0.2/
+new-avatars-v0.2/
+stress-examples/

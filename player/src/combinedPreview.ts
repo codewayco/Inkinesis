@@ -5,9 +5,10 @@ import { createRecorder } from './recordClip';
 import { espeakServiceBackend } from './story/tts';
 import { mouthOpenness, type VisemeTrack } from '../../engine/src/lipsync/visemes';
 import type { RunReport } from '../../tools/imageToRig/pipeline';
-import type {MotionCapabilities} from '../../tools/imageToRig/capabilities';
+import {designNotes,type MotionCapabilities} from '../../tools/imageToRig/capabilities';
 import { installAvatarLibrary } from './avatarLibrary';
 import { motionDemoValues, blinkOpenness } from './previewMotion';
+import {installUploadReview} from './uploadReview';
 const el = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const state = (text: string) => { el('generateState').textContent = text; };
 const saveButton=el<HTMLButtonElement>('saveGenerated');
@@ -85,6 +86,13 @@ function showCapabilities(caps?:MotionCapabilities, ready=true) {
     if(!caps){capabilityDialog.close();return;}
     el('generatedActions').hidden=false;
     const intro=document.createElement('p');intro.textContent=ready?'Your character design is preserved. Only supported movements are enabled; other regions stay in their drawn pose. Preview the result before saving.':'Source assessment only — no animated rig is available. Candidate movements still require layer and geometry checks.';capabilityPanel.append(intro);
+    const notes=designNotes(caps);
+    if(notes.length){
+        const heading=document.createElement('strong');heading.textContent='What this drawing limits';
+        const list=document.createElement('ul');list.style.margin='4px 0 10px';
+        for(const note of notes){const item=document.createElement('li');item.textContent=note;list.append(item);}
+        capabilityPanel.append(heading,list);
+    }
     const labels:Record<string,string>={'Arm L':'Left arm','Arm R':'Right arm','Leg L':'Left leg','Leg R':'Right leg',yaw:'Head turn (yaw)',pitch:'Head tilt (pitch)',roll:'Head lean (roll)',head:'Head',blink:'Blink',mouth:'Mouth'};
     for(const [name,c] of [...Object.entries(caps.headAxes??{head:caps.face.head}),...Object.entries({blink:caps.face.blink,mouth:caps.face.mouth}),...Object.entries(caps.chains)]) {
         const row=document.createElement('p');row.style.margin='5px 0';
@@ -119,9 +127,12 @@ function syncControls(displayValues = values) { for (const [id, [name, axis, mul
     if (p) {
         input.min = String(p.min[axis] * multiplier);
         input.max = String(p.max[axis] * multiplier);
+        // Reduced ranges can have fractional endpoints (e.g. -12.5..12.5).
+        // An integer step anchored at that minimum silently rounds neutral 0.
+        input.step = 'any';
         input.value = String(displayValues[name][axis] * multiplier);
     }
-    el(id + 'Out').textContent = id === 'jaw' ? (Number(input.value) / multiplier).toFixed(2) : input.value;
+    el(id + 'Out').textContent = id === 'jaw' ? (Number(input.value) / multiplier).toFixed(2) : String(Number(Number(input.value).toFixed(2)));
 }
     garmentControls.hidden = false;
     garmentControls.style.display = ['ParamGarmentSway','ParamBodySway','ParamBreath'].some(name => values[name]) ? '' : 'none';
@@ -226,6 +237,7 @@ function stopSpeech() { ++speechTicket; el<HTMLButtonElement>('say').disabled = 
         URL.revokeObjectURL(speech.url);
 } speech = null; }
 async function load(bytes: Uint8Array, label: string) {
+    showUploadResult();
     showSave('',false,false);
     referencePreview.hidden = true;
     el<HTMLButtonElement>('record').disabled = false;
@@ -304,8 +316,19 @@ el('stopSpeaking').onclick = stopSpeech;
 const recorder = createRecorder(canvas, (recording, message) => { el('record').textContent = recording ? 'Stop recording' : 'Record a clip'; el('recordState').textContent = message; });
 el('record').onclick = () => recorder.toggle();
 function setBusy(value: boolean) { busy = value; recentGenerations.disabled=value; if(value)showSave('',false,false); el<HTMLButtonElement>('generate').disabled = value; el<HTMLInputElement>('source').disabled = value; }
+function showUploadResult(report?:RunReport) {
+    const panel=el('uploadResult');panel.replaceChildren();panel.hidden=!report?.uploadReview;
+    const review=report?.uploadReview;if(!review)return;
+    const title=document.createElement('strong');title.textContent='Rig built · Visual review needed';panel.append(title);
+    for(const note of review.notes){const p=document.createElement('p');p.textContent=note;panel.append(p);}
+    if(review.limitations.length){const list=document.createElement('ul');
+        const labels:Record<string,string>={'Arm L':'Left arm','Arm R':'Right arm','Leg L':'Left leg','Leg R':'Right leg',mouth:'Mouth',blink:'Blink',yaw:'Head turn',pitch:'Head tilt',roll:'Head lean'};
+        for(const limitation of review.limitations){const li=document.createElement('li');li.textContent=`${labels[limitation.region]??limitation.region}: limited or unavailable — ${limitation.reason}`;list.append(li);}panel.append(list);
+    }
+}
 async function poll(id: string) {
     setBusy(true);
+    showUploadResult();
     localStorage.setItem('combined-job', id);
     try {
         for (;;) {
@@ -344,6 +367,7 @@ async function poll(id: string) {
                     status('Source image only — ' + report.status.replaceAll('_', ' ') + '. See the report.');
                 }
                 showSave(id,Boolean(saved),Boolean(report.files.input));
+                showUploadResult(report);
                 await refreshGenerations();
                 break;
             }
@@ -367,6 +391,7 @@ catch (e) {
     state(e instanceof Error ? e.message : String(e));
     setBusy(false);
 } }
+const uploadReview=installUploadReview({setBusy,state,startJob:async id=>{await refreshGenerations();await poll(id);}});
 el('generate').onclick = () => { const prompt = el<HTMLTextAreaElement>('generatePrompt').value.trim(); if (!prompt) {
     state('Describe a character first.');
     return;
@@ -377,9 +402,10 @@ el<HTMLInputElement>('source').onchange = () => guard(async () => { const file =
     el('downloads').replaceChildren();
 }
 else
-    await generate(file, file.type); });
+    await uploadReview.open(file);
+el<HTMLInputElement>('source').value=''; });
 el('loadGenerated').onclick = () => guard(async () => { const response = await fetch('/api/rig/last'); const r = await response.json(); if (!response.ok)
-    throw new Error(r.error); await loadUrl(r.base + '/' + r.report.files.rig, 'Last generated character'); downloads(r.base, { 'Download rig': r.report.files.rig, 'Report': 'REPORT.md' }); state('Rig ready — open Report for review findings.'); });
+    throw new Error(r.error); await loadUrl(r.base + '/' + r.report.files.rig, 'Last generated character'); downloads(r.base, { 'Download rig': r.report.files.rig, 'Report': 'REPORT.md' }); showUploadResult(r.report); state('Rig ready — open Report for review findings.'); });
 function frame(now: number) {
     if (asset && renderer && referencePreview.hidden) {
         const posed = structuredClone(values), t = (now - clipStart) / 1000;
@@ -444,4 +470,4 @@ guard(async () => { const r = await fetch('/api/rig/'); if (!r.ok || !r.headers.
     el('generationSetup').hidden=Boolean(p.available);
     el('generationMissing').replaceChildren(...(p.missing??[]).map((reason:string)=>{const li=document.createElement('li');li.textContent=reason;return li;}));
     state(p.available ? `Ready: upload an image or describe a character. See-through: ${p.decomposition?.policy==='local'?'local GPU selected.':p.decomposition?.policy==='h100'?'H100 selected; local fallback disabled.':p.decomposition?.ready?'H100 connected, with local fallback.':'H100 unavailable; local fallback selected.'} Image and expression APIs run separately.` : 'Generation setup incomplete. You can still use example avatars or upload a rig.'); const pending = localStorage.getItem('combined-job') ?? p.running; if (pending)
-    await poll(pending); });
+    await poll(pending); else await uploadReview.restore(); });

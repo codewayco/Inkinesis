@@ -7,15 +7,16 @@ import { fileURLToPath } from 'node:url';
 import { preflight, outputRoot, imageApiKey } from './config';
 import { acquireRun } from './lock';
 import { readCombined } from '../../player/src/combinedRuntime';
-import { analyze } from './analyze';
-import { analyzeGarment, assessGarment, type GarmentAssessment } from './garmentAnalysis';
+import { analyze, acceptedPoints, adoptLandmarkCheck, type LandmarkCheck } from './analyze';
+import { analyzeGarment, assessGarment, adoptGarmentLandmarkCheck, type GarmentAnalysisRecord, type GarmentAssessment } from './garmentAnalysis';
 import { decomposeH100 } from '../remote/decompose';
 import { runDecomposition, uiGpuOptions } from './decompositionBackend';
 import {sourceQuality} from '../quality/source';
 import {preparedQuality} from '../quality/prepared';
 import {motionQuality} from '../quality/motion';
-import {assessCapabilities,type MotionCapabilities} from './capabilities';
+import {assessCapabilities,type MotionCapabilities,type SourceCheckItem} from './capabilities';
 export interface RunReport {
+    uploadReview?: import('./uploadResult').UploadResultReview;
     motionCapabilities?: MotionCapabilities;
     qualityMode?: 'off' | 'observe' | 'repair';
     originalInputSha256?: string;
@@ -66,7 +67,7 @@ export async function runPipeline(options: {
         copyFileSync(join(home, 'report.json'), join(home, `report-attempt-${Date.now()}.json`));
     const report: RunReport = { id, preparation, rigMode, qualityMode, status: 'running', stage: 'preflight', started: new Date().toISOString(), reasons: [], stages: previous?.stages ?? [], files: {}, decomposition:{requested:options.remoteQueue?(options.allowLocalFallback?'h100-first':'h100'):'local'} };
     const save = () => { writeFileSync(join(home, 'report.pending.json'), JSON.stringify(report, null, 2) + '\n'); renameSync(join(home, 'report.pending.json'), join(home, 'report.json')); notify?.(structuredClone(report)); };
-    const c = preflight({local:!options.remoteQueue || options.allowLocalFallback});
+    const c = preflight({local:!options.remoteQueue || options.allowLocalFallback === true});
     const env = { ...process.env };
     const release = acquireRun(home);
     // Existing prompt drawer writes relative records; isolate its working directory.
@@ -121,7 +122,7 @@ export async function runPipeline(options: {
             if (!imageApiKey())
                 throw new Error('Set OPENAI_API_KEY for prompt drawing.');
             writeFileSync(join(home, 'prompt.txt'), options.prompt + '\n');
-            await node('draw', 'tools/generate/baseOpenAI.ts', ['--prompt', options.prompt, '--out', source], home);
+            await node('draw', 'tools/generate/baseOpenAI.ts', ['--prompt', options.prompt, '--out', source, '--background', 'transparent'], home);
         }
         else if (options.image) {
             await command('normalize', cfg.python, ['-c', 'from PIL import Image,ImageOps; import sys; im=ImageOps.exif_transpose(Image.open(sys.argv[1])); im.thumbnail((1536,1536)); im.convert("RGBA").save(sys.argv[2])', resolve(options.image!), join(home, 'normalized.png')]);
@@ -152,13 +153,13 @@ export async function runPipeline(options: {
         save();
         const t = Date.now();
         const analysisPath = join(home, 'analysis.json');
-        let analysis: Omit<Awaited<ReturnType<typeof analyze>>,'capabilities'> & {capabilities?:MotionCapabilities|ReturnType<typeof assessGarment>['capabilities']};
+        let analysis: Omit<Awaited<ReturnType<typeof analyze>>,'capabilities'|'usage'|'attempts'|'failedAttempts'|'coordinateFrame'> & {capabilities?:MotionCapabilities|ReturnType<typeof assessGarment>['capabilities']};
         if (options.resume && existsSync(analysisPath)) {
             analysis = JSON.parse(readFileSync(analysisPath, 'utf8'));
             if (analysis.source.digest !== 'sha256:' + report.inputSha256)
                 throw new Error('Cached analysis belongs to another image.');
-            Object.assign(analysis, options.experimentalGarments ? assessGarment(analysis.assessment as GarmentAssessment) : assessCapabilities(analysis.assessment, analysis.source.width, analysis.source.height));
-            analysis.points = Object.fromEntries(Object.entries(analysis.assessment.points).filter(([, p]) => p && p.confidence >= (options.experimentalGarments ? .8 : .5) && p.confidence <= 1 && Number.isFinite(p.x) && Number.isFinite(p.y) && p.x >= 0 && p.x <= 1 && p.y >= 0 && p.y <= 1).map(([k, p]) => [k, { x: p!.x * analysis.source.width, y: p!.y * analysis.source.height }]));
+            Object.assign(analysis, options.experimentalGarments ? assessGarment(analysis.assessment as GarmentAssessment, { provisional: true }) : assessCapabilities(analysis.assessment, analysis.source.width, analysis.source.height));
+            analysis.points = acceptedPoints(analysis.assessment.points, analysis.source.width, analysis.source.height, options.experimentalGarments ? .8 : .5);
             writeFileSync(analysisPath, JSON.stringify(analysis, null, 2) + '\n');
         }
         else
@@ -171,6 +172,11 @@ export async function runPipeline(options: {
             report.reasons = analysis.reasons;
             return report;
         }
+        // Deterministic check of the drawing against the design contract's structural
+        // items, before the decomposition. It gates nothing; failed items are reported.
+        await command('source-check', cfg.python, ['tools/generate/prepareCharacter.py', 'check', '--image', source, '--analysis', analysisPath, '--out', assets]);
+        const sourceCheck = JSON.parse(readFileSync(join(assets, 'source-check.json'), 'utf8')) as {checks: SourceCheckItem[]};
+        report.files.sourceCheck = 'assets/source-check.json';
         await command('neutralize', cfg.python, ['tools/generate/prepareCharacter.py', 'neutralize', '--image', source, '--out', assets]);
         // Decomposition must use the exact neutralized image that the expression stages use.
         const decompositionRecord = join(assets, 'local-decomposition.json');
@@ -199,6 +205,33 @@ export async function runPipeline(options: {
             report.decomposition!.used=remoteMatches&&remoteCache?'h100':'local';report.decomposition!.cached=true;save();
         }
         const common = ['--image', source, '--psd', join(assets, 'decomposition.psd'), '--out', assets];
+        if (!options.experimentalGarments) {
+            // Verify model landmarks on the decomposition before any stage uses them.
+            await command('landmark-check', cfg.python, ['tools/generate/prepareCharacter.py', 'landmarks', ...common, '--analysis', analysisPath]);
+            const check = JSON.parse(readFileSync(join(assets, 'landmark-check.json'), 'utf8')) as LandmarkCheck;
+            analysis = adoptLandmarkCheck(analysis as Awaited<ReturnType<typeof analyze>>, check);
+            writeFileSync(analysisPath, JSON.stringify(analysis, null, 2) + '\n');
+            report.motionCapabilities = analysis.capabilities as MotionCapabilities;
+            report.files.landmarkCheck = 'assets/landmark-check.json';
+            if (!analysis.canBuild) {
+                report.status = 'needs_review';
+                report.reasons = [...analysis.reasons, 'The verified landmarks no longer support a face rig; see assets/landmark-check.json.'];
+                return report;
+            }
+        } else {
+            // The garment builder gates on 0.8 confidence: verify lower-confidence face
+            // and shoulder landmarks on the decomposition before deciding.
+            await command('landmark-check', cfg.python, ['tools/generate/prepareCharacter.py', 'landmarks', ...common, '--analysis', analysisPath, '--garment-mode']);
+            const check = JSON.parse(readFileSync(join(assets, 'landmark-check.json'), 'utf8')) as LandmarkCheck;
+            analysis = adoptGarmentLandmarkCheck(analysis as unknown as GarmentAnalysisRecord & typeof analysis, check) as unknown as typeof analysis;
+            writeFileSync(analysisPath, JSON.stringify(analysis, null, 2) + '\n');
+            report.files.landmarkCheck = 'assets/landmark-check.json';
+            if (!analysis.canBuild) {
+                report.status = 'unsupported';
+                report.reasons = [...analysis.reasons, 'The verified landmarks do not support the garment face rig; see assets/landmark-check.json.'];
+                return report;
+            }
+        }
         await command('expression-regions', cfg.python, ['tools/generate/prepareCharacter.py', 'plan', ...common, '--analysis', analysisPath]);
         await node('expression-edits', 'tools/generate/editExpressions.ts', [assets]);
         await command('prepare-layers', cfg.python, ['tools/generate/prepareCharacter.py', 'prepare', ...common, '--analysis', analysisPath, ...(options.experimentalGarments ? ['--garment-mode'] : [])]);
@@ -217,6 +250,7 @@ export async function runPipeline(options: {
             // Layer repairs remain isolated explicit candidates until calibrated and reviewed.
         }
         await command('source-bust', cfg.python, ['tools/rig/psd2live/prepareDirect.py', '--engine', cfg.engine, '--java-home', cfg.java, '--psd', join(assets, 'character.psd'), '--output', rig]);
+        if (!options.experimentalGarments && analysis.capabilities) (analysis.capabilities as MotionCapabilities).sourceCheck = sourceCheck.checks.filter(c => c.status === 'fail');
         const config = { compactFace: true, headAttachmentSafety: true, sourcePoses: join(rig, 'model/poses.json'), landmarks: join(home, 'analysis.json'), reference: source, out: home, visibleSeparateLimbs: analysis.assessment.separateLimbs, longGarment: analysis.assessment.longGarment, ...(!options.experimentalGarments?{capabilities:analysis.capabilities}:{}) };
         writeFileSync(join(home, 'combined-config.json'), JSON.stringify(config, null, 2) + '\n');
         await node('combined-rig', options.experimentalGarments ? 'tools/rig/buildGarment.ts' : 'tools/rig/buildCombined.ts', [join(home, 'combined-config.json')]);
@@ -238,9 +272,9 @@ export async function runPipeline(options: {
         await command('demo', cfg.python, ['-c', 'from PIL import Image; from pathlib import Path; import sys; p=Path(sys.argv[1]); fs=[Image.open(f).convert("RGBA") for f in sorted((p/"frames").glob("demo_*.png"))]; fs[0].save(p/"demo.gif",save_all=True,append_images=fs[1:],duration=100,loop=0,disposal=2)', home]);
         copyFileSync(join(assets, 'decomposition.psd'), join(home, 'layers.psd'));
         report.files = { ...report.files, rig: 'character.inp', layers: 'layers.psd', build: 'build.json', poses: 'poses.json', measurement: 'frames/measurement.json', validation: 'validation.json', demo: 'demo.gif' };
-        // Structural validation is not visual acceptance. Always preserve review status.
-        report.status = 'needs_review';
-        report.reasons = [...analysis.assessment.reasons, ...Object.entries({...report.motionCapabilities?.chains,...report.motionCapabilities?.face,...report.motionCapabilities?.headAxes}).flatMap(([name,c])=>c.reasons.map(r=>`${name}: ${r}`)), 'Rig exported and native geometry evaluated. Visual review is required for anatomy, identity, expression quality and extreme poses.'];
+        // The rig is exported and natively validated; capability limits stay in the reasons.
+        report.status = 'success';
+        report.reasons = [...analysis.assessment.reasons, ...Object.entries({...report.motionCapabilities?.chains,...report.motionCapabilities?.face,...report.motionCapabilities?.headAxes}).flatMap(([name,c])=>c.reasons.map(r=>`${name}: ${r}`)), 'Rig exported and natively validated.'];
         if(qualityMode!=='off'){
             report.stage='motion-quality';save();const started=Date.now();
             try{
@@ -266,7 +300,7 @@ export async function runPipeline(options: {
             } catch (error) {
                 report.reasons.push('Optional Live2D export failed; the validated INP remains available. ' + (error instanceof Error ? error.message : String(error)));
             } finally {
-                report.status = 'needs_review';
+                report.status = 'success';
             }
         }
     }

@@ -18,6 +18,8 @@ type Point = {x:number;y:number};
 export interface GarmentAnalysis {
     source: {width:number;height:number}; points: Record<string,Point>;
     assessment: GarmentAssessment;
+    /** Present once the landmark check verified the model points on the decomposition. */
+    landmarkCheck?: unknown;
 }
 const faceLayer = /^(front hair|back hair|side hair|hair|headwear|eyewear|earwear(?:-[lr])?|face|neck|nose|ears?(?:-[lr])?|eyebrow-[lr]|irides-[lr]|eyewhite-[lr]|eyelash-[lr]|eye_close-[lr]|mouth(?:_open|_close)?|lip_upper|lip_lower|tooth-[tb]|tongue)$/;
 const clothLayer = /^(topwear|bottomwear|handwear|arm)(?:-[lr])?$/;
@@ -49,7 +51,7 @@ export function clothOffset(p:Point, region:GarmentRegion, width:number,height:n
 }
 
 export function buildGarment(dump:PoseDump,atlases:Map<string,Buffer>,analysis:GarmentAnalysis,reference?:ReturnType<typeof decodePNG>,preservation?:ReturnType<typeof decodePNG>) {
-    const decision=assessGarment(analysis.assessment);
+    const decision=assessGarment(analysis.assessment,{checked:Boolean(analysis.landmarkCheck)});
     if(!decision.canBuild) throw new Error('Insufficient visible facial evidence for garment rig');
     const {width,height}=dump.canvas, scale=Math.max(width,height)/Math.max(analysis.source.width,analysis.source.height);
     const ox=(width-analysis.source.width*scale)/2,oy=(height-analysis.source.height*scale)/2;
@@ -117,7 +119,11 @@ export function buildGarment(dump:PoseDump,atlases:Map<string,Buffer>,analysis:G
     puppet.meta.capabilities={...decision.capabilities,garment:generated.some(p=>p.name==='ParamGarmentSway'),body:generated.some(p=>p.name==='ParamBodySway'),reasons:decision.reasons};
     puppet.meta.garment={regions,bodyParts:[...bodyIds],parameters:generated.map(p=>p.name),attachmentRule:'Cloth offsets are zero at/above anchorY; merged sleeves also pin visible arm chains and wrists.',layerPolicy:'Preserve merged artwork and fixed source draw order; no invented depth or hidden surfaces.'};
     const faceCompression=compactFaceKeys(puppet);
-    const file=writeInp(puppet,source.textures), asset=readCombined(file);
+    let file=writeInp(puppet,source.textures),asset=readCombined(file);
+    const {result:audit,amplitude}=fitStrainAmplitude(()=>auditGarment(asset,bodyIds),factor=>{
+        for(const p of generated)for(const b of p.bindings)b.values=b.values.map(col=>col.map(v=>(v as number[][]).map(([x,y])=>[x*factor,y*factor])));
+        file=writeInp(puppet,source.textures);asset=readCombined(file);
+    });
     // Compare rest geometry against the face/body assembly before new parameters.
     const before=evaluateCombined(readCombined(baseline)); let neutralError=0;
     const neutral=evaluateCombined(asset);
@@ -126,10 +132,26 @@ export function buildGarment(dump:PoseDump,atlases:Map<string,Buffer>,analysis:G
         n.xy.forEach((v,i)=>{neutralError=Math.max(neutralError,Math.abs(p.xy[i]-v));});
     }
     if(neutralError>1e-7)throw new Error('Garment parameters changed the neutral geometry');
-    const audit=auditGarment(asset,bodyIds);
     const attachments=auditAttachments(asset,regions);
-    return {file,report:{mode:'garment-v1',capabilities:puppet.meta.capabilities,garment:puppet.meta.garment,sourceCoverage:coverage?.report,hairAttachments,faceChannels:carried.channels,faceCompression,expressionRepairs,neutralMaxPositionError:neutralError,geometry:audit,attachments,
+    return {file,report:{mode:'garment-v1',capabilities:puppet.meta.capabilities,garment:{...puppet.meta.garment as object,amplitude},sourceCoverage:coverage?.report,hairAttachments,faceChannels:carried.channels,faceCompression,expressionRepairs,neutralMaxPositionError:neutralError,geometry:audit,attachments,
         limitations:['No walking, independent arm/leg articulation, hidden-surface completion or dynamic draw-order changes.','Sleeve sway is disabled when its visible arm chain is incomplete.','Geometry checks do not certify alpha overlap or visual quality.']}};
+}
+
+/**
+ * Fit the cloth and body amplitude to the area strain budget: a finely meshed
+ * hem near a garment box edge may stretch slightly beyond it at full sway. The
+ * amplitude is reduced in steps of 15%, to no less than half; a foldover, or a
+ * strain that half the amplitude does not fix, still refuses the rig.
+ */
+export function fitStrainAmplitude<T>(audit:()=>T,scale:(factor:number)=>void) {
+    let amplitude=1;
+    for(;;){
+        try{return {result:audit(),amplitude};}
+        catch(error){
+            if(!(error instanceof Error&&error.message.includes('strain budget'))||amplitude*.85<.5)throw error;
+            amplitude*=.85;scale(.85);
+        }
+    }
 }
 
 /** Verify authored vertex anchors and static non-clothing layers, relative to the assembled neutral rig. */

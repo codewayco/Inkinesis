@@ -1,212 +1,1961 @@
 {
-  "width": 1440,
+  "width": 1600,
   "height": 1000,
   "fps": 24,
-  "durationSeconds": 81,
-  "frameCount": 1944,
-  "layout": "Synchronized two-row right-to-left scrolling strip: neutral above, animated below",
-  "controls": {
-    "limbs": "Exported parameter min/max: outward shoulders and hips, inward elbows, positive knee flexion; separate hip/knee/arm phases",
-    "yaw": 30,
-    "pitch": 10,
-    "roll": 15,
-    "mouth": 0.65,
-    "periodSeconds": 3
+  "durationSeconds": 105,
+  "frameCount": 2520,
+  "layout": "Aligned neutral and animated rows; 2-second opening and 7-second closing holds; one character every 2 seconds",
+  "motionLimits": {
+    "yaw": 20,
+    "pitch": 0,
+    "roll": 10,
+    "shoulder": 16,
+    "elbow": 30,
+    "hip": 18,
+    "knee": 45,
+    "mouth": 0.65
   },
-  "seen": [
-    "01-tidal-glass",
-    "02-nocturne-cartographer",
-    "03-ember-waltz",
-    "04-purple-couture",
-    "05-solstice-mosaic",
-    "06-ultramarine-tempo",
-    "07-saffron-orbit",
-    "08-lichen-starweaver",
-    "09-neon-skater",
-    "11-bubblegum-idol",
-    "12-desert-ranger",
-    "13-voltage-mechanic",
-    "14-coral-diver",
-    "15-silver-fencer",
-    "16-tangerine-chef",
-    "17-sakura-kendo",
-    "18-obsidian-rogue",
-    "19-lemon-scientist",
-    "20-maroon-boxer",
-    "23-fennec-aeronaut",
-    "27-splitlight-atelier",
-    "28-teal-drummer",
-    "29-ochre-nomad",
-    "30-frost-goalie",
-    "31-papaya-broadcaster",
-    "32-inkblue-locksmith",
-    "37-periwinkle-glassblower"
+  "motionTiming": {
+    "period": 4,
+    "arms": [
+      0,
+      1.2
+    ],
+    "rightLeg": [
+      1,
+      1.8
+    ],
+    "leftLeg": [
+      1.8,
+      2.6
+    ],
+    "head": [
+      2.4,
+      4
+    ],
+    "settle": [
+      3.6,
+      4
+    ]
+  },
+  "reference": "docs/media/motion.gif",
+  "trajectory": "Repeating four-second GIF sequence: both arms, right leg, left leg, head and face, return to neutral. Shared time, no per-avatar delay or amplitude multiplier.",
+  "rangeClamping": "Actual exported min/max only; missing and fixed channels omitted",
+  "reviewSampleSeconds": [
+    0,
+    0.6,
+    1.4,
+    2.2,
+    2.75,
+    3.2,
+    3.6
   ],
-  "errors": [],
-  "reviewScales": {
-    "06-ultramarine-tempo": 0.7,
-    "07-saffron-orbit": 0.7,
-    "09-neon-skater": 0.7,
-    "14-coral-diver": 0.7,
-    "16-tangerine-chef": 0.7,
-    "19-lemon-scientist": 0.7
-  },
-  "reviewReason": "Six presentation-only 70% motion scales after visible sleeve/shoulder texture pulling at the exported limits. Rig data is unchanged.",
+  "videoOrder": [
+    "04-purple-couture",
+    "03-solstice-mosaic",
+    "06-saffron-orbit",
+    "05-ultramarine-tempo",
+    "09-desert-ranger",
+    "07-neon-skater",
+    "11-coral-diver",
+    "12-silver-fencer",
+    "13-tangerine-chef",
+    "15-obsidian-rogue",
+    "16-lemon-scientist",
+    "17-maroon-boxer",
+    "18-fennec-aeronaut",
+    "19-splitlight-atelier",
+    "20-teal-drummer",
+    "21-ochre-nomad",
+    "22-frost-goalie",
+    "24-inkblue-locksmith",
+    "08-bubblegum-idol",
+    "23-papaya-broadcaster",
+    "27-ruby-encore",
+    "35-saffron-jester-acrobat",
+    "10-voltage-mechanic",
+    "14-sakura-kendo",
+    "29-indigo-jackal-radio",
+    "48-pearl-ram-glassblower",
+    "49-jade-cicada-cape-singer",
+    "51-safflower-red-panda-postmaster",
+    "53-lapis-comet-tress-orator",
+    "25-cobalt-otter-cartographer",
+    "26-raspberry-clockwork-gnome",
+    "30-vermilion-crane-host",
+    "31-copper-ibis-restaurateur",
+    "32-coral-reef-siren",
+    "33-sunsteel-lion-knight",
+    "34-mulberry-cloud-witch",
+    "36-jade-dragon-parade",
+    "37-peach-kite-painter",
+    "38-amber-pangolin-ceramist",
+    "39-aurora-axolotl-beaconer",
+    "40-obsidian-bat-cabaret",
+    "43-rose-ibex-fan-diplomat",
+    "52-garnet-elk-scarf-keeper",
+    "28-pomegranate-tide-alchemist",
+    "41-salt-quartz-antelope",
+    "42-carmine-manta-duelist",
+    "44-citrus-seahorse-luthier",
+    "45-saffron-spider-confectioner",
+    "46-brass-heron-banner-engineer",
+    "47-frost-lynx-bell-silks",
+    "50-cobalt-jelly-puff-couture",
+    "01-tidal-glass",
+    "02-ember-waltz"
+  ],
+  "rangeCheckSamplesPerRig": 193,
   "assets": [
     {
       "id": "01-tidal-glass",
       "label": "Tidal Glass",
-      "sourceSha256": "c4c953747f1430af5361bcbabc6b65ca8c7af5e4937c8d16f55c39223d43d382"
+      "base": "/example-avatars/01-tidal-glass",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/01-tidal-glass.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "01-tidal-glass.inp",
+          "bytes": 18131796,
+          "sha256": "2797828cf3e02aaa26f2a9c70f5184e341f0cdcfb3db3cf7159da036ce69cea5"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "01-tidal-glass-live2d.zip",
+          "bytes": 42745950,
+          "sha256": "a964b5e838b0258760edf2b8c36c3fe436ba8a508c5c64c6cde12b8894c886dc"
+        }
+      ],
+      "sourceSha256": "2797828cf3e02aaa26f2a9c70f5184e341f0cdcfb3db3cf7159da036ce69cea5",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [],
+        "legs": []
+      }
     },
     {
-      "id": "02-nocturne-cartographer",
-      "label": "Nocturne Cartographer",
-      "sourceSha256": "9bedb4650b63fa58fd141036f099aa51a15d72b17cee6be9a0b9bbbce4a74d42"
-    },
-    {
-      "id": "03-ember-waltz",
+      "id": "02-ember-waltz",
       "label": "Ember Waltz",
-      "sourceSha256": "99c8621c0a0a48a12e36be8145e6f3edd64f1cadbfb3d070ab50f3b79dfc56ea"
+      "base": "/example-avatars/02-ember-waltz",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/02-ember-waltz.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "02-ember-waltz.inp",
+          "bytes": 10853262,
+          "sha256": "1df0a963cabc081c39ffe555d837ef88c66218388cfd0c19b38d422fb488b9f2"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "02-ember-waltz-live2d.zip",
+          "bytes": 27001154,
+          "sha256": "e1c5828713f3781a266badf4f921527f4a594b6c5b8e2f14c16e4d17300584de"
+        }
+      ],
+      "sourceSha256": "1df0a963cabc081c39ffe555d837ef88c66218388cfd0c19b38d422fb488b9f2",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [],
+        "legs": []
+      }
+    },
+    {
+      "id": "03-solstice-mosaic",
+      "label": "Solstice Mosaic",
+      "base": "/example-avatars/03-solstice-mosaic",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/03-solstice-mosaic.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "03-solstice-mosaic.inp",
+          "bytes": 16748099,
+          "sha256": "925cbd359a4a376401b35c8f999b59030a5c4377a6b1675da5a5bafcae0f44d9"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "03-solstice-mosaic-live2d.zip",
+          "bytes": 116890284,
+          "sha256": "e3ed67c6a2f3b707ecdc490b67db567982f0003b0d7044c74bac041e6994723e"
+        }
+      ],
+      "sourceSha256": "925cbd359a4a376401b35c8f999b59030a5c4377a6b1675da5a5bafcae0f44d9",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
       "id": "04-purple-couture",
       "label": "Purple Couture",
-      "sourceSha256": "15ef34ebf9a30b98c57eb86af8c3c6e2bfa40180d9d726e80f6049e405bc74b0"
+      "base": "/example-avatars/04-purple-couture",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/04-purple-couture.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "04-purple-couture.inp",
+          "bytes": 13007105,
+          "sha256": "859212b34c778af9b6e13f846e00a5ad86ea607dc2b77996f2a7a48423e29bf5"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "04-purple-couture-live2d.zip",
+          "bytes": 22825511,
+          "sha256": "47a7ba3b111c0f7c311df270fa4a86f3bd01ed41c48ba6fe74fce3b060d84fe4"
+        }
+      ],
+      "sourceSha256": "859212b34c778af9b6e13f846e00a5ad86ea607dc2b77996f2a7a48423e29bf5",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "05-solstice-mosaic",
-      "label": "Solstice Mosaic",
-      "sourceSha256": "7a11abf6451fb771d5025f79b60526c9761531f86a932098ac3c8304daeb4126"
-    },
-    {
-      "id": "06-ultramarine-tempo",
+      "id": "05-ultramarine-tempo",
       "label": "Ultramarine Tempo",
-      "sourceSha256": "ecb93265dd84e8bbe92aa41a08dc4ac6e60c79be64684227a1afb363c354d613"
+      "base": "/example-avatars/05-ultramarine-tempo",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/05-ultramarine-tempo.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "05-ultramarine-tempo.inp",
+          "bytes": 13250895,
+          "sha256": "82b8f6f5dd33739d2876241f20d1b1b7393fbf0d6252c0ea56f3485e7c891b65"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "05-ultramarine-tempo-live2d.zip",
+          "bytes": 23541561,
+          "sha256": "22ae506f5d83d7e80bd723ed586bc67791d82b4b84687b94fc56ac0f718771f2"
+        }
+      ],
+      "sourceSha256": "82b8f6f5dd33739d2876241f20d1b1b7393fbf0d6252c0ea56f3485e7c891b65",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "07-saffron-orbit",
+      "id": "06-saffron-orbit",
       "label": "Saffron Orbit",
-      "sourceSha256": "438ef6ad481b8c69e6dfbf5246236b821d778e726d152d1a8d68247dd08bb0a7"
+      "base": "/example-avatars/06-saffron-orbit",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/06-saffron-orbit.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "06-saffron-orbit.inp",
+          "bytes": 19811915,
+          "sha256": "91defa0f73f5fb152fd295fe67b871971962b430c7cbceb00088a6a809daf30f"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "06-saffron-orbit-live2d.zip",
+          "bytes": 154668969,
+          "sha256": "31f65712488fb48f470da967538519366cc22fb2cf3ac8ef82c5208b54a431e3"
+        }
+      ],
+      "sourceSha256": "91defa0f73f5fb152fd295fe67b871971962b430c7cbceb00088a6a809daf30f",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "08-lichen-starweaver",
-      "label": "Lichen Starweaver",
-      "sourceSha256": "2bd6f9d6e318303ff211819dbcc33e4147ecdd5bc115321041e1d0c773e39a7d"
-    },
-    {
-      "id": "09-neon-skater",
+      "id": "07-neon-skater",
       "label": "Neon Skater",
-      "sourceSha256": "ab230dd2b0aa0ae284ae9c8bbb81237d11d8c7b3967ff4588df62e2d5e27671b"
+      "base": "/example-avatars/07-neon-skater",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/07-neon-skater.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "07-neon-skater.inp",
+          "bytes": 13733948,
+          "sha256": "ac96a19a2033815681f8a36f541818406994f180ea9993836cfdc30872be72d4"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "07-neon-skater-live2d.zip",
+          "bytes": 23709148,
+          "sha256": "ac03c638d8e4e94e3af525b38784df118c5b189e6878a08872ecd44d4b639bf6"
+        }
+      ],
+      "sourceSha256": "ac96a19a2033815681f8a36f541818406994f180ea9993836cfdc30872be72d4",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "11-bubblegum-idol",
+      "id": "08-bubblegum-idol",
       "label": "Bubblegum Idol",
-      "sourceSha256": "0a7dcf1279ef84d8d010496f041134200bf507db94a23e72d05154c550a19b05"
+      "base": "/example-avatars/08-bubblegum-idol",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/08-bubblegum-idol.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "08-bubblegum-idol.inp",
+          "bytes": 15228955,
+          "sha256": "6d4db6398ba6e20eef075894f5ae091c476fb24b78fd64696bf8582876087103"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "08-bubblegum-idol-live2d.zip",
+          "bytes": 110576639,
+          "sha256": "9af0a07b9f0564c5a760b17d80e520f7b7e3bfcd4b9539cc4058896e617e15a5"
+        }
+      ],
+      "sourceSha256": "6d4db6398ba6e20eef075894f5ae091c476fb24b78fd64696bf8582876087103",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "12-desert-ranger",
+      "id": "09-desert-ranger",
       "label": "Desert Ranger",
-      "sourceSha256": "5a685a93a060449608e6f66bf3cc64f60134c7b9d37349fb45489ca6b0a06a2c"
+      "base": "/example-avatars/09-desert-ranger",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/09-desert-ranger.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "09-desert-ranger.inp",
+          "bytes": 11638124,
+          "sha256": "51200726a94e1d913cdfacc5acef78ae2cb8f838d95abca0a3e48f3e89da2349"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "09-desert-ranger-live2d.zip",
+          "bytes": 20034190,
+          "sha256": "e2d75572dbde8d349ef2b280d91ecf732f3dc41c54d7aca3d93e5acf99053d93"
+        }
+      ],
+      "sourceSha256": "51200726a94e1d913cdfacc5acef78ae2cb8f838d95abca0a3e48f3e89da2349",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "13-voltage-mechanic",
+      "id": "10-voltage-mechanic",
       "label": "Voltage Mechanic",
-      "sourceSha256": "d47701d7e2fa7f179f9014e3bb29c6039f3b7c46fc1c0684663bc702a67dd6e0"
+      "base": "/example-avatars/10-voltage-mechanic",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/10-voltage-mechanic.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "10-voltage-mechanic.inp",
+          "bytes": 13617226,
+          "sha256": "7b24e821c52f469d19204975ee4f515e80309fa0d246708632f2df56d97add34"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "10-voltage-mechanic-live2d.zip",
+          "bytes": 29524397,
+          "sha256": "f8a61f1bab91a1983baf5675a89e50b2a81f504bc5d72f3be3a13ad51ed79a9c"
+        }
+      ],
+      "sourceSha256": "7b24e821c52f469d19204975ee4f515e80309fa0d246708632f2df56d97add34",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": []
+      }
     },
     {
-      "id": "14-coral-diver",
+      "id": "11-coral-diver",
       "label": "Coral Diver",
-      "sourceSha256": "9358533a72c95ef0cbb9292fd32c63f4f5c739d352cfb1e91b6d09b62178e33d"
+      "base": "/example-avatars/11-coral-diver",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/11-coral-diver.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "11-coral-diver.inp",
+          "bytes": 17298050,
+          "sha256": "ec9989b86e32a5826b46485f2c52a85c2ab86e1c6268ada7689b6d6b83178f7e"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "11-coral-diver-live2d.zip",
+          "bytes": 104630193,
+          "sha256": "4635e7550371164eaeaacd7b6157e656eb7e1d3ad49d4751018201c6ddd9d88b"
+        }
+      ],
+      "sourceSha256": "ec9989b86e32a5826b46485f2c52a85c2ab86e1c6268ada7689b6d6b83178f7e",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "15-silver-fencer",
+      "id": "12-silver-fencer",
       "label": "Silver Fencer",
-      "sourceSha256": "f77113a837be585ba4d2c4694f9fa1a5e100ca295999e6eb0226f4a1fdff4934"
+      "base": "/example-avatars/12-silver-fencer",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/12-silver-fencer.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "12-silver-fencer.inp",
+          "bytes": 15273110,
+          "sha256": "4c9abe5f83d71a4ceedab5039658576f02ceaf76feda7d7b44d3c60f525c5eac"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "12-silver-fencer-live2d.zip",
+          "bytes": 116380060,
+          "sha256": "57294aede49ffa01fd898ec60a7b470980fc6f41a95dc6e236804507d5a0c19d"
+        }
+      ],
+      "sourceSha256": "4c9abe5f83d71a4ceedab5039658576f02ceaf76feda7d7b44d3c60f525c5eac",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "16-tangerine-chef",
+      "id": "13-tangerine-chef",
       "label": "Tangerine Chef",
-      "sourceSha256": "817ef6eec9d31e0f091bba671dc338a7bd81cb1959af8269d263e496a0d4658b"
+      "base": "/example-avatars/13-tangerine-chef",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/13-tangerine-chef.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "13-tangerine-chef.inp",
+          "bytes": 18790315,
+          "sha256": "12765c6c644abf1ae24c18c6e3e71286212db9594a6065415567520976d45f0e"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "13-tangerine-chef-live2d.zip",
+          "bytes": 146298241,
+          "sha256": "1a49b6c000363b313b4ba334746807713f65dd67596637158efa16cc6f33fcdd"
+        }
+      ],
+      "sourceSha256": "12765c6c644abf1ae24c18c6e3e71286212db9594a6065415567520976d45f0e",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "17-sakura-kendo",
+      "id": "14-sakura-kendo",
       "label": "Sakura Kendo",
-      "sourceSha256": "9ee07269d06b32b287a85b1f5196a568064479ffd93ef20509dce41a44c075a8"
+      "base": "/example-avatars/14-sakura-kendo",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/14-sakura-kendo.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "14-sakura-kendo.inp",
+          "bytes": 10833467,
+          "sha256": "dd6dfde48e569ba642a21d1997c115c86199f86f51d6870fff8c2afe673fc469"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "14-sakura-kendo-live2d.zip",
+          "bytes": 22445446,
+          "sha256": "aad40fe04353d4773dd85e3337f13fb1cfa564630213e55d753db4f7caf16002"
+        }
+      ],
+      "sourceSha256": "dd6dfde48e569ba642a21d1997c115c86199f86f51d6870fff8c2afe673fc469",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": []
+      }
     },
     {
-      "id": "18-obsidian-rogue",
+      "id": "15-obsidian-rogue",
       "label": "Obsidian Rogue",
-      "sourceSha256": "fd7c2762379b03ce5ef9a31fcdd88c53232017abe3944985da3a943245ad4f51"
+      "base": "/example-avatars/15-obsidian-rogue",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/15-obsidian-rogue.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "15-obsidian-rogue.inp",
+          "bytes": 14271777,
+          "sha256": "bc6dc9ee5a94fa78d7fff898144ee8b91bf42f39ee1dc4a13bfc4b57fcf0639e"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "15-obsidian-rogue-live2d.zip",
+          "bytes": 103622645,
+          "sha256": "56b02f74a2f8837eeff50b6e801151fb79d3e1976342878a71a38664826781bd"
+        }
+      ],
+      "sourceSha256": "bc6dc9ee5a94fa78d7fff898144ee8b91bf42f39ee1dc4a13bfc4b57fcf0639e",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "19-lemon-scientist",
+      "id": "16-lemon-scientist",
       "label": "Lemon Scientist",
-      "sourceSha256": "9edd5c10e56aa16a089eb85d32c3bcf5ed5a1fcc993633f94c283300440432ec"
+      "base": "/example-avatars/16-lemon-scientist",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/16-lemon-scientist.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "16-lemon-scientist.inp",
+          "bytes": 14183441,
+          "sha256": "3c6a6e78105701a92a27801fe8b1644768072b8e03a867943c00ebcd40cc907d"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "16-lemon-scientist-live2d.zip",
+          "bytes": 98401873,
+          "sha256": "c2b177d7aa4154e81cf8959320acf4ffce15dfe85cae71ee061f5d5bd24dfbb1"
+        }
+      ],
+      "sourceSha256": "3c6a6e78105701a92a27801fe8b1644768072b8e03a867943c00ebcd40cc907d",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "20-maroon-boxer",
+      "id": "17-maroon-boxer",
       "label": "Maroon Boxer",
-      "sourceSha256": "8084e048c592965e7b32208c5fbdf33db5983da4ce8c30c274acb9e9695641e9"
+      "base": "/example-avatars/17-maroon-boxer",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/17-maroon-boxer.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "17-maroon-boxer.inp",
+          "bytes": 18886781,
+          "sha256": "e7044cb5f846655d84fa57b7ce1cf11774d72e1d28dfd7580c1700dfe284794c"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "17-maroon-boxer-live2d.zip",
+          "bytes": 143775453,
+          "sha256": "85ed9737f5cff92175facd35413e19ab0ec1d4298adeb43939dfd1698f6ae20d"
+        }
+      ],
+      "sourceSha256": "e7044cb5f846655d84fa57b7ce1cf11774d72e1d28dfd7580c1700dfe284794c",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "23-fennec-aeronaut",
+      "id": "18-fennec-aeronaut",
       "label": "Fennec Aeronaut",
-      "sourceSha256": "873e22ce0ba257ea9996744ce0d0fc00ba8999c0d394b382e5a7cd2c5406556a"
+      "base": "/example-avatars/18-fennec-aeronaut",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/18-fennec-aeronaut.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "18-fennec-aeronaut.inp",
+          "bytes": 14173917,
+          "sha256": "8603d3158a3611173cd88f37c447bc20f7d50cce91411bf7a7dd9cf13df102cc"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "18-fennec-aeronaut-live2d.zip",
+          "bytes": 26021545,
+          "sha256": "f0f711f418ebf32a3bcfd9b7159e30aed3f07dc84baaffa39e6c2c27cdf092c5"
+        }
+      ],
+      "sourceSha256": "8603d3158a3611173cd88f37c447bc20f7d50cce91411bf7a7dd9cf13df102cc",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "27-splitlight-atelier",
+      "id": "19-splitlight-atelier",
       "label": "Splitlight Atelier",
-      "sourceSha256": "6f380a8bcd1b03113c2cba48a8b11cc7ec7db8d0364ae0ad6ad94a7e0f5b0d81"
+      "base": "/example-avatars/19-splitlight-atelier",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/19-splitlight-atelier.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "19-splitlight-atelier.inp",
+          "bytes": 15052768,
+          "sha256": "9377c942da2af0a75d856e558daa7f844df93a551d82beb59771cff8c2c18c82"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "19-splitlight-atelier-live2d.zip",
+          "bytes": 104852420,
+          "sha256": "40976caa396d7177ad6520663b1c0c64e0218276cf469d7cb291b20bbb7581ff"
+        }
+      ],
+      "sourceSha256": "9377c942da2af0a75d856e558daa7f844df93a551d82beb59771cff8c2c18c82",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "28-teal-drummer",
+      "id": "20-teal-drummer",
       "label": "Teal Drummer",
-      "sourceSha256": "45130d7bb7ddbcf01c688f0bf1f149761e4473ec80ae0fb485e802cf6691e495"
+      "base": "/example-avatars/20-teal-drummer",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/20-teal-drummer.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "20-teal-drummer.inp",
+          "bytes": 17675215,
+          "sha256": "e95c9114e8d11b803a510fb3e6c3ace09874a991712133337b7408f4da4e24ef"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "20-teal-drummer-live2d.zip",
+          "bytes": 121225850,
+          "sha256": "610260b27be20b35b8cf279056f142f1ae639fd16735fecf84d5459a7562d353"
+        }
+      ],
+      "sourceSha256": "e95c9114e8d11b803a510fb3e6c3ace09874a991712133337b7408f4da4e24ef",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "29-ochre-nomad",
+      "id": "21-ochre-nomad",
       "label": "Ochre Nomad",
-      "sourceSha256": "a5289f441e601f5169c7b87474fe4a3578da6ee66d29ae8d1545c5af332d2c55"
+      "base": "/example-avatars/21-ochre-nomad",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/21-ochre-nomad.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "21-ochre-nomad.inp",
+          "bytes": 14345787,
+          "sha256": "6002284741a553d5156944f0691b5f9644b9d21cdc03146091db5d07ce43e3cc"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "21-ochre-nomad-live2d.zip",
+          "bytes": 25817879,
+          "sha256": "10273f6f43c80e39137d13255f09b95933a4475893d54a3d36c529579ac20758"
+        }
+      ],
+      "sourceSha256": "6002284741a553d5156944f0691b5f9644b9d21cdc03146091db5d07ce43e3cc",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "30-frost-goalie",
+      "id": "22-frost-goalie",
       "label": "Frost Goalie",
-      "sourceSha256": "3cf5cab90fb462e70e14d99bdc3ccebf23f0f0750fd07adbf33d07afc4916fc3"
+      "base": "/example-avatars/22-frost-goalie",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/22-frost-goalie.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "22-frost-goalie.inp",
+          "bytes": 17261959,
+          "sha256": "a75c4cb2390d001298b852b4a8c385bedc8b3534ea9f14e234de1f0e46e41a20"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "22-frost-goalie-live2d.zip",
+          "bytes": 107342340,
+          "sha256": "a30fdba3b637560856225b6d663af57d4d57222e4b99a1968e01676373198e3b"
+        }
+      ],
+      "sourceSha256": "a75c4cb2390d001298b852b4a8c385bedc8b3534ea9f14e234de1f0e46e41a20",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "31-papaya-broadcaster",
+      "id": "23-papaya-broadcaster",
       "label": "Papaya Broadcaster",
-      "sourceSha256": "5be54b92515f68dceabd0332db70b4e6c6904c0ffb7ff511229eb6121d8fb337"
+      "base": "/example-avatars/23-papaya-broadcaster",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/23-papaya-broadcaster.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "23-papaya-broadcaster.inp",
+          "bytes": 13826976,
+          "sha256": "b07e20a55929191a496a6193cdc3d54dd86e156e3adb094ba6d77e0dd27f75a5"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "23-papaya-broadcaster-live2d.zip",
+          "bytes": 121600728,
+          "sha256": "cfceadec5c28f749c793cb472d9da28d84e542ba84a6e2317bae20621c9a4bf0"
+        }
+      ],
+      "sourceSha256": "b07e20a55929191a496a6193cdc3d54dd86e156e3adb094ba6d77e0dd27f75a5",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "32-inkblue-locksmith",
+      "id": "24-inkblue-locksmith",
       "label": "Inkblue Locksmith",
-      "sourceSha256": "3c643a56f543cfefbcf69316fad9c4cbbb38b0c70e03f23dc2ab96e22fa98257"
+      "base": "/example-avatars/24-inkblue-locksmith",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/24-inkblue-locksmith.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "24-inkblue-locksmith.inp",
+          "bytes": 12118474,
+          "sha256": "697faa04b5f7633474b205ede00e926cd944e48bf2062beb977a53947a707fca"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "24-inkblue-locksmith-live2d.zip",
+          "bytes": 22329172,
+          "sha256": "714ca3bf8cfb3e10822e04a7d9c05e2c11732bd20f274ff73c9a34065829e210"
+        }
+      ],
+      "sourceSha256": "697faa04b5f7633474b205ede00e926cd944e48bf2062beb977a53947a707fca",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
     },
     {
-      "id": "37-periwinkle-glassblower",
-      "label": "Periwinkle Glassblower",
-      "sourceSha256": "82751fc1851c82efbe491f038ff4d1e625fad15bdc1b4076a2926656d26527cd"
+      "id": "25-cobalt-otter-cartographer",
+      "label": "Cobalt Otter Cartographer",
+      "base": "/example-avatars/25-cobalt-otter-cartographer",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/25-cobalt-otter-cartographer.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "25-cobalt-otter-cartographer.inp",
+          "bytes": 12079444,
+          "sha256": "2969d4d022187fbe071ff12105cabaee22043f4d347404515b807bebfe8ab59a"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "25-cobalt-otter-cartographer-live2d.zip",
+          "bytes": 25350371,
+          "sha256": "5398c7f2742eadf38115f7941069820af7f29869eea47aa143443d445daed861"
+        }
+      ],
+      "sourceSha256": "2969d4d022187fbe071ff12105cabaee22043f4d347404515b807bebfe8ab59a",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm R"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "26-raspberry-clockwork-gnome",
+      "label": "Raspberry Clockwork Gnome",
+      "base": "/example-avatars/26-raspberry-clockwork-gnome",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/26-raspberry-clockwork-gnome.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "26-raspberry-clockwork-gnome.inp",
+          "bytes": 15755498,
+          "sha256": "a7741f6c17cf0abce293701b208f28e2bcd4b891dee1b8f3cf543d561a93f484"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "26-raspberry-clockwork-gnome-live2d.zip",
+          "bytes": 35822766,
+          "sha256": "a4003d9fb6045bd0b08dcb7a906a755da873d0bbb480c51b90703e4fab8f47c6"
+        }
+      ],
+      "sourceSha256": "a7741f6c17cf0abce293701b208f28e2bcd4b891dee1b8f3cf543d561a93f484",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "27-ruby-encore",
+      "label": "Ruby Encore",
+      "base": "/example-avatars/27-ruby-encore",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/27-ruby-encore.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "27-ruby-encore.inp",
+          "bytes": 27276411,
+          "sha256": "0e2e9df832e08a7482f9a1324374c1d34b061003004ff8b2ac693e71a19e6258"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "27-ruby-encore-live2d.zip",
+          "bytes": 48208239,
+          "sha256": "d2e274935f2618e3647160aae7c058b69de83729e178b603d5e1acea89066b93"
+        }
+      ],
+      "sourceSha256": "0e2e9df832e08a7482f9a1324374c1d34b061003004ff8b2ac693e71a19e6258",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L"
+        ],
+        "legs": [
+          "Leg L",
+          "Leg R"
+        ]
+      }
+    },
+    {
+      "id": "28-pomegranate-tide-alchemist",
+      "label": "Pomegranate Tide Alchemist",
+      "base": "/example-avatars/28-pomegranate-tide-alchemist",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/28-pomegranate-tide-alchemist.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "28-pomegranate-tide-alchemist.inp",
+          "bytes": 10289698,
+          "sha256": "e20201607b7bdb6534de7c62d9194b5d524d7b95876fbe180ff6236739925784"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "28-pomegranate-tide-alchemist-live2d.zip",
+          "bytes": 23128153,
+          "sha256": "e18c42e07f6f879bc21e7b042d5a27205b15c3f5357b3895fbeb582673a70365"
+        }
+      ],
+      "sourceSha256": "e20201607b7bdb6534de7c62d9194b5d524d7b95876fbe180ff6236739925784",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [],
+        "legs": []
+      }
+    },
+    {
+      "id": "29-indigo-jackal-radio",
+      "label": "Indigo Jackal Radio",
+      "base": "/example-avatars/29-indigo-jackal-radio",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/29-indigo-jackal-radio.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "29-indigo-jackal-radio.inp",
+          "bytes": 9449709,
+          "sha256": "f092766392eeb1de89cbe1f83b32641ddaa93d8bc6178de5dfc46b8be3a0fd85"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "29-indigo-jackal-radio-live2d.zip",
+          "bytes": 19912366,
+          "sha256": "633af07ae01ad1ace516f404a2bcd445e4cfafb6a866970dc99c386244cdc29e"
+        }
+      ],
+      "sourceSha256": "f092766392eeb1de89cbe1f83b32641ddaa93d8bc6178de5dfc46b8be3a0fd85",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "30-vermilion-crane-host",
+      "label": "Vermilion Crane Host",
+      "base": "/example-avatars/30-vermilion-crane-host",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/30-vermilion-crane-host.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "30-vermilion-crane-host.inp",
+          "bytes": 13935239,
+          "sha256": "327b1a8e4c7272ede35e6789ba4c4b23861ba10ff4553d38dd57f39ca3a5a891"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "30-vermilion-crane-host-live2d.zip",
+          "bytes": 28930718,
+          "sha256": "527f082d6cc62e1a0982812931ce4ce3136f3858ac7cb6f4848bd88c67eee239"
+        }
+      ],
+      "sourceSha256": "327b1a8e4c7272ede35e6789ba4c4b23861ba10ff4553d38dd57f39ca3a5a891",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "31-copper-ibis-restaurateur",
+      "label": "Copper Ibis Restaurateur",
+      "base": "/example-avatars/31-copper-ibis-restaurateur",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/31-copper-ibis-restaurateur.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "31-copper-ibis-restaurateur.inp",
+          "bytes": 9651380,
+          "sha256": "56d0c8757652377c17f5ae3c2450fee408bec86be0cbb3d1c628cf14ab833868"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "31-copper-ibis-restaurateur-live2d.zip",
+          "bytes": 21101699,
+          "sha256": "4a186ee77a2c76f56ecf7e89e7d906ffe0d54f5e593ba08ca7ae7eaf202c27c5"
+        }
+      ],
+      "sourceSha256": "56d0c8757652377c17f5ae3c2450fee408bec86be0cbb3d1c628cf14ab833868",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [],
+        "legs": [
+          "Leg R"
+        ]
+      }
+    },
+    {
+      "id": "32-coral-reef-siren",
+      "label": "Coral Reef Siren",
+      "base": "/example-avatars/32-coral-reef-siren",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/32-coral-reef-siren.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "32-coral-reef-siren.inp",
+          "bytes": 14599547,
+          "sha256": "6ed3d05e3000b7aba99c5f8d59b303380e264e81e572df292dff30a2b58d824d"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "32-coral-reef-siren-live2d.zip",
+          "bytes": 31264193,
+          "sha256": "6366be4ee1d95653ef9cde090be3c83d95ced0c373f8e71a12ee15347f97e818"
+        }
+      ],
+      "sourceSha256": "6ed3d05e3000b7aba99c5f8d59b303380e264e81e572df292dff30a2b58d824d",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm R"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "33-sunsteel-lion-knight",
+      "label": "Sunsteel Lion Knight",
+      "base": "/example-avatars/33-sunsteel-lion-knight",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/33-sunsteel-lion-knight.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "33-sunsteel-lion-knight.inp",
+          "bytes": 15816123,
+          "sha256": "f52e8483827dded1d11791b80747a79fab205f54fd0ad6382fb136df9bb2aaaf"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "33-sunsteel-lion-knight-live2d.zip",
+          "bytes": 33717153,
+          "sha256": "c13c51696e5399ca7ac6ab11bccacd8ef82c3f718022bf767666a671cd2fe7ab"
+        }
+      ],
+      "sourceSha256": "f52e8483827dded1d11791b80747a79fab205f54fd0ad6382fb136df9bb2aaaf",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm R"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "34-mulberry-cloud-witch",
+      "label": "Mulberry Cloud Witch",
+      "base": "/example-avatars/34-mulberry-cloud-witch",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/34-mulberry-cloud-witch.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "34-mulberry-cloud-witch.inp",
+          "bytes": 15866138,
+          "sha256": "a94bea72a2d25accd713df67df579efc871d0109d20ee1cd3d6edf6cddb0ee9e"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "34-mulberry-cloud-witch-live2d.zip",
+          "bytes": 34366359,
+          "sha256": "47280b9e1330a631ca795e0a9f9e901428e0198aa1fae565964cfbee4669daa9"
+        }
+      ],
+      "sourceSha256": "a94bea72a2d25accd713df67df579efc871d0109d20ee1cd3d6edf6cddb0ee9e",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "35-saffron-jester-acrobat",
+      "label": "Saffron Jester Acrobat",
+      "base": "/example-avatars/35-saffron-jester-acrobat",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/35-saffron-jester-acrobat.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "35-saffron-jester-acrobat.inp",
+          "bytes": 13720406,
+          "sha256": "dce32b015d34899fca0cdccc16af1485f748a67fb3c4cb0edaa5b3faea54e896"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "35-saffron-jester-acrobat-live2d.zip",
+          "bytes": 27398807,
+          "sha256": "41d7006e1dd2d17b9b81bc0d32b57bff825725e0b83bc256eae61399caf02ea7"
+        }
+      ],
+      "sourceSha256": "dce32b015d34899fca0cdccc16af1485f748a67fb3c4cb0edaa5b3faea54e896",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": [
+          "Leg R"
+        ]
+      }
+    },
+    {
+      "id": "36-jade-dragon-parade",
+      "label": "Jade Dragon Parade",
+      "base": "/example-avatars/36-jade-dragon-parade",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/36-jade-dragon-parade.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "36-jade-dragon-parade.inp",
+          "bytes": 14908470,
+          "sha256": "43b300b24b1317bffc3d08011d1add7ed00d01e60332f2d4c8fd4400db41e5ab"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "36-jade-dragon-parade-live2d.zip",
+          "bytes": 31607066,
+          "sha256": "843b3dde4b628c5ceb5314de51eef8739702d78cbd00f6f9b1f74cb76e309ece"
+        }
+      ],
+      "sourceSha256": "43b300b24b1317bffc3d08011d1add7ed00d01e60332f2d4c8fd4400db41e5ab",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm R"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "37-peach-kite-painter",
+      "label": "Peach Kite Painter",
+      "base": "/example-avatars/37-peach-kite-painter",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/37-peach-kite-painter.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "37-peach-kite-painter.inp",
+          "bytes": 11134322,
+          "sha256": "94f9b64612e7babb5214e822949d695618bdac602ddac5532a484143491bfd6c"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "37-peach-kite-painter-live2d.zip",
+          "bytes": 23796801,
+          "sha256": "f0b92b186918c592637f1ac38765402ea7e30da8659057763fd924e409569f58"
+        }
+      ],
+      "sourceSha256": "94f9b64612e7babb5214e822949d695618bdac602ddac5532a484143491bfd6c",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "38-amber-pangolin-ceramist",
+      "label": "Amber Pangolin Ceramist",
+      "base": "/example-avatars/38-amber-pangolin-ceramist",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/38-amber-pangolin-ceramist.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "38-amber-pangolin-ceramist.inp",
+          "bytes": 19648539,
+          "sha256": "9b9453093d24defe90d38dd6778954fb893c4d745ba8478560d9786e610cfb23"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "38-amber-pangolin-ceramist-live2d.zip",
+          "bytes": 42634872,
+          "sha256": "32c1704cf7f826fad0d31c03c1e7983f6e2c8f452b9d2c13e2e82ec753cd96a6"
+        }
+      ],
+      "sourceSha256": "9b9453093d24defe90d38dd6778954fb893c4d745ba8478560d9786e610cfb23",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "39-aurora-axolotl-beaconer",
+      "label": "Aurora Axolotl Beaconer",
+      "base": "/example-avatars/39-aurora-axolotl-beaconer",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/39-aurora-axolotl-beaconer.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "39-aurora-axolotl-beaconer.inp",
+          "bytes": 12400133,
+          "sha256": "fa3599443bd8b9fc349576d8e6b85283dad890955937253ca06abdd3eb2069e1"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "39-aurora-axolotl-beaconer-live2d.zip",
+          "bytes": 26087714,
+          "sha256": "7c7c6f1bb8549b198c4eabeff856994b5d6406d13aafd6d95fe0b6efe77d58bd"
+        }
+      ],
+      "sourceSha256": "fa3599443bd8b9fc349576d8e6b85283dad890955937253ca06abdd3eb2069e1",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm R"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "40-obsidian-bat-cabaret",
+      "label": "Obsidian Bat Cabaret",
+      "base": "/example-avatars/40-obsidian-bat-cabaret",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/40-obsidian-bat-cabaret.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "40-obsidian-bat-cabaret.inp",
+          "bytes": 11481485,
+          "sha256": "0e260106fa056d7b9b871ebba98ead03e507d80c96829688c5660880e8de0ff9"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "40-obsidian-bat-cabaret-live2d.zip",
+          "bytes": 24629238,
+          "sha256": "aaceb0de259a7335c209f74f00718ab49c1bbd8de24523760b6c185ccffcb294"
+        }
+      ],
+      "sourceSha256": "0e260106fa056d7b9b871ebba98ead03e507d80c96829688c5660880e8de0ff9",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "41-salt-quartz-antelope",
+      "label": "Salt Quartz Antelope",
+      "base": "/example-avatars/41-salt-quartz-antelope",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/41-salt-quartz-antelope.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "41-salt-quartz-antelope.inp",
+          "bytes": 11377594,
+          "sha256": "e1e4863fa179ee0308b68ee578bc5735f2d3c07c1623f9eee5e7c3277dc397f4"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "41-salt-quartz-antelope-live2d.zip",
+          "bytes": 25694965,
+          "sha256": "5ed47ea997724031f9b7f4dac3c26c0ec59a415b0403d1d3cdb7ea86ec277698"
+        }
+      ],
+      "sourceSha256": "e1e4863fa179ee0308b68ee578bc5735f2d3c07c1623f9eee5e7c3277dc397f4",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [],
+        "legs": []
+      }
+    },
+    {
+      "id": "42-carmine-manta-duelist",
+      "label": "Carmine Manta Duelist",
+      "base": "/example-avatars/42-carmine-manta-duelist",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/42-carmine-manta-duelist.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "42-carmine-manta-duelist.inp",
+          "bytes": 11056596,
+          "sha256": "0a80eb044ce89687dba76a895dfc976428252348a32f0c330401acd1bb54bef9"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "42-carmine-manta-duelist-live2d.zip",
+          "bytes": 24247804,
+          "sha256": "9f95a310355817d39511ef5c4a0cac2829b0356d21fc44143b542c3c5cf55662"
+        }
+      ],
+      "sourceSha256": "0a80eb044ce89687dba76a895dfc976428252348a32f0c330401acd1bb54bef9",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [],
+        "legs": []
+      }
+    },
+    {
+      "id": "43-rose-ibex-fan-diplomat",
+      "label": "Rose Ibex Fan Diplomat",
+      "base": "/example-avatars/43-rose-ibex-fan-diplomat",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/43-rose-ibex-fan-diplomat.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "43-rose-ibex-fan-diplomat.inp",
+          "bytes": 16571675,
+          "sha256": "5d1881333366ba3a97ebbf62311d082f107b4a6dcb5e491398447b1eb9eedf68"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "43-rose-ibex-fan-diplomat-live2d.zip",
+          "bytes": 35236944,
+          "sha256": "dd01f7759d8e49ca9e417c26b7ab7252e2d93061c55429176ae49f150975e8c4"
+        }
+      ],
+      "sourceSha256": "5d1881333366ba3a97ebbf62311d082f107b4a6dcb5e491398447b1eb9eedf68",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "44-citrus-seahorse-luthier",
+      "label": "Citrus Seahorse Luthier",
+      "base": "/example-avatars/44-citrus-seahorse-luthier",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/44-citrus-seahorse-luthier.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "44-citrus-seahorse-luthier.inp",
+          "bytes": 10029481,
+          "sha256": "a7b5984f8dd71b202b7aeaec3bc6eab70333cfd3b9567453d0e9575fcaf58a0a"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "44-citrus-seahorse-luthier-live2d.zip",
+          "bytes": 22747759,
+          "sha256": "70efbd2912891dcf198f5c3ede7e73d5387b42e268f564c5092360598e0fb439"
+        }
+      ],
+      "sourceSha256": "a7b5984f8dd71b202b7aeaec3bc6eab70333cfd3b9567453d0e9575fcaf58a0a",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [],
+        "legs": []
+      }
+    },
+    {
+      "id": "45-saffron-spider-confectioner",
+      "label": "Saffron Spider Confectioner",
+      "base": "/example-avatars/45-saffron-spider-confectioner",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/45-saffron-spider-confectioner.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "45-saffron-spider-confectioner.inp",
+          "bytes": 9591655,
+          "sha256": "7427b799086f8b638bd2ce7f9e109ff61510d940558a37504f15cce40379d4fe"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "45-saffron-spider-confectioner-live2d.zip",
+          "bytes": 21866608,
+          "sha256": "66c7a5b2622d2be97169d9ef9340cf25ced00c75fad6fdf9d9892dd701c80327"
+        }
+      ],
+      "sourceSha256": "7427b799086f8b638bd2ce7f9e109ff61510d940558a37504f15cce40379d4fe",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [],
+        "legs": []
+      }
+    },
+    {
+      "id": "46-brass-heron-banner-engineer",
+      "label": "Brass Heron Banner Engineer",
+      "base": "/example-avatars/46-brass-heron-banner-engineer",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/46-brass-heron-banner-engineer.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "46-brass-heron-banner-engineer.inp",
+          "bytes": 7360122,
+          "sha256": "89cfb03a61e19e7136fd14f7beb1b085ad9a5a6838dd8a2fc842266dc00b5dcd"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "46-brass-heron-banner-engineer-live2d.zip",
+          "bytes": 17072549,
+          "sha256": "b87ade88e085fb43075b14b310370677d55aaddf2b6f28bc18214449c44ae0cd"
+        }
+      ],
+      "sourceSha256": "89cfb03a61e19e7136fd14f7beb1b085ad9a5a6838dd8a2fc842266dc00b5dcd",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [],
+        "legs": []
+      }
+    },
+    {
+      "id": "47-frost-lynx-bell-silks",
+      "label": "Frost Lynx Bell Silks",
+      "base": "/example-avatars/47-frost-lynx-bell-silks",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/47-frost-lynx-bell-silks.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "47-frost-lynx-bell-silks.inp",
+          "bytes": 12318409,
+          "sha256": "9b4ea364442389ef7b206cb51de4d31f28eda8caa5cd9cdd89e06dfc877787ad"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "47-frost-lynx-bell-silks-live2d.zip",
+          "bytes": 27318707,
+          "sha256": "4460b336f810a9306191122ce833b5ca3cf4cca9e3686ec38115d4c41ccdb3da"
+        }
+      ],
+      "sourceSha256": "9b4ea364442389ef7b206cb51de4d31f28eda8caa5cd9cdd89e06dfc877787ad",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [],
+        "legs": []
+      }
+    },
+    {
+      "id": "48-pearl-ram-glassblower",
+      "label": "Pearl Ram Glassblower",
+      "base": "/example-avatars/48-pearl-ram-glassblower",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/48-pearl-ram-glassblower.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "48-pearl-ram-glassblower.inp",
+          "bytes": 17141029,
+          "sha256": "6bde47a7221b85517f59011cde19e58cfbb6ec9c413cd6fc79ef37e18bf40304"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "48-pearl-ram-glassblower-live2d.zip",
+          "bytes": 35329521,
+          "sha256": "47c447e5623c5e0cd2924cf711185d51a29678e38c9670d5be73e5d060ad1a20"
+        }
+      ],
+      "sourceSha256": "6bde47a7221b85517f59011cde19e58cfbb6ec9c413cd6fc79ef37e18bf40304",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "49-jade-cicada-cape-singer",
+      "label": "Jade Cicada Cape Singer",
+      "base": "/example-avatars/49-jade-cicada-cape-singer",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/49-jade-cicada-cape-singer.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "49-jade-cicada-cape-singer.inp",
+          "bytes": 15258092,
+          "sha256": "bf96d51b6d69106d452719e9c31c1cf640e1552aef6b696b54e2e44cc4258efd"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "49-jade-cicada-cape-singer-live2d.zip",
+          "bytes": 29817417,
+          "sha256": "a057116287b04b33bd3a82df85e7f76d479d4a029f82d1560a8838ccd086f5ab"
+        }
+      ],
+      "sourceSha256": "bf96d51b6d69106d452719e9c31c1cf640e1552aef6b696b54e2e44cc4258efd",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "50-cobalt-jelly-puff-couture",
+      "label": "Cobalt Jelly Puff Couture",
+      "base": "/example-avatars/50-cobalt-jelly-puff-couture",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/50-cobalt-jelly-puff-couture.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "50-cobalt-jelly-puff-couture.inp",
+          "bytes": 12990191,
+          "sha256": "43eb25dbe26a59ce8b9d5aa014ce6349727617e1d843e4ce962bae6b16be4fa3"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "50-cobalt-jelly-puff-couture-live2d.zip",
+          "bytes": 28991339,
+          "sha256": "097217c5261490aa1d8e19ee4a685d2f8e74f52fc5715cf77c0d2e83a6e37481"
+        }
+      ],
+      "sourceSha256": "43eb25dbe26a59ce8b9d5aa014ce6349727617e1d843e4ce962bae6b16be4fa3",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [],
+        "legs": []
+      }
+    },
+    {
+      "id": "51-safflower-red-panda-postmaster",
+      "label": "Safflower Red Panda Postmaster",
+      "base": "/example-avatars/51-safflower-red-panda-postmaster",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/51-safflower-red-panda-postmaster.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "51-safflower-red-panda-postmaster.inp",
+          "bytes": 14628710,
+          "sha256": "c09563628af8f80d5e94fe778df55c492beb161dae40961f30a8b61d1cbcae1e"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "51-safflower-red-panda-postmaster-live2d.zip",
+          "bytes": 30270978,
+          "sha256": "e2e50c5f82d58de5f9c5240bdd0b20d788c9025ac38bf4da13587f9d2326afb9"
+        }
+      ],
+      "sourceSha256": "c09563628af8f80d5e94fe778df55c492beb161dae40961f30a8b61d1cbcae1e",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "52-garnet-elk-scarf-keeper",
+      "label": "Garnet Elk Scarf Keeper",
+      "base": "/example-avatars/52-garnet-elk-scarf-keeper",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/52-garnet-elk-scarf-keeper.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "52-garnet-elk-scarf-keeper.inp",
+          "bytes": 10504023,
+          "sha256": "56650fb915640c42b6b44806dbba74109497ddbc707aeb3e0718b8fb2f3822a0"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "52-garnet-elk-scarf-keeper-live2d.zip",
+          "bytes": 22822486,
+          "sha256": "a12192294890f0d75bf34f5cea878b53c93f6095f500943b85a21add6a511fa5"
+        }
+      ],
+      "sourceSha256": "56650fb915640c42b6b44806dbba74109497ddbc707aeb3e0718b8fb2f3822a0",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L"
+        ],
+        "legs": []
+      }
+    },
+    {
+      "id": "53-lapis-comet-tress-orator",
+      "label": "Lapis Comet Tress Orator",
+      "base": "/example-avatars/53-lapis-comet-tress-orator",
+      "files": {
+        "Download rig": "character.inp",
+        "Live2D package": "Live2D.zip"
+      },
+      "preview": "/example-avatars/previews/53-lapis-comet-tress-orator.webp",
+      "artifacts": [
+        {
+          "file": "character.inp",
+          "asset": "53-lapis-comet-tress-orator.inp",
+          "bytes": 22088881,
+          "sha256": "498ecf5ca2e382b3aa137440e960d93457f7a51366070181b1ea98a96fc81d00"
+        },
+        {
+          "file": "Live2D.zip",
+          "asset": "53-lapis-comet-tress-orator-live2d.zip",
+          "bytes": 45129180,
+          "sha256": "b0660e05620ba4512a7a9867b8cb803311e7fc28e736f28e85e607c468462147"
+        }
+      ],
+      "sourceSha256": "498ecf5ca2e382b3aa137440e960d93457f7a51366070181b1ea98a96fc81d00",
+      "recipe": {
+        "family": "gif-motion",
+        "arms": [
+          "Arm L",
+          "Arm R"
+        ],
+        "legs": []
+      }
     }
   ],
-  "audio": false,
-  "codec": "H.264, yuv420p, 900 kbit/s target, two-pass",
-  "scroll": "One character-width every three seconds; multiple characters remain visible together. Both rows share identical horizontal positions.",
-  "source": "Existing INP geometry and textures evaluated by the same browser renderer as the UI. Top row is cached neutral renders; bottom row is evaluated every frame. No synthesized video frames or rig modifications.",
-  "review": "All 27 rigs inspected at 0, 0.75, 1.5 and 2.25 seconds of the presentation cycle, including limb endpoints. Six reduced-amplitude clips reinspected. Presentation review is not an exhaustive visual certification or a claim of pose-for-pose equivalence to the paper validation suite.",
-  "rangeHandling": "Every command is clamped to the exported parameter range. Limited ranges are already encoded in rig min/max and are not halved again. Missing or fixed chains remain still. Limb movement uses the outward shoulder/hip and inward elbow endpoints, and zero-to-maximum knee flexion, with phase offsets.",
   "rendererSources": {
     "player/src/combinedRuntime.ts": "f5aa94ba048b302be925fa26a83959345c4a2a60984b18605de83e6f738459d7",
-    "player/src/combinedRenderer.ts": "7bdce56fcdbe55af3287a7c00d7e20b765f3c45d4669c8e61de010f7ed1d7a37"
+    "player/src/combinedRenderer.ts": "7bdce56fcdbe55af3287a7c00d7e20b765f3c45d4669c8e61de010f7ed1d7a37",
+    "tools/media/showcaseMotion.ts": "f851874d14d03cb6544e9768003b6de1a2917aa425abe358ee846e54eb041596",
+    "tools/media/showcaseBrowser.ts": "84be1547f76846279fc4a3734f45247093277a7a25f3b38b03da4e4f4f668c5b",
+    "tools/media/renderReadme.ts": "b0b0251470ecf18f9dbe9640ec88db7703a61e3a1127127c1b06df4fec162a2f"
+  },
+  "errors": [],
+  "encoding": {
+    "encoder": "libopenh264",
+    "pixelFormat": "yuv420p",
+    "audio": false,
+    "args": [
+      "-y",
+      "-hide_banner",
+      "-loglevel",
+      "warning",
+      "-f",
+      "image2pipe",
+      "-framerate",
+      "24",
+      "-i",
+      "pipe:0",
+      "-an",
+      "-c:v",
+      "libopenh264",
+      "-b:v",
+      "3500k",
+      "-pix_fmt",
+      "yuv420p",
+      "-movflags",
+      "+faststart",
+      "docs/media/showcase.mp4"
+    ]
   },
   "files": {
     "showcase.mp4": {
-      "bytes": 9105848,
-      "sha256": "622b98c10ee6eefea27714ed5f3ab7315ba99f724f3affb8d41761a9f2d56ee2"
+      "bytes": 42869679,
+      "sha256": "8f17037bc9f43e8100cf87d94797c49c2b9bbfb5bb00be26be1d276215de05c9"
     },
     "showcase-poster.png": {
-      "bytes": 985602,
-      "sha256": "2a70b85c8189ccea637427f273678d5f26ab38cb16f8200eb1b25b2d609a2aa6"
+      "bytes": 624259,
+      "sha256": "f3573b59374fe638c7349c74bd6518cef89b8f64fae42a25d900d2d80b0bf087"
+    },
+    "gallery.webp": {
+      "bytes": 561888,
+      "sha256": "c7ed7d78cd76c59e210d2e32237d526f5f6057b2eb24221a18ba920dbdbf3de2"
     }
+  },
+  "referenceSha256": "7ad7943fb7215d117254d6a6e2c70afc9efe27c070cf62562da1f1e66ffe69ff",
+  "referenceReconstruction": "Angle targets and phase windows from the recorded GIF specification; head intermediate key times reconstructed from GIF frames because the original capture script is not present.",
+  "visualReview": {
+    "avatars": 53,
+    "fullBodySampleSeconds": [
+      0,
+      0.6,
+      1.4,
+      2.2,
+      2.75,
+      3.2,
+      3.6
+    ],
+    "headSampleSeconds": [
+      0,
+      2.75,
+      3,
+      3.2,
+      3.6
+    ],
+    "views": [
+      "full body phase peaks",
+      "head and neck detail",
+      "Purple Couture comparison against motion.gif"
+    ],
+    "note": "Review of the video presentation; not a rig-quality certification."
+  },
+  "cameraTimingVerification": {
+    "openingHoldSeconds": 2,
+    "closingHoldSeconds": 7,
+    "pixelsPerSecond": 160,
+    "measuredHorizontalShift1_5To2Seconds": 0.0,
+    "measuredHorizontalShift2To2_5Seconds": -79.97412404708064
   }
 }

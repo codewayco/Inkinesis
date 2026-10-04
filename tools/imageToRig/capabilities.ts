@@ -17,10 +17,50 @@ export interface MotionCapabilities {
   chains:Record<ChainName,MotionCapability>;
   face:Record<'head'|'blink'|'mouth',MotionCapability>;
   headAxes?:Record<'yaw'|'pitch'|'roll',MotionCapability>;
+  /** Failed items of the pre-decomposition source check (prepareCharacter.py source_check). */
+  sourceCheck?:SourceCheckItem[];
   reviewRequired:true;
 }
+export interface SourceCheckItem {item:string; name:string; status:'pass'|'fail'|'skipped'; value:unknown; detail:string}
+const capabilityLabels:Record<string,string>={'Arm L':'Left arm','Arm R':'Right arm','Leg L':'Left leg','Leg R':'Right leg',head:'Head',yaw:'Head turn',pitch:'Head tilt',roll:'Head lean',blink:'Blink',mouth:'Mouth'};
+const sourceCheckNotes:Record<string,string>={
+  C1:'The drawing has no transparent background, so light edges next to the background may keep a faint fringe.',
+  C2:'The figure touches the image edge; parts at the edge may be cut off.',
+  P3:'The legs are close together, so leg motion may be limited.',
+};
+/**
+ * Plain-language notes on what the drawing allows, derived only from the capability
+ * record: every control that stays still or moves in a reduced range, with its first
+ * recorded reason, followed by the failed source-check items.
+ */
+export function designNotes(caps:MotionCapabilities):string[] {
+  const notes:string[]=[];
+  const entries:[string,MotionCapability][]=[...Object.entries(caps.headAxes??{head:caps.face.head}),['blink',caps.face.blink],['mouth',caps.face.mouth],...Object.entries(caps.chains)];
+  for(const [name,c] of entries){
+    if(c.mode==='articulated')continue;
+    const reason=c.reasons.find(r=>!r.startsWith('Body foldover:'));
+    notes.push(`${capabilityLabels[name]??name} ${c.mode==='fixed'?'stays in its drawn pose':'moves in a reduced range'}${reason?': '+reason.replace(/\.$/,''):''}.`);
+  }
+  for(const check of caps.sourceCheck??[]){
+    if(check.status!=='fail')continue;
+    notes.push(check.item==='P2'?`The ${check.name.replace(' clear of the torso','')} touches the torso in the drawing, so it may stay still.`:sourceCheckNotes[check.item]??`${check.name}: ${check.detail}`);
+  }
+  return notes;
+}
+/** Reason recorded when the landmark check estimated an occluded shoulder (prepareCharacter.py estimate_separated_shoulders). */
+export const SHOULDER_ESTIMATE_REASON='Shoulder estimated from the separated arm silhouette';
+/** Reason recorded when the landmark check estimated a hip hidden by a hem (prepareCharacter.py estimate_covered_hips). */
+export const HIP_ESTIMATE_REASON='Hip estimated from the separated leg layer under the garment hem';
+export interface RootEstimate {status:'estimated'|'declined'; reason:string; [evidence:string]:unknown}
+/** Lowest model confidence of a landmark the post-decomposition check verified on the layers. */
+export const VERIFIED_FLOOR=.3;
+/** A point is usable when the model is confident, or when the landmark check
+ * measured or confirmed it on the decomposition (eye and mouth layers, an arm
+ * chain lying on its arm layer) and the model still gave it some confidence.
+ * The confidence itself is never raised; stricter gates (0.8) are unaffected. */
 export function usablePoint(p:Assessment['points'][string]|undefined, minimum=.5) {
-  return Boolean(p && [p.x,p.y,p.confidence].every(Number.isFinite) && p.x>=0 && p.x<=1 && p.y>=0 && p.y<=1 && p.confidence>=minimum && p.confidence<=1);
+  return Boolean(p && [p.x,p.y,p.confidence].every(Number.isFinite) && p.x>=0 && p.x<=1 && p.y>=0 && p.y<=1 && p.confidence<=1
+    && (p.confidence>=minimum || (minimum<=.5 && p.verified===true && p.confidence>=VERIFIED_FLOOR)));
 }
 export function assessCapabilities(a:Assessment,width:number,height:number) {
   const result=(mode:MotionCapability['mode'],reasons:string[]):MotionCapability=>({mode,reasons,stage:'source'});
@@ -30,7 +70,7 @@ export function assessCapabilities(a:Assessment,width:number,height:number) {
     if(e && [e.visible,e.separate,e.rootOccluded].every(v=>typeof v==='boolean') && typeof e.reason==='string') {
       if(!e.visible)reasons.push(e.reason||'This limb is not visible in the drawing.');
       else if(!e.separate)reasons.push(e.reason||'This limb overlaps another body region.');
-      else if(e.rootOccluded)reasons.push(e.reason||'Clothing hides the limb attachment; independent movement is unverified.');
+      else if(e.rootOccluded&&a.rootEstimates?.[name]?.status!=='estimated')reasons.push(e.reason||'Clothing hides the limb attachment; independent movement is unverified.');
     } else {
       if(!a.separateLimbs)reasons.push('Independent separation of this limb has not been established.');
       if(name.startsWith('Leg')&&a.longGarment)reasons.push('Long clothing may hide the leg attachments; their visibility has not been established.');
@@ -44,7 +84,16 @@ export function assessCapabilities(a:Assessment,width:number,height:number) {
       if(usablePoint(opposite)&&(name.endsWith('L')?p[0].x<=opposite!.x:p[0].x>=opposite!.x))reasons.push('Left/right attachment ownership is ambiguous.');
     }
     const uncertain=ids.some(id=>!usablePoint(a.points[id],.8));
-    chains[name]=reasons.length?result('fixed',reasons):result('articulated',uncertain?['Joint positions are estimated from the drawing; anatomical accuracy still needs visual review.']:[]);
+    // An arm whose occluded shoulder the landmark check estimated from the
+    // separated arm silhouette moves in the reduced range only. A leg whose hip
+    // it estimated under a hem keeps the full range: the hip is the top of
+    // See-through's own leg layer, and the garment attachment sweep later tests
+    // that the thigh hidden under the static hem stays under it.
+    const estimatedRoot=Boolean(e?.rootOccluded&&a.rootEstimates?.[name]?.status==='estimated');
+    chains[name]=reasons.length?result('fixed',reasons)
+      :estimatedRoot&&name.startsWith('Leg')?result('articulated',[...(e?.reason?[e.reason]:[]),HIP_ESTIMATE_REASON+'; the static hem is tested on the rig.'])
+      :estimatedRoot?result('limited',[...(e?.reason?[e.reason]:[]),SHOULDER_ESTIMATE_REASON+'; the arm moves in a reduced range.'])
+      :result('articulated',uncertain?['Joint positions are estimated from the drawing; anatomical accuracy still needs visual review.']:[]);
   }
   const face={} as MotionCapabilities['face'];
   for(const [feature,ids] of Object.entries({head:['eyeL','eyeR','chin'],blink:['eyeL','eyeR'],mouth:['mouth']})) {

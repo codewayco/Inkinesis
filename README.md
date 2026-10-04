@@ -16,10 +16,13 @@
 
 </div>
 
-<!-- GitHub renders a bare attachment URL as an inline video player. The same file is kept in docs/media/showcase.mp4. -->
-https://github.com/user-attachments/assets/1be8c51f-5301-4c25-a2aa-9c6d5d08ef7f
+<!-- GitHub renders a bare attachment URL as an inline video player (a 1280x800 copy under the 10 MB limit). The full-resolution file is docs/media/showcase.mp4, linked below. -->
 
-*All 27 characters in a scrolling showcase: neutral rigs above, animated rigs below. Actual Inkinesis playback with supported head, expression, arm, leg and garment motion.*
+https://github.com/user-attachments/assets/b8d0e076-d97c-4a18-a5d3-48bc4ffaf8bd
+
+[**Watch the showcase · 1 min 45 sec**](docs/media/showcase.mp4) · [Open the local video player](docs/media/showcase.html)
+
+*All 53 characters in a scrolling showcase: neutral rigs above, the four-second “See it move” sequence below. Arms, right leg, left leg, then head and expressions repeat with the GIF’s angle targets and phase timing; unavailable controls stay still. Actual Inkinesis playback; no generated animation frames.*
 
 ## See it move
 
@@ -43,19 +46,19 @@ Inkinesis turns a text prompt or a character illustration into a layered, animat
 | | |
 | --- | --- |
 | **230–237 seconds** | saved illustration to first export across four recorded runs; remote H100 80GB decomposition, with local preparation and export |
-| **27 characters** | ready to download, each as an Inochi2D `.inp` and a Live2D package |
-| **27 / 27** | exported Live2D models evaluated in the official Cubism Core with zero Core-aware drawable mismatches |
-| **780 poses per rig** | every limb key and half-grid sample checked for reversed triangles; the articulated rigs reverse none |
+| **53 characters** | ready to download, each as an Inochi2D `.inp` and a Live2D package |
+| **53 / 53** | current exported Live2D models with matching saved official Cubism Core reports and zero Core-aware drawable mismatches |
+| **Up to 780 limb poses per rig** | authored keys and half-grid samples cover each enabled limb; the count varies with available controls |
 
-Timings include decomposition inference and transfers, but exclude image generation, later revisions and repeated validation. Runtime checks measure technical compatibility, not visual quality; see [validation details](docs/instructions/live2d_export.md#near-key-runtime-differences). A technical report describing the method and these measurements is in preparation.
+Timings include decomposition inference and transfers, but exclude image generation, later revisions and repeated validation. The [catalog evidence audit](docs/media/catalog-validation.json) matches saved validation reports to all 53 current rigs and packaged Live2D models: 8 have zero strict source mismatches; 45 pass with documented runtime sampling differences, and all 53 have zero Core-aware mismatches. This audit rechecks artifact identities, not a fresh Core run. Runtime checks measure technical compatibility, not visual quality; see [validation details](docs/instructions/live2d_export.md#near-key-runtime-differences). A technical report describing the method and these measurements is in preparation.
 
 ## Meet the characters
 
 These examples were built from AI-generated illustrations using Inkinesis and saved as reusable rigs so you can try the viewer without a GPU or API key. You can also describe your own character or upload an illustration; supported movements depend on the design and the results of layer and motion checks.
 
-![All 27 example characters in neutral poses, rendered from their rigs: Tidal Glass, Nocturne Cartographer, Ember Waltz, Purple Couture, Solstice Mosaic, Ultramarine Tempo, Saffron Orbit, Lichen Starweaver, Neon Skater, Bubblegum Idol, Desert Ranger, Voltage Mechanic, Coral Diver, Silver Fencer, Tangerine Chef, Sakura Kendo, Obsidian Rogue, Lemon Scientist, Maroon Boxer, Fennec Aeronaut, Splitlight Atelier, Teal Drummer, Ochre Nomad, Frost Goalie, Papaya Broadcaster, Inkblue Locksmith, and Periwinkle Glassblower.](docs/media/gallery.webp)
+![All 53 current example characters in labelled neutral poses rendered from their rigs, including human, fantasy, seated and accessory-bearing designs.](docs/media/gallery.webp)
 
-*Neutral-pose previews rendered from the 27 example rigs. Open any of them with **Pick an Avatar** in the viewer; the first Download installs both formats locally. To make your own, see [Installation](#installation).*
+*Neutral-pose previews rendered from the 53 example rigs. Open any of them with **Pick an Avatar** in the viewer; the first Download installs both formats locally. To make your own, see [Installation](#installation).*
 
 ## Try the viewer
 
@@ -66,7 +69,7 @@ npm ci
 npm run dev
 ```
 
-The browser opens at **http://localhost:5200/**. Use **Pick an Avatar** to browse the 27 example characters, or **Choose File** to open a compatible Inkinesis `.inp`. Playing a prepared rig needs no GPU or API key.
+The browser opens at **http://localhost:5200/**. Use **Pick an Avatar** to browse the 53 example characters, or **Choose File** to open a compatible Inkinesis `.inp`. Playing a prepared rig needs no GPU or API key.
 
 Select an example and press **Download**. The app installs its rig files in `example-avatars/<id>/`, verifies the download, and opens the character for animation. The button changes to **Downloaded**, and future sessions reuse those local files.
 
@@ -100,7 +103,7 @@ Use **Live2D (.zip)** in the viewer to download a model package. See the [export
 
 Inkinesis reuses strong existing components and adds the layer between them. **Reused:** text-to-image drawing, See-through semantic decomposition, VLM joint landmarks, and psd2live facial keyforms. **Ours:** measured expression edits registered to the unchanged face, anatomical garment ownership, a continuous two-joint limb rig, and a coherent head-pitch field. **Verification:** every export is evaluated by the native Inochi2D runtime and, for Live2D, by the official Cubism Core.
 
-**Movement is assessed region by region:** an obscured hip need not prevent an independently usable arm from moving. The UI explains available controls in **Movement details**. Generated rigs still need visual review.
+**Movement is assessed region by region:** each arm, leg, head axis, blink and mouth control is checked independently. A hidden hip need not prevent a usable arm from moving; a hand holding a static prop stays in its drawn pose. Clothing and attachments follow their assigned body regions. The UI explains available and reduced controls in **Movement details**. Generated rigs still need visual review.
 
 ## What you get
 
@@ -248,6 +251,8 @@ npm run dev
 
 Open **http://localhost:5200/**, describe a character and press **Generate**, or upload an image. Restart the dev server after changing `.env`. If setup or a run fails, follow [setup troubleshooting](docs/instructions/setup_troubleshooting.md).
 
+Image uploads open a review before rigging: inspect source warnings, choose **Use as-is** or request **Redraw for rigging**, then confirm the image. Redrawing adds an image-edit API call and may change the face, style or details; the original is retained. [Upload review and saved results](docs/instructions/image_to_rig.md#review-an-uploaded-image-before-rigging).
+
 ## Generating from the command line
 
 ```sh
@@ -262,11 +267,11 @@ CLI runs write directly to an output directory. UI runs stay temporary until you
 
 ## Limits
 
-- **One front-facing character** per image, full body, on a plain background. Multiple characters and unsuitable face views are refused.
+- **One front-facing character** per image, full body, on a transparent or plain background. Multiple characters and unsuitable face views are refused.
 - **Separated limbs and visible joints** give the best rigs. A hidden joint restricts only its own chain: an arm under a coat stays fixed while the other arm and the head keep moving.
 - **Clothing, facial hair and accessories are preserved**, not simplified to make rigging easier.
 - **The mouth is a measured patch**, not separately articulated teeth and tongue; seams can show at extreme poses or on unusual designs.
-- **Every generated rig is marked for visual review.** Geometry checks catch reversed triangles and runtime mismatches, not texture quality or natural anatomy.
+- **A successful export still needs visual review.** `success` means the rig was exported and passed native validation. Geometry and runtime checks do not establish texture quality or natural anatomy.
 
 ## Development
 
@@ -279,8 +284,9 @@ npm run build
 npx playwright install chromium
 # In another terminal, start npm run dev; then:
 npm run verify:ui
+npm run verify:upload
 npm run verify:example-download
-# Optional: after installing all 27 example avatars locally:
+# Optional: after installing all 53 example avatars locally:
 npm run verify:examples
 node --import tsx tools/verify/uiSaveSmoke.ts
 ```

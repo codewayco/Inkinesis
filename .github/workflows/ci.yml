@@ -33,4 +33,5 @@ jobs:
           done
           npm run verify:example-download
           npm run verify:ui
+          npm run verify:upload
           node --import tsx tools/verify/uiSaveSmoke.ts

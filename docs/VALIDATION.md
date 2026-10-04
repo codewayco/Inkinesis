@@ -1,38 +1,67 @@
-# Publication-copy validation
+# Release 2 validation
 
-Validation performed on September 24, 2026, on macOS Apple Silicon. This document covers release packaging and application regression checks, not a new rig-quality experiment.
+Checked on October 4, 2026, on macOS Apple Silicon. A separate source-only copy was assembled from publishable files, without `.env`, research directories, local avatar payloads, model caches or proprietary SDKs. It received a fresh `npm ci` under Node 22.23.3 and a fresh Python 3.14 virtual environment using `requirements.txt`.
 
 | Check | Result |
 | --- | --- |
-| Isolated Node 22, freshly installed npm dependencies | Passed |
-| TypeScript application and engine checks | Passed |
-| ESLint | Passed |
-| Portable unit suite | 158 passed; 2 optional private-reference tests skipped |
-| Optional native-reference runtime parity | Both additional tests passed using existing private fixtures; fixtures are not distributed |
-| Python preparation tests | 12 passed using the development preparation environment |
-| Python 3.14 root requirements resolution | Passed with pip dry-run; no new GPU installation performed |
-| Production build | Passed for the original bundled layout; the new metadata-only build is checked separately below |
-| npm dependency audit | Zero known vulnerabilities reported after updating Vite and Vitest |
-| Browser startup and synthetic rig | Passed: blank startup, prompt input, upload, rendering, control response, neutral reset |
-| Browser Save flow | Passed: no persistent output before Save, full artifact tree preserved, repeated-save UI and reload |
-| Request boundaries | Cross-origin generation/save and arbitrary export paths rejected |
-| Existing avatar library | All 27 load; enabled controls and resets execute; INP and ZIP downloads match SHA-256 checksums |
-| Example archive integrity | All 27 ZIP integrity checks passed |
-| Published text and metadata scan | No Turkish prose, personal absolute paths, private deployment hostname, or scanned API-key patterns found |
-| Documentation links | Local Markdown file links resolve |
+| Clean npm installation | Passed; lockfile resolves without dependency changes |
+| TypeScript application and engine | Passed |
+| ESLint | Passed; local ignored research workspaces are excluded |
+| Portable unit suite | 39 files; **214 passed**, 2 optional private-reference tests skipped |
+| Clean Python preparation installation/tests | **58 passed** |
+| Production build | Passed; 57 files, 471,855 bytes; metadata/previews only, no INP/ZIP/MOC3/CMO3 payloads |
+| npm dependency audit | **0 known vulnerabilities** after updating the two transitive `brace-expansion` versions |
+| Browser startup and synthetic rig | Passed: empty startup, prompt entry, optional picker, uploaded INP, control response, neutral reset and request boundaries |
+| Upload review browser flow | Passed: source warnings, redraw preview, reload recovery, explicit selection/hash confirmation, visual review and limited-motion result, failed redraw recovery, as-is, cancel and unchanged prompt payload |
+| Browser Save flow | Passed: temporary preview, explicit Save, complete artifact tree, repeat-save behavior and reload |
+| Example download browser flow | Passed: explicit action, progress, corrupt transfer rejection, retry, both formats, playback and local reuse |
+| Installed avatar library | **53/53** load; both downloads match hashes; enabled controls reach requested values and return to their defaults |
+| ZIP CRC integrity | **53/53** pass |
+| Release attachment preparation | Exactly **106** verified avatar files plus `SHA256SUMS`; obsolete attachments removed only after successful preparation |
+| Catalog/checksum consistency | All 106 entries agree; 53 preview paths resolve |
+| Saved Cubism evidence | 53 current INP/MOC3 identities match saved reports; 53 Core-aware zero-mismatch reports, 8 strict-source zero-mismatch reports |
+| Optional Cubism reference typecheck | Passed in the development workspace with its separately installed SDK; not required or available in a clean portable checkout |
+| Local generation preflight | Passed with the development configuration |
+| Source/publication scan | No scanned credential patterns or developer absolute paths; local Markdown links resolve; no oversized Git payloads |
 
-Browser checks used headless Chromium and produced no JavaScript page errors. A rendered Purple Couture preview was also visually inspected. Existing binary rigs were copied without regeneration; checksums are in `example-avatars/checksums.json`.
+The browser tests completed without JavaScript page errors. Purple Couture's rendered preview was visually inspected. All-53 control checks verify runtime operation and resets, not the aesthetic quality of every pose. The saved Core evidence audit rechecks artifact identity; it does not rerun Core or certify visual quality.
 
-No paid image/analysis API calls, new GPU inference, new Live2D export, or new full visual pose audit were performed for this packaging task. Local CUDA/MPS and remote H100 setup instructions describe supported routes; they do not certify every hardware/driver combination. Users must supply credentials, model access, external components, and compatible GPU resources before generating new rigs.
+## Corrections made during this audit
 
-## On-demand avatar distribution update
+- Removed the unused error formatting/exit helpers, unreachable direct-image generation branch, unused upload-normalization return value, obsolete deprecated-directory configuration and unreferenced legacy character figure. Import/reference searches checked remaining modules against the player, pipeline, CLI commands, tests and documentation; optional adapters and documented tools remain active entry points.
+- Fixed strict H100 CLI preflight incorrectly requiring local inference dependencies when `allowLocalFallback` was omitted. Added policy regression coverage; the UI prompt path keeps its existing backend policy.
+- Fixed fractional joint ranges causing HTML sliders to round neutral or requested values. Browser checks now verify exact targets and restored defaults for every installed avatar.
+- Kept oversized upload/confirmation failures readable and released the request slot without destroying the response socket. Added recovery coverage.
+- Made release preparation replace its generated directory after full verification, preventing removed/renamed avatars from surviving into the next release. Added stale-file and failed-verification tests.
+- Excluded local export workspaces from Git and ignored research directories from lint. Updated obsolete 27-avatar publication instructions and release URLs.
+- Added the upload browser regression to CI and refreshed vulnerable transitive dependency pins within their existing version ranges.
 
-The first seven avatar directories and catalog IDs are now numbered 01–07 in UI order. Existing binary bytes are preserved. Twenty-seven small WebP previews were rendered from the existing rigs in neutral poses, without image-generation calls. INP/ZIP payloads were removed from staging and ignored; source assets remain on disk.
+## Generation and publication boundaries
 
-The new downloader is validated with local synthetic transfers and browser checks (explicit action, progress, integrity failure, retry, installation of both files, rig control response, and reuse after reload). Production builds include metadata and previews without binary payloads. Live GitHub release download remains untested because no repository or release URL has been provided; none was created or uploaded.
+This release audit made no new paid image/analysis calls or GPU inference runs. The preceding upload integration check used one real photo, reviewed its redraw, completed H100 decomposition and local rigging, saved the result and reopened it. That run's rest silhouette IoU was approximately **0.993**, with articulated limbs, head axes, blink and mouth; its visual state remained **needs review**. One successful example is not a guarantee for arbitrary uploads or identity preservation.
 
-Final update checks: TypeScript and lint passed; 164 unit tests passed and the 2 optional private-reference tests remained skipped. The new browser download test passed, as did the existing startup, Save and all-27-avatar browser tests. The metadata-only build contains no INP/ZIP files and totals about 170 KB; the 27 WebP previews total 102,742 bytes. Release preparation produced 54 hash-verified attachments plus SHA256SUMS locally; no assets were uploaded.
+The optional two native parity tests require private fixtures via `RIG_TEST_ASSET_DIR`; they were skipped in the portable suite. Native reference tools, GPU inference and provider access still require their separately documented dependencies. The clean install validates preparation dependencies, not a new CUDA/MPS installation on every supported platform. Vite currently emits a non-fatal warning about extensionless configuration imports under a possible future native loader; the current build succeeds.
 
-## Local setup and default port
+The catalog targets `codewayco/Inkinesis` release **`avatars-v2`**, which returned HTTP 404 at audit time. Installed local avatars and synthetic download tests pass, but a real fresh-checkout download cannot be certified until the maintainer publishes the matching attachments. Follow [release instructions](RELEASE.md). No files were staged or committed, and no release, tag, push or media upload was performed.
 
-The development server now defaults to port 5200 with strict port selection. Its HTTP setup endpoint was verified on that port. Private machine-specific dependency paths and model IDs are configured only in ignored `.env`; no credentials or private paths were added to public configuration. A tiny upload/download round trip through the existing H100 bridge verified connectivity and an NVIDIA H100 80GB GPU. No new image generation or inference was run. The bridge supports an optional kernel-directory mapping for older running bridge processes.
+## Reproduce
+
+```sh
+npm ci
+npm run typecheck
+npm run lint
+npm test
+npm run test:python
+npm run build
+npx playwright install chromium
+npm run verify:upload
+npm run verify:example-download
+node --import tsx tools/verify/uiSaveSmoke.ts
+# With npm run dev running separately:
+npm run verify:ui
+# With all current avatar payloads installed:
+npm run verify:examples
+npm run prepare:avatar-release
+# With saved local Cubism export reports:
+python3 tools/media/auditCatalog.py
+```

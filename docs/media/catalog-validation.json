@@ -1,0 +1,699 @@
+{
+  "scope": "Saved official Cubism Core reports matched to current INP and packaged MOC3 hashes. Catalog sizes and SHA-256 verified for both artifacts. This audit does not rerun Cubism Core or certify visual quality.",
+  "catalogSha256": "1b5753c8ba7ad142def790d9b6e36633725b28acd8176958fe44acb577ec461e",
+  "avatars": 53,
+  "coreAwareZeroMismatch": 53,
+  "strictSourceZeroMismatch": 8,
+  "coreSamplingEpsilonPhysicalUnits": 0.001,
+  "entries": [
+    {
+      "id": "01-tidal-glass",
+      "artifactSha256": {
+        "character.inp": "2797828cf3e02aaa26f2a9c70f5184e341f0cdcfb3db3cf7159da036ce69cea5",
+        "Live2D.zip": "a964b5e838b0258760edf2b8c36c3fe436ba8a508c5c64c6cde12b8894c886dc"
+      },
+      "mocSha256": "634ea691b9627afd0b545a82d683ee333d3a96e29e02d682b54ada9768db089e",
+      "validationReportSha256": "b91e2517e00a9e1146451d23fcd9e3b53bea1cdb707c2ece769cf9af74e95e53",
+      "status": "passed_with_runtime_differences",
+      "frames": 155,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "02-ember-waltz",
+      "artifactSha256": {
+        "character.inp": "1df0a963cabc081c39ffe555d837ef88c66218388cfd0c19b38d422fb488b9f2",
+        "Live2D.zip": "e1c5828713f3781a266badf4f921527f4a594b6c5b8e2f14c16e4d17300584de"
+      },
+      "mocSha256": "527e7ae80159214d80897eb38eb2d28afb60443ebcd286f169fce16471e76aaa",
+      "validationReportSha256": "934bce667d90ccd1cd7acdaa67d8c15b8c6cb11104eac5f7de49c6d30e1aedcd",
+      "status": "passed_with_runtime_differences",
+      "frames": 155,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "03-solstice-mosaic",
+      "artifactSha256": {
+        "character.inp": "925cbd359a4a376401b35c8f999b59030a5c4377a6b1675da5a5bafcae0f44d9",
+        "Live2D.zip": "e3ed67c6a2f3b707ecdc490b67db567982f0003b0d7044c74bac041e6994723e"
+      },
+      "mocSha256": "9340b08b4dd1de83cfd97bacd673ac4e85d23a1267cc41aec7cbc4a3123c2101",
+      "validationReportSha256": "d34d3f3ecb1e9ba69541baeae5ee966ce0afdaec8456edfb2fc6c9094b86ffb8",
+      "status": "passed_with_runtime_differences",
+      "frames": 382,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "04-purple-couture",
+      "artifactSha256": {
+        "character.inp": "859212b34c778af9b6e13f846e00a5ad86ea607dc2b77996f2a7a48423e29bf5",
+        "Live2D.zip": "47a7ba3b111c0f7c311df270fa4a86f3bd01ed41c48ba6fe74fce3b060d84fe4"
+      },
+      "mocSha256": "fd99a280743e7364a7dd20f389a631fbd6985074946e8a482d986d7dedb7447a",
+      "validationReportSha256": "8da855767790b46bda2885cae2759c84bdc2764ed5ecceebf705d63f193be753",
+      "status": "passed_with_runtime_differences",
+      "frames": 379,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "05-ultramarine-tempo",
+      "artifactSha256": {
+        "character.inp": "82b8f6f5dd33739d2876241f20d1b1b7393fbf0d6252c0ea56f3485e7c891b65",
+        "Live2D.zip": "22ae506f5d83d7e80bd723ed586bc67791d82b4b84687b94fc56ac0f718771f2"
+      },
+      "mocSha256": "5be34fa1eef04d1a0062fdbf7f524164b8cb56f24cca050bdb6a532f8e9dc772",
+      "validationReportSha256": "15028a1b0da9ec6e4adf8b4a97ea28d5696f57583a48c2304f7fd49c3789f43d",
+      "status": "passed_with_runtime_differences",
+      "frames": 382,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "06-saffron-orbit",
+      "artifactSha256": {
+        "character.inp": "91defa0f73f5fb152fd295fe67b871971962b430c7cbceb00088a6a809daf30f",
+        "Live2D.zip": "31f65712488fb48f470da967538519366cc22fb2cf3ac8ef82c5208b54a431e3"
+      },
+      "mocSha256": "8fb33ddb15480683a5f4c04b10e9a9a42fd248dfbd4bf0847e9479d945f34713",
+      "validationReportSha256": "61e0cdccda2a99bdb137983aa12504a509b41aaf13a59354145d8c158092a3a5",
+      "status": "passed_with_runtime_differences",
+      "frames": 381,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "07-neon-skater",
+      "artifactSha256": {
+        "character.inp": "ac96a19a2033815681f8a36f541818406994f180ea9993836cfdc30872be72d4",
+        "Live2D.zip": "ac03c638d8e4e94e3af525b38784df118c5b189e6878a08872ecd44d4b639bf6"
+      },
+      "mocSha256": "7f5d3c66fb261cf0f973f892627554975f3861785c29e9487f3259b582747748",
+      "validationReportSha256": "9d9537040e36f6e019fda14032fd9182f2afed3365bd086e266b4c0192c018f4",
+      "status": "passed_with_runtime_differences",
+      "frames": 382,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "08-bubblegum-idol",
+      "artifactSha256": {
+        "character.inp": "6d4db6398ba6e20eef075894f5ae091c476fb24b78fd64696bf8582876087103",
+        "Live2D.zip": "9af0a07b9f0564c5a760b17d80e520f7b7e3bfcd4b9539cc4058896e617e15a5"
+      },
+      "mocSha256": "414e443c5547505cecd1f713daa16de8108f4e625be1f93bfc58f0ce5b8cf97b",
+      "validationReportSha256": "8ac1f5de9e0ad82b92d38e5510f4c87aedb23f09f7b430c26db2519a6f39ec95",
+      "status": "passed_with_runtime_differences",
+      "frames": 329,
+      "strictSourceMismatchCount": 2,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "09-desert-ranger",
+      "artifactSha256": {
+        "character.inp": "51200726a94e1d913cdfacc5acef78ae2cb8f838d95abca0a3e48f3e89da2349",
+        "Live2D.zip": "e2d75572dbde8d349ef2b280d91ecf732f3dc41c54d7aca3d93e5acf99053d93"
+      },
+      "mocSha256": "e8ec5f33de7393f90c4045f2671c76aa93a5f7e7187b010a93ac0cd072bb364a",
+      "validationReportSha256": "145e4426bcf5bfee3a706d3b23f54427e5f47caab95b118a179dfcf48cfaede8",
+      "status": "passed_with_runtime_differences",
+      "frames": 375,
+      "strictSourceMismatchCount": 2,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "10-voltage-mechanic",
+      "artifactSha256": {
+        "character.inp": "7b24e821c52f469d19204975ee4f515e80309fa0d246708632f2df56d97add34",
+        "Live2D.zip": "f8a61f1bab91a1983baf5675a89e50b2a81f504bc5d72f3be3a13ad51ed79a9c"
+      },
+      "mocSha256": "d0a1602c8a4961a5588b9675e0c7fe0115a7ae31845b21dd933bf914b9c524f7",
+      "validationReportSha256": "a1894739950a396895cfb20c6fb54252f6dce0eb4bd145839ebcb70517cd2a1e",
+      "status": "passed",
+      "frames": 252,
+      "strictSourceMismatchCount": 0,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "11-coral-diver",
+      "artifactSha256": {
+        "character.inp": "ec9989b86e32a5826b46485f2c52a85c2ab86e1c6268ada7689b6d6b83178f7e",
+        "Live2D.zip": "4635e7550371164eaeaacd7b6157e656eb7e1d3ad49d4751018201c6ddd9d88b"
+      },
+      "mocSha256": "f313df5be291cb267ff5bf95b6e09955ed1bbf168fea7faec1799f9597fa8a8e",
+      "validationReportSha256": "fe5f36f01eadcd7ddcd8958b0ac49f7beb4ceb29edb9ba309b3938669a3fc67b",
+      "status": "passed_with_runtime_differences",
+      "frames": 382,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "12-silver-fencer",
+      "artifactSha256": {
+        "character.inp": "4c9abe5f83d71a4ceedab5039658576f02ceaf76feda7d7b44d3c60f525c5eac",
+        "Live2D.zip": "57294aede49ffa01fd898ec60a7b470980fc6f41a95dc6e236804507d5a0c19d"
+      },
+      "mocSha256": "be8c3af86d9368abeb1c439c5d23cd817d85d6f3c75856a6d39db7f29483ea58",
+      "validationReportSha256": "e0507b6c93f84708dfc05179d144fd4d7d04f534f0207b394a470f4e98f4ebc6",
+      "status": "passed_with_runtime_differences",
+      "frames": 381,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "13-tangerine-chef",
+      "artifactSha256": {
+        "character.inp": "12765c6c644abf1ae24c18c6e3e71286212db9594a6065415567520976d45f0e",
+        "Live2D.zip": "1a49b6c000363b313b4ba334746807713f65dd67596637158efa16cc6f33fcdd"
+      },
+      "mocSha256": "a50433cdff5560680a1c945562e496f52e9aaa103d8788325df8291b70cd6438",
+      "validationReportSha256": "14dcd311752bbf5fb367a210cb0b3816a8f7db2a467c59d784207ec7af521ec2",
+      "status": "passed_with_runtime_differences",
+      "frames": 384,
+      "strictSourceMismatchCount": 2,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "14-sakura-kendo",
+      "artifactSha256": {
+        "character.inp": "dd6dfde48e569ba642a21d1997c115c86199f86f51d6870fff8c2afe673fc469",
+        "Live2D.zip": "aad40fe04353d4773dd85e3337f13fb1cfa564630213e55d753db4f7caf16002"
+      },
+      "mocSha256": "2a78fb8d1dfbec08acd2854f4da4c7d09986e0d8256f82ad9589db73e552091f",
+      "validationReportSha256": "fead09948e0b6b6894aa1ab3ab7ac4892e05440f478b29a0b0b4fa6364efe2bc",
+      "status": "passed",
+      "frames": 247,
+      "strictSourceMismatchCount": 0,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "15-obsidian-rogue",
+      "artifactSha256": {
+        "character.inp": "bc6dc9ee5a94fa78d7fff898144ee8b91bf42f39ee1dc4a13bfc4b57fcf0639e",
+        "Live2D.zip": "56b02f74a2f8837eeff50b6e801151fb79d3e1976342878a71a38664826781bd"
+      },
+      "mocSha256": "72c619422bc856f5131dfde9f5deadb81aa4ec23b08cefd7811da2aca60a6ab2",
+      "validationReportSha256": "af023227187bf54f597da8070fb836686102828bc38f7a405eeab96523fd2b4f",
+      "status": "passed_with_runtime_differences",
+      "frames": 382,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "16-lemon-scientist",
+      "artifactSha256": {
+        "character.inp": "3c6a6e78105701a92a27801fe8b1644768072b8e03a867943c00ebcd40cc907d",
+        "Live2D.zip": "c2b177d7aa4154e81cf8959320acf4ffce15dfe85cae71ee061f5d5bd24dfbb1"
+      },
+      "mocSha256": "88425b20524a782cd3bc830677999629cf879a5b118e82cba2a9ed3b6d6108a6",
+      "validationReportSha256": "04474a96ae54982314b8d32ed000251b71566a10181a545f2382db60423ec303",
+      "status": "passed_with_runtime_differences",
+      "frames": 381,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "17-maroon-boxer",
+      "artifactSha256": {
+        "character.inp": "e7044cb5f846655d84fa57b7ce1cf11774d72e1d28dfd7580c1700dfe284794c",
+        "Live2D.zip": "85ed9737f5cff92175facd35413e19ab0ec1d4298adeb43939dfd1698f6ae20d"
+      },
+      "mocSha256": "c872737279a06ce5dd0a52659dae0b1a5d85b85bd79326706f5a6e8b8d262367",
+      "validationReportSha256": "3f1043a71e52eac336a02e5c6528c7038a0a70bc3e6842de4cfe96fe652d49bd",
+      "status": "passed_with_runtime_differences",
+      "frames": 385,
+      "strictSourceMismatchCount": 2,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "18-fennec-aeronaut",
+      "artifactSha256": {
+        "character.inp": "8603d3158a3611173cd88f37c447bc20f7d50cce91411bf7a7dd9cf13df102cc",
+        "Live2D.zip": "f0f711f418ebf32a3bcfd9b7159e30aed3f07dc84baaffa39e6c2c27cdf092c5"
+      },
+      "mocSha256": "9fd6cac6e5b62b5c1fea4aec279c60711e16911170c287707ec855547b563e03",
+      "validationReportSha256": "f19a48b61cd7950e6b91d909ec7c43070bd965eee420b8862f69918a2da6bafd",
+      "status": "passed_with_runtime_differences",
+      "frames": 382,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "19-splitlight-atelier",
+      "artifactSha256": {
+        "character.inp": "9377c942da2af0a75d856e558daa7f844df93a551d82beb59771cff8c2c18c82",
+        "Live2D.zip": "40976caa396d7177ad6520663b1c0c64e0218276cf469d7cb291b20bbb7581ff"
+      },
+      "mocSha256": "a3f64f60febfa268050ba698ca1a893dd59c38a5195c5f64ef98f25ac9c3be7c",
+      "validationReportSha256": "00e7b8dcd5c617c77801f1e7b94f38949e02a150dcc5d1a500cbcf204f2c6dad",
+      "status": "passed_with_runtime_differences",
+      "frames": 382,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "20-teal-drummer",
+      "artifactSha256": {
+        "character.inp": "e95c9114e8d11b803a510fb3e6c3ace09874a991712133337b7408f4da4e24ef",
+        "Live2D.zip": "610260b27be20b35b8cf279056f142f1ae639fd16735fecf84d5459a7562d353"
+      },
+      "mocSha256": "4e758a6f514accaa18e517fed5d89abec1ccc347f35b182acc1814f7540783b7",
+      "validationReportSha256": "125f242652ec8c43490f61c65bc249358893891a3539dad4b2e95e8bd41917a0",
+      "status": "passed_with_runtime_differences",
+      "frames": 379,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "21-ochre-nomad",
+      "artifactSha256": {
+        "character.inp": "6002284741a553d5156944f0691b5f9644b9d21cdc03146091db5d07ce43e3cc",
+        "Live2D.zip": "10273f6f43c80e39137d13255f09b95933a4475893d54a3d36c529579ac20758"
+      },
+      "mocSha256": "3f3ff59fbb347fdf466e8886f439ca48a4988b492e72c387c456b265427ec3b4",
+      "validationReportSha256": "1700580a83a021efc4db1a80ad1f180d8129111696c51037d6a5bfa259cd1365",
+      "status": "passed",
+      "frames": 375,
+      "strictSourceMismatchCount": 0,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "22-frost-goalie",
+      "artifactSha256": {
+        "character.inp": "a75c4cb2390d001298b852b4a8c385bedc8b3534ea9f14e234de1f0e46e41a20",
+        "Live2D.zip": "a30fdba3b637560856225b6d663af57d4d57222e4b99a1968e01676373198e3b"
+      },
+      "mocSha256": "d0499697b52a2f076ada2ed1beb52127916f3904bc438e3f9a4550e580e316fd",
+      "validationReportSha256": "ec14cf8cca46cfda7229301c29ddf67838173d0d42675291da853df02af1b07c",
+      "status": "passed_with_runtime_differences",
+      "frames": 381,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "23-papaya-broadcaster",
+      "artifactSha256": {
+        "character.inp": "b07e20a55929191a496a6193cdc3d54dd86e156e3adb094ba6d77e0dd27f75a5",
+        "Live2D.zip": "cfceadec5c28f749c793cb472d9da28d84e542ba84a6e2317bae20621c9a4bf0"
+      },
+      "mocSha256": "b3b3e2c2a1481b134db96728aee7de76ae9b68e6bf9dc593a25e360f91441b50",
+      "validationReportSha256": "e8ab13ff04b43e7133a83e010721382d97b0651ed8c307660ee978c2479668f7",
+      "status": "passed_with_runtime_differences",
+      "frames": 328,
+      "strictSourceMismatchCount": 2,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "24-inkblue-locksmith",
+      "artifactSha256": {
+        "character.inp": "697faa04b5f7633474b205ede00e926cd944e48bf2062beb977a53947a707fca",
+        "Live2D.zip": "714ca3bf8cfb3e10822e04a7d9c05e2c11732bd20f274ff73c9a34065829e210"
+      },
+      "mocSha256": "9965d3b80b0d92eef304dc644e7a26c393417acc9c057d6db31398008953f69f",
+      "validationReportSha256": "09a8d7672f74d8320c9100a3b72b13d02058448e017ba3baeca16c73e97c490c",
+      "status": "passed_with_runtime_differences",
+      "frames": 382,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "25-cobalt-otter-cartographer",
+      "artifactSha256": {
+        "character.inp": "2969d4d022187fbe071ff12105cabaee22043f4d347404515b807bebfe8ab59a",
+        "Live2D.zip": "5398c7f2742eadf38115f7941069820af7f29869eea47aa143443d445daed861"
+      },
+      "mocSha256": "621e0db3587a16b0bdff7a362c1031177c65226f6e67e602845687660ca79209",
+      "validationReportSha256": "2d9df409ed9400759a6b06cdbacabde698a5aefb52f11cdb7cb12ae11b3cd9ff",
+      "status": "passed_with_runtime_differences",
+      "frames": 194,
+      "strictSourceMismatchCount": 3,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "26-raspberry-clockwork-gnome",
+      "artifactSha256": {
+        "character.inp": "a7741f6c17cf0abce293701b208f28e2bcd4b891dee1b8f3cf543d561a93f484",
+        "Live2D.zip": "a4003d9fb6045bd0b08dcb7a906a755da873d0bbb480c51b90703e4fab8f47c6"
+      },
+      "mocSha256": "6f2b60dea1fbcf618e65464f5a47b2fcdbd693add493d8e198fc98b4f9595df0",
+      "validationReportSha256": "9b375756a87dbbcdc8ff08ab24fe8c780befda03cfc88dd2b6b00489356f77f2",
+      "status": "passed_with_runtime_differences",
+      "frames": 201,
+      "strictSourceMismatchCount": 5,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "27-ruby-encore",
+      "artifactSha256": {
+        "character.inp": "0e2e9df832e08a7482f9a1324374c1d34b061003004ff8b2ac693e71a19e6258",
+        "Live2D.zip": "d2e274935f2618e3647160aae7c058b69de83729e178b603d5e1acea89066b93"
+      },
+      "mocSha256": "a6ff32f439f6308e3c74bd760495d7aa29e055aa9a5ce4ec715724050dfa01fc",
+      "validationReportSha256": "5943303d47e390824b1e6431665f0bade22c13e73836e2cd02e8e86861e9e910",
+      "status": "passed_with_runtime_differences",
+      "frames": 328,
+      "strictSourceMismatchCount": 2,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "28-pomegranate-tide-alchemist",
+      "artifactSha256": {
+        "character.inp": "e20201607b7bdb6534de7c62d9194b5d524d7b95876fbe180ff6236739925784",
+        "Live2D.zip": "e18c42e07f6f879bc21e7b042d5a27205b15c3f5357b3895fbeb582673a70365"
+      },
+      "mocSha256": "78d2a61e0673fc120318bf7d85c9ce2004abd50e615d2565552146d34860812b",
+      "validationReportSha256": "4114a30fcd46dbedead1fd4d99983ece70e224a952d2d4396d5414374fb4fede",
+      "status": "passed_with_runtime_differences",
+      "frames": 142,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "29-indigo-jackal-radio",
+      "artifactSha256": {
+        "character.inp": "f092766392eeb1de89cbe1f83b32641ddaa93d8bc6178de5dfc46b8be3a0fd85",
+        "Live2D.zip": "633af07ae01ad1ace516f404a2bcd445e4cfafb6a866970dc99c386244cdc29e"
+      },
+      "mocSha256": "9aa6d86d895c40918dd23fb3306439e6a2ca140d3f7fc0b949d36f8b29ab2698",
+      "validationReportSha256": "c9df52822a57cf016650842cdf043713e5b676c6924cd00a62d9e87bf9590989",
+      "status": "passed",
+      "frames": 247,
+      "strictSourceMismatchCount": 0,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "30-vermilion-crane-host",
+      "artifactSha256": {
+        "character.inp": "327b1a8e4c7272ede35e6789ba4c4b23861ba10ff4553d38dd57f39ca3a5a891",
+        "Live2D.zip": "527f082d6cc62e1a0982812931ce4ce3136f3858ac7cb6f4848bd88c67eee239"
+      },
+      "mocSha256": "076767ebb4880d8f34e01dc372b45010d5a25c6aa51a733b665dd05f63e01b88",
+      "validationReportSha256": "046ffbd3d20fbca6efd967de85da6142ba7acb0f5fa36715d0d8c730ec62a9dd",
+      "status": "passed_with_runtime_differences",
+      "frames": 194,
+      "strictSourceMismatchCount": 3,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "31-copper-ibis-restaurateur",
+      "artifactSha256": {
+        "character.inp": "56d0c8757652377c17f5ae3c2450fee408bec86be0cbb3d1c628cf14ab833868",
+        "Live2D.zip": "4a186ee77a2c76f56ecf7e89e7d906ffe0d54f5e593ba08ca7ae7eaf202c27c5"
+      },
+      "mocSha256": "4fb2acf66276006e62bbb89349fe80dbdba7b312099e279e1776bb08c3464dd1",
+      "validationReportSha256": "725f465244aecdda48b7cdab22f7e016791ae8ada85819c2265f37add471d21f",
+      "status": "passed_with_runtime_differences",
+      "frames": 208,
+      "strictSourceMismatchCount": 4,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "32-coral-reef-siren",
+      "artifactSha256": {
+        "character.inp": "6ed3d05e3000b7aba99c5f8d59b303380e264e81e572df292dff30a2b58d824d",
+        "Live2D.zip": "6366be4ee1d95653ef9cde090be3c83d95ced0c373f8e71a12ee15347f97e818"
+      },
+      "mocSha256": "dd96ad714e312ddf4eb3f4126c996f2cfeb78f109fa04f385b582fe03fd7d396",
+      "validationReportSha256": "dbbafcaaf5967db724f1df5f194800ce71177880e295938d808d27e7395fd54a",
+      "status": "passed_with_runtime_differences",
+      "frames": 195,
+      "strictSourceMismatchCount": 4,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "33-sunsteel-lion-knight",
+      "artifactSha256": {
+        "character.inp": "f52e8483827dded1d11791b80747a79fab205f54fd0ad6382fb136df9bb2aaaf",
+        "Live2D.zip": "c13c51696e5399ca7ac6ab11bccacd8ef82c3f718022bf767666a671cd2fe7ab"
+      },
+      "mocSha256": "701bd2825a680b1f3ab0cb54ace092c0e2dcaafc3088f06e0a705b09c546bc88",
+      "validationReportSha256": "88f40fd7e5d67eab3ab25ef4f31185fa75011b8344a17e934a72cd26a31e07a4",
+      "status": "passed_with_runtime_differences",
+      "frames": 194,
+      "strictSourceMismatchCount": 3,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "34-mulberry-cloud-witch",
+      "artifactSha256": {
+        "character.inp": "a94bea72a2d25accd713df67df579efc871d0109d20ee1cd3d6edf6cddb0ee9e",
+        "Live2D.zip": "47280b9e1330a631ca795e0a9f9e901428e0198aa1fae565964cfbee4669daa9"
+      },
+      "mocSha256": "7c7c9bf54bc7f3d951c04e7cc81077b72906baceb2973c29dacddf56120aab11",
+      "validationReportSha256": "b4d251dd3e1aeb4e8d5d53274864b86d2818f8c4f0cd7fd276e2836f11d759c8",
+      "status": "passed_with_runtime_differences",
+      "frames": 197,
+      "strictSourceMismatchCount": 3,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "35-saffron-jester-acrobat",
+      "artifactSha256": {
+        "character.inp": "dce32b015d34899fca0cdccc16af1485f748a67fb3c4cb0edaa5b3faea54e896",
+        "Live2D.zip": "41d7006e1dd2d17b9b81bc0d32b57bff825725e0b83bc256eae61399caf02ea7"
+      },
+      "mocSha256": "bbf3d323e386daf561e2489c40c29cf3c478d896ba9e86d6a0621473af96adff",
+      "validationReportSha256": "4069276be4b679558fd6dcc50cc4be07b0c2b14109344b141396051bf25847d7",
+      "status": "passed_with_runtime_differences",
+      "frames": 315,
+      "strictSourceMismatchCount": 2,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "36-jade-dragon-parade",
+      "artifactSha256": {
+        "character.inp": "43b300b24b1317bffc3d08011d1add7ed00d01e60332f2d4c8fd4400db41e5ab",
+        "Live2D.zip": "843b3dde4b628c5ceb5314de51eef8739702d78cbd00f6f9b1f74cb76e309ece"
+      },
+      "mocSha256": "72f4876b8dff993a44b5dd998f73963932490c98a49264168ad2383a9a11b272",
+      "validationReportSha256": "7e20cc3978b9ba900e3f4ffa36f195233132e076776945108eaa1b1b68fb6793",
+      "status": "passed_with_runtime_differences",
+      "frames": 194,
+      "strictSourceMismatchCount": 4,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "37-peach-kite-painter",
+      "artifactSha256": {
+        "character.inp": "94f9b64612e7babb5214e822949d695618bdac602ddac5532a484143491bfd6c",
+        "Live2D.zip": "f0b92b186918c592637f1ac38765402ea7e30da8659057763fd924e409569f58"
+      },
+      "mocSha256": "b1d137fada9ef672a9b83d3be15961b425ed8820c472003d1cb4566a0d7dc2aa",
+      "validationReportSha256": "d2afe8fd43efda2abdfacf9d5aac0c6306a799cf0f79148fc3a3e1704392aa62",
+      "status": "passed_with_runtime_differences",
+      "frames": 195,
+      "strictSourceMismatchCount": 4,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "38-amber-pangolin-ceramist",
+      "artifactSha256": {
+        "character.inp": "9b9453093d24defe90d38dd6778954fb893c4d745ba8478560d9786e610cfb23",
+        "Live2D.zip": "32c1704cf7f826fad0d31c03c1e7983f6e2c8f452b9d2c13e2e82ec753cd96a6"
+      },
+      "mocSha256": "6d4c037c7bb6e50aabcd01e893acd1b7dbc352bfb44ede4c48ed5220fa4d54cb",
+      "validationReportSha256": "8cdbfffcbe1a0fa5aa63284dd0fbeb7a979c44c7674d242bf874829774ffa43e",
+      "status": "passed_with_runtime_differences",
+      "frames": 198,
+      "strictSourceMismatchCount": 4,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "39-aurora-axolotl-beaconer",
+      "artifactSha256": {
+        "character.inp": "fa3599443bd8b9fc349576d8e6b85283dad890955937253ca06abdd3eb2069e1",
+        "Live2D.zip": "7c7c6f1bb8549b198c4eabeff856994b5d6406d13aafd6d95fe0b6efe77d58bd"
+      },
+      "mocSha256": "66e8a80c5229792c84377e4698cc5385dd79d0e259dbdff9a04664542ffa9883",
+      "validationReportSha256": "9c853774b5d8b96aefd60f36a8c6c36c029820d83409b8247aeec6487d1a90d3",
+      "status": "passed_with_runtime_differences",
+      "frames": 195,
+      "strictSourceMismatchCount": 4,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "40-obsidian-bat-cabaret",
+      "artifactSha256": {
+        "character.inp": "0e260106fa056d7b9b871ebba98ead03e507d80c96829688c5660880e8de0ff9",
+        "Live2D.zip": "aaceb0de259a7335c209f74f00718ab49c1bbd8de24523760b6c185ccffcb294"
+      },
+      "mocSha256": "cefc48a981ff506135185454fcd55a1298e1cb21fe90b2f0769b719283506f56",
+      "validationReportSha256": "aacd9f7ff05b2497f2f2bef58becce31c5f2a113b634adc38514b6ecd6931f13",
+      "status": "passed_with_runtime_differences",
+      "frames": 194,
+      "strictSourceMismatchCount": 3,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "41-salt-quartz-antelope",
+      "artifactSha256": {
+        "character.inp": "e1e4863fa179ee0308b68ee578bc5735f2d3c07c1623f9eee5e7c3277dc397f4",
+        "Live2D.zip": "5ed47ea997724031f9b7f4dac3c26c0ec59a415b0403d1d3cdb7ea86ec277698"
+      },
+      "mocSha256": "76fabf2ba436eb1215c6903e7714a71f0217c2dec09441c617f4ca9c86cb5a56",
+      "validationReportSha256": "ce1713f090986a1d198e619fb88d4306c823cf06c0bf4fdd29667bf4be247ac8",
+      "status": "passed_with_runtime_differences",
+      "frames": 142,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "42-carmine-manta-duelist",
+      "artifactSha256": {
+        "character.inp": "0a80eb044ce89687dba76a895dfc976428252348a32f0c330401acd1bb54bef9",
+        "Live2D.zip": "9f95a310355817d39511ef5c4a0cac2829b0356d21fc44143b542c3c5cf55662"
+      },
+      "mocSha256": "0b4c98e4dd623b51318ff2a8e24ef3c363b43e0a3bd24e67e640d0326f8c0c5b",
+      "validationReportSha256": "9288e3113a35235d9a4fee2cdf5c16d9d112a2104901bb4b64fc79ccd91cb77c",
+      "status": "passed_with_runtime_differences",
+      "frames": 139,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "43-rose-ibex-fan-diplomat",
+      "artifactSha256": {
+        "character.inp": "5d1881333366ba3a97ebbf62311d082f107b4a6dcb5e491398447b1eb9eedf68",
+        "Live2D.zip": "dd01f7759d8e49ca9e417c26b7ab7252e2d93061c55429176ae49f150975e8c4"
+      },
+      "mocSha256": "b11f11654280fb14a1764ecc16e35aee83cefaf14a41fbd0ce159bf72d3f92fa",
+      "validationReportSha256": "a6c12aef2f6024efff4e257abc55959a5b23085a5e79afa699684e07769187b1",
+      "status": "passed_with_runtime_differences",
+      "frames": 194,
+      "strictSourceMismatchCount": 3,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "44-citrus-seahorse-luthier",
+      "artifactSha256": {
+        "character.inp": "a7b5984f8dd71b202b7aeaec3bc6eab70333cfd3b9567453d0e9575fcaf58a0a",
+        "Live2D.zip": "70efbd2912891dcf198f5c3ede7e73d5387b42e268f564c5092360598e0fb439"
+      },
+      "mocSha256": "f20ce322d78873be17114b45540bd8bb8d405d99470d51fe395b7c63d9ae81a1",
+      "validationReportSha256": "1022971c84dbc0fcc7b8f95505a440e62acc39a700563e0e61c16f5940ab81f6",
+      "status": "passed_with_runtime_differences",
+      "frames": 142,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "45-saffron-spider-confectioner",
+      "artifactSha256": {
+        "character.inp": "7427b799086f8b638bd2ce7f9e109ff61510d940558a37504f15cce40379d4fe",
+        "Live2D.zip": "66c7a5b2622d2be97169d9ef9340cf25ced00c75fad6fdf9d9892dd701c80327"
+      },
+      "mocSha256": "ba9be07336cb373195e5c1f88074fa70615c307985daf7b36159e384911b3622",
+      "validationReportSha256": "e103edec651a24f78479be62adc7ecb5ee1f0d7f1881f5c0dc652610fc8eed39",
+      "status": "passed_with_runtime_differences",
+      "frames": 142,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "46-brass-heron-banner-engineer",
+      "artifactSha256": {
+        "character.inp": "89cfb03a61e19e7136fd14f7beb1b085ad9a5a6838dd8a2fc842266dc00b5dcd",
+        "Live2D.zip": "b87ade88e085fb43075b14b310370677d55aaddf2b6f28bc18214449c44ae0cd"
+      },
+      "mocSha256": "815b1a2f1cd2baad35a33863766b58a9aba5975d4a4b6ee8bab8047c6a307546",
+      "validationReportSha256": "a8a5bda1f137d86ee9b744eb107d7eaaa76c6f829515f4ba61bef8d83e219ad3",
+      "status": "passed_with_runtime_differences",
+      "frames": 141,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "47-frost-lynx-bell-silks",
+      "artifactSha256": {
+        "character.inp": "9b4ea364442389ef7b206cb51de4d31f28eda8caa5cd9cdd89e06dfc877787ad",
+        "Live2D.zip": "4460b336f810a9306191122ce833b5ca3cf4cca9e3686ec38115d4c41ccdb3da"
+      },
+      "mocSha256": "80120a5dfb174219561fd0af019e5c33f740bc59a18e2673382738c9cf4ecb3d",
+      "validationReportSha256": "74b0fdf53fc451aa114a1177297ec166bf7bd1185da3864231317f039c6f5c81",
+      "status": "passed_with_runtime_differences",
+      "frames": 141,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "48-pearl-ram-glassblower",
+      "artifactSha256": {
+        "character.inp": "6bde47a7221b85517f59011cde19e58cfbb6ec9c413cd6fc79ef37e18bf40304",
+        "Live2D.zip": "47c447e5623c5e0cd2924cf711185d51a29678e38c9670d5be73e5d060ad1a20"
+      },
+      "mocSha256": "e9d6c8ae774b213ed9327c6a0b7dfe8a501598c9c5715154d4f71612f4beee60",
+      "validationReportSha256": "0e4c8b7e7c2e73024ed6b744223e540f15e05f40ddfd5bf61d012d5f46b5caa9",
+      "status": "passed",
+      "frames": 250,
+      "strictSourceMismatchCount": 0,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "49-jade-cicada-cape-singer",
+      "artifactSha256": {
+        "character.inp": "bf96d51b6d69106d452719e9c31c1cf640e1552aef6b696b54e2e44cc4258efd",
+        "Live2D.zip": "a057116287b04b33bd3a82df85e7f76d479d4a029f82d1560a8838ccd086f5ab"
+      },
+      "mocSha256": "f02dba7664f3bd8e32702467fb365b6c916309dcab91a32c21cba294fd5d6025",
+      "validationReportSha256": "47fca59eef22a0c19a637bdf20682aef8af8bc33a74d304553ae3d7bf79d2fbb",
+      "status": "passed",
+      "frames": 247,
+      "strictSourceMismatchCount": 0,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "50-cobalt-jelly-puff-couture",
+      "artifactSha256": {
+        "character.inp": "43eb25dbe26a59ce8b9d5aa014ce6349727617e1d843e4ce962bae6b16be4fa3",
+        "Live2D.zip": "097217c5261490aa1d8e19ee4a685d2f8e74f52fc5715cf77c0d2e83a6e37481"
+      },
+      "mocSha256": "4e6e505268ee12ae33a1127d3b313afa649e944f6f884c9cb8d08fd956b5f4ad",
+      "validationReportSha256": "4f9fdf5d40f3d6b776311e79833087cf9632badc2c8136a6f4901be1a0c8a535",
+      "status": "passed_with_runtime_differences",
+      "frames": 142,
+      "strictSourceMismatchCount": 1,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "51-safflower-red-panda-postmaster",
+      "artifactSha256": {
+        "character.inp": "c09563628af8f80d5e94fe778df55c492beb161dae40961f30a8b61d1cbcae1e",
+        "Live2D.zip": "e2e50c5f82d58de5f9c5240bdd0b20d788c9025ac38bf4da13587f9d2326afb9"
+      },
+      "mocSha256": "3faa3bf28d1f6060eb7e34e1d5f941ead9ee5adf1d6ac08f389eb4313b65eeff",
+      "validationReportSha256": "20bc6811640b3e934ac39f6459bbd19d5a90c85ea1bf0af2b33963ceb88c3bc2",
+      "status": "passed",
+      "frames": 247,
+      "strictSourceMismatchCount": 0,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "52-garnet-elk-scarf-keeper",
+      "artifactSha256": {
+        "character.inp": "56650fb915640c42b6b44806dbba74109497ddbc707aeb3e0718b8fb2f3822a0",
+        "Live2D.zip": "a12192294890f0d75bf34f5cea878b53c93f6095f500943b85a21add6a511fa5"
+      },
+      "mocSha256": "75fe1e04d4860a5eb4fb3743cdd30896057ada51645a83fde1cf542ff4cc84df",
+      "validationReportSha256": "cbfade65c75a81f5e60168eea00b394934a532fa03a6c943c506a47edb482bd2",
+      "status": "passed_with_runtime_differences",
+      "frames": 195,
+      "strictSourceMismatchCount": 4,
+      "coreAwareMismatchCount": 0
+    },
+    {
+      "id": "53-lapis-comet-tress-orator",
+      "artifactSha256": {
+        "character.inp": "498ecf5ca2e382b3aa137440e960d93457f7a51366070181b1ea98a96fc81d00",
+        "Live2D.zip": "b0660e05620ba4512a7a9867b8cb803311e7fc28e736f28e85e607c468462147"
+      },
+      "mocSha256": "60d65a79bdb4ee3098ebfd39ce566415c8031291cd3235560ca2af18eedc0281",
+      "validationReportSha256": "c09a468fe6fb40ebc45ef9266ebb260c45dd496999ac3bb90cc6805b9478bd1b",
+      "status": "passed",
+      "frames": 247,
+      "strictSourceMismatchCount": 0,
+      "coreAwareMismatchCount": 0
+    }
+  ]
+}

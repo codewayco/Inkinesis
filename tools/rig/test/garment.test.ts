@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { clothOffset, auditGarment } from '../buildGarment';
-import { assessGarment, type GarmentAssessment, type GarmentRegion } from '../../imageToRig/garmentAnalysis';
+import { clothOffset, auditGarment, fitStrainAmplitude } from '../buildGarment';
+import { assessGarment, adoptGarmentLandmarkCheck, type GarmentAssessment, type GarmentRegion } from '../../imageToRig/garmentAnalysis';
 import type { CombinedAsset } from '../../../player/src/combinedRuntime';
 
 const skirt:GarmentRegion={kind:'skirt',box:[100,200,900,1450],anchorY:500,confidence:.9,reason:'Visible waist, hidden legs'};
@@ -20,6 +20,37 @@ describe('limited garment motion contract',()=>{
         expect(assessGarment(a).canBuild).toBe(false);
         a.points.mouth!.confidence=.9; a.garments[0].confidence=.6;
         expect(assessGarment(a).capabilities.garment).toBe(false);
+    });
+    it('verifies a 0.5-0.8 face on the decomposition instead of refusing it before the decomposition',()=>{
+        // A small full-body face: the model answers mouth and chin with 0.7-0.78 and the whole image with 0.72.
+        const a=assessment();a.confidence=.72;a.points.mouth!.confidence=.78;a.points.chin!.confidence=.7;
+        expect(assessGarment(a).canBuild).toBe(false);
+        const provisional=assessGarment(a,{provisional:true});
+        expect(provisional.canBuild).toBe(true);expect(provisional.reasons.join(' ')).toContain('verified on the decomposition');
+        // The landmark check verified the mouth and the chin on the mouth and face layers.
+        const checked={...a,points:{...a.points,mouth:{...a.points.mouth!,verified:true},chin:{...a.points.chin!,verified:true}}};
+        expect(assessGarment(checked,{checked:true}).canBuild).toBe(true);
+        // Unverified points stay refused, and confidence below 0.5 is never enough.
+        expect(assessGarment(a,{checked:true}).canBuild).toBe(false);
+        expect(assessGarment({...checked,points:{...checked.points,chin:{...checked.points.chin!,confidence:.4}}},{checked:true}).canBuild).toBe(false);
+        a.points.chin!.confidence=.4;expect(assessGarment(a,{provisional:true}).canBuild).toBe(false);
+    });
+    it('adopts the landmark check: verified points become build landmarks, the model answer is kept',()=>{
+        const a=assessment();a.points.chin!.confidence=.7;a.points.shoulderL={x:.6,y:.4,confidence:.7};a.points.shoulderR={x:.4,y:.4,confidence:.7};
+        const record={assessment:a,source:{width:1000,height:2000},points:{}};
+        const points={...a.points,chin:{x:.5,y:.32,confidence:.7,verified:true},shoulderL:{...a.points.shoulderL,verified:true},shoulderR:{...a.points.shoulderR,verified:true}};
+        const adopted=adoptGarmentLandmarkCheck(record,{schema:1,points,records:[],changed:0});
+        expect(adopted.canBuild).toBe(true);expect(adopted.capabilities.body).toBe(true);
+        expect(adopted.points.chin).toEqual({x:500,y:640});expect(adopted.assessment.modelPoints!.chin!.y).toBe(.3);
+        expect(adopted.landmarkCheck).toBeDefined();
+    });
+    it('reduces the sway amplitude to fit the strain budget, but never below half and never past a foldover',()=>{
+        let strain=1.3,scaled=0;
+        const audit=()=>{if(strain>1.2)throw new Error('Garment deformation exceeds the area strain budget');return {maxAreaRatio:strain};};
+        const fit=fitStrainAmplitude(audit,f=>{scaled++;strain=1+(strain-1)*f;});
+        expect(fit.result.maxAreaRatio).toBeLessThanOrEqual(1.2);expect(scaled).toBe(3);expect(fit.amplitude).toBeCloseTo(.85**3,12);
+        strain=3;expect(()=>fitStrainAmplitude(audit,f=>{strain=1+(strain-1)*f;})).toThrow('strain budget');
+        expect(()=>fitStrainAmplitude(()=>{throw new Error('Garment foldover: skirt');},()=>{})).toThrow('foldover');
     });
     it('pins the waist and box boundaries and bounds all cloth offsets',()=>{
         for(let y=200;y<=500;y+=5)expect(clothOffset({x:500,y},skirt,1024,1536,{})).toEqual({x:0,y:0});

@@ -19,6 +19,14 @@ npm run image-to-rig -- --image /path/to/character.png --out outputs/my-characte
 
 CLI runs use isolated directories under `outputs/` by default (`RIG_OUTPUT_DIR` overrides this). UI runs instead use OS temporary directories: press **Save** after generation to persist all produced files under `outputs/<job-id>/`. The session selector lets you revisit unsaved avatars; these previews do not survive an ordinary dev-server process exit. **Load last saved** reads persistent outputs. A failed or unsupported trial can also be saved if its input image exists. Save waits until generation/export finishes and never overwrites an existing run. Existing saved files are retained. No coordinates or garment flags are required. A process lock prevents concurrent CLI/UI jobs from competing for the local GPU and external Gradle build. The UI polls asynchronous jobs and reconnects to its job after a page reload. Generate does not keep one HTTP request open throughout inference.
 
+## Review an uploaded image before rigging
+
+Selecting a PNG, JPEG or WebP opens **Review your image**. Background transparency and resolution are checked locally; the configured vision provider assesses photo/illustration type, framing and limb separation. These findings are advisory and appear before GPU rigging starts. A failed vision check is shown as unknown, not as a pass.
+
+Choose **Use as-is** to retain the uploaded artwork, or **Redraw for rigging** to request a transparent illustration using the configured image provider. Redrawing adds a paid image-edit request and can change identity, style or details. The original is kept. Compare the proposed redraw and its checks, then press **Accept redraw and build rig**; nothing is rigged automatically when the redraw finishes. You can return to the original or request another redraw. The server verifies that the accepted image matches the preview. Upload previews expire with the dev-server session.
+
+Once built, uploaded-image results distinguish **technical completion** from **visual review needed**, and list limited or unavailable movements. An advisory silhouette warning appears below 0.95 IoU; this is not a calibrated acceptance threshold and a higher score never certifies visual quality. Saved runs include `upload-review/` with the original upload, normalized reference, candidate, checks and acceptance record. The prompt Generate path and direct CLI image commands keep their existing behavior.
+
 ## Saving and downloads
 
 UI runs stay in OS temporary directories until you click **Save**. Saving copies the complete run into `outputs/<job-id>/` by default: prompt, image, analysis, layers, rig, validation, previews, logs, and any prepared Live2D exports. `RIG_OUTPUT_DIR` changes that destination. **Load last saved** reopens the latest completed saved rig. Unsaved previews expire on normal server shutdown; abrupt crashes can leave temporary files.
@@ -43,7 +51,7 @@ A resumed run preserves prior report snapshots and appends stage logs. Analysis 
 
 - `unsupported`: multiple/non-front-facing characters. These still exceed the face builder's contract; partial capabilities do not promise a rig for every image.
 - `needs_review` without a rig: insufficient overall analysis confidence or unusable eye landmarks for the current bust adapter. Do not invent missing anatomy.
-- `needs_review` with a rig: each arm, leg, head, blink and mouth is assessed independently. Clothing or uncertain joints disable only the affected region. Points below 0.5 are unusable; 0.5–0.8 retains an uncertainty note. These thresholds apply to model-reported confidence, **not calibrated probabilities**.
+- `success`: the rig is exported and natively validated. Each arm, leg, head, blink and mouth is assessed independently. Clothing or uncertain joints disable only the affected region. Points below 0.5 are unusable; 0.5–0.8 retains an uncertainty note. These thresholds apply to model-reported confidence, **not calibrated probabilities**.
 - `failed`: missing environment, provider failure, invalid source assets or an unrecoverable build/validation failure. Preserve the stage and its log.
 
 ### Regional movement capabilities
@@ -56,7 +64,7 @@ Each candidate limb is tested with the existing mesh gate. If its authored range
 
 The UI explains unavailable movements and disables their sliders and incompatible motion clips. Source-only assessments are explicitly candidates, never enabled motion. These checks do not prove natural seams, correct depth ownership or identity preservation: inspect the preview before Save. Existing saved avatars are not automatically rebuilt or replaced.
 
-The report schema reserves `success` for a future acceptance policy. Current automatic runs deliberately end as `needs_review` even after structural validation; no automated run is labeled human-approved. Independent blink support requires actual open-eye source layers, not merely parameters bearing eye names. Walk/gesture clips are previews, without foot planting or physics.
+`success` means the rig was exported and passed native validation; it is not a visual acceptance, so inspect the preview before Save. Independent blink support requires actual open-eye source layers, not merely parameters bearing eye names. Walk/gesture clips are previews, without foot planting or physics.
 
 ## Environment
 
@@ -83,4 +91,4 @@ The browser reads the restricted INP subset emitted by `buildCombined`: linear s
 
 `npm run build:player` builds the current player. Model generation requires the development server and prepared local tools; a static build does not host the generation service. Record uses the existing browser recorder and produces silent video.
 
-No avatar is loaded automatically. **Pick an Avatar** lists the 27 example characters; select one and press **Download** to install its files. Saved Inochi and Live2D packages require no model requests.
+No avatar is loaded automatically. **Pick an Avatar** lists the 53 example characters; select one and press **Download** to install its files. Saved Inochi and Live2D packages require no model requests.

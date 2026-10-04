@@ -1,5 +1,5 @@
 /** Renders the actual INP textures at Inochi2D-evaluated poses, never a rebuilt PSD. */
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { inpParts, inpTextures, readInp } from '../rig/inp';
@@ -13,8 +13,51 @@ export interface RuntimeFrame {
 }
 /** Sign-safe frame filename: '-' becomes 'neg' and '.' becomes 'p' so opposite poses never collide. */
 export function poseFilename(label:string){return label.replace(/-/g,'neg').replace(/\./g,'p').replace(/\W+/g,'_')+'.png';}
+/**
+ * Light fringe on a dark background: silhouette pixels within 2 px of transparency
+ * that, composited over a dark grey, are light (every channel above 150) and more
+ * than 50 levels brighter than the solid artwork around them (pixels at least 3 px
+ * inside, 9x9 window). Backdrop left in anti-aliased edges shows here; a colour
+ * comparison with the white-backed source cannot see it.
+ */
+export function darkEdgeFringe(rgba: Uint8ClampedArray|Uint8Array, width: number, height: number) {
+  const n=width*height,dist=new Float32Array(n),big=1e6,d1=1,d2=Math.SQRT2;
+  for(let i=0;i<n;i++)dist[i]=rgba[i*4+3]>24?big:0;
+  // Two-pass chamfer distance to the nearest transparent pixel.
+  for(let y=0;y<height;y++)for(let x=0;x<width;x++){const i=y*width+x;if(!dist[i])continue;let d=dist[i];
+    if(x>0)d=Math.min(d,dist[i-1]+d1);if(y>0){d=Math.min(d,dist[i-width]+d1);if(x>0)d=Math.min(d,dist[i-width-1]+d2);if(x<width-1)d=Math.min(d,dist[i-width+1]+d2);}dist[i]=d;}
+  for(let y=height-1;y>=0;y--)for(let x=width-1;x>=0;x--){const i=y*width+x;if(!dist[i])continue;let d=dist[i];
+    if(x<width-1)d=Math.min(d,dist[i+1]+d1);if(y<height-1){d=Math.min(d,dist[i+width]+d1);if(x<width-1)d=Math.min(d,dist[i+width+1]+d2);if(x>0)d=Math.min(d,dist[i+width-1]+d2);}dist[i]=d;}
+  const dark=[38,38,46],lum=new Float32Array(n),low=new Float32Array(n);
+  for(let i=0;i<n;i++){const a=rgba[i*4+3]/255;let s=0,m=255;for(let c=0;c<3;c++){const v=rgba[i*4+c]*a+dark[c]*(1-a);s+=v;m=Math.min(m,v);}lum[i]=s/3;low[i]=m;}
+  // Integral images of the core luminance and count.
+  const W=width+1,sum=new Float64Array(W*(height+1)),cnt=new Float64Array(W*(height+1));
+  for(let y=0;y<height;y++)for(let x=0;x<width;x++){const i=y*width+x,core=dist[i]>3,k=(y+1)*W+x+1;
+    sum[k]=(core?lum[i]:0)+sum[k-1]+sum[k-W]-sum[k-W-1];cnt[k]=(core?1:0)+cnt[k-1]+cnt[k-W]-cnt[k-W-1];}
+  let fringe=0,edge=0;
+  for(let y=0;y<height;y++)for(let x=0;x<width;x++){const i=y*width+x;if(!(dist[i]>0&&dist[i]<=2))continue;edge++;
+    if(low[i]<=150)continue;const x0=Math.max(0,x-4),y0=Math.max(0,y-4),x1=Math.min(width,x+5),y1=Math.min(height,y+5);
+    const c=cnt[y1*W+x1]-cnt[y0*W+x1]-cnt[y1*W+x0]+cnt[y0*W+x0];if(c<1)continue;
+    const mean=(sum[y1*W+x1]-sum[y0*W+x1]-sum[y1*W+x0]+sum[y0*W+x0])/c;if(lum[i]-mean>50)fringe++;}
+  return {fringePixels:fringe,edgePixels:edge,fraction:edge?fringe/edge:0};
+}
+/**
+ * The source's figure test. A drawing with real transparency is its alpha; a drawing
+ * on white (no transparency) also treats near-white pixels as the backdrop, so white
+ * artwork is only lost from the comparison when no alpha says otherwise.
+ */
+export function sourceFigure(rgba: Uint8ClampedArray|Uint8Array) {
+  let transparent=false;
+  for(let i=3;i<rgba.length;i+=4)if(rgba[i]<250){transparent=true;break;}
+  const figure=transparent?(_r:number,_g:number,_b:number,a:number)=>a>24
+    :(r:number,g:number,b:number,a:number)=>a>24&&!(r>238&&g>238&&b>238);
+  return Object.assign(figure,{transparent});
+}
 export function measurePuppet(inp: string, poses: string, source: string, out: string) {
   mkdirSync(out, { recursive: true });
+  // Frames of an earlier render (a chain that was articulated then, more mouth
+  // keys) would otherwise remain beside this render's frames.
+  for (const file of readdirSync(out)) if (file.endsWith('.png') || file === 'measurement.json') rmSync(resolve(out, file));
   const { puppet, textures: raw } = readInp(readFileSync(inp));
   const textures = inpTextures(raw), nodes = inpParts(puppet);
   const ref = decodePNG(new Uint8Array(readFileSync(source)));
@@ -57,13 +100,15 @@ export function measurePuppet(inp: string, poses: string, source: string, out: s
   const offX=(width-ref.width*scale)/2,offY=(height-ref.height*scale)/2;
   let shared=0,union=0,different=0,restOpaque=0,layered=0;
   const attribution: Record<string,number> = {};
-  const figure = (r:number,g:number,b:number,a:number) => a>24 && !(r>238 && g>238 && b>238);
+  const figure = sourceFigure(ref.rgba);
   for(let y=0;y<height;y++) for(let x=0;x<width;x++) {
     const px=y*width+x,i=px*4,sx=Math.round((x-offX)/scale),sy=Math.round((y-offY)/scale);
     const j=(sy*ref.width+sx)*4,inside=sx>=0&&sy>=0&&sx<ref.width&&sy<ref.height;
     const alpha=rest.rgba[i+3]/255;
     const rgb=[0,1,2].map(c=>Math.round(rest.rgba[i+c]*alpha+255*(1-alpha)));
-    const a=figure(rgb[0],rgb[1],rgb[2],255);
+    // The rest frame is judged like its source: by its own alpha against a transparent
+    // drawing, by its white-composited colour against a drawing on white.
+    const a=figure.transparent?rest.rgba[i+3]>24:figure(rgb[0],rgb[1],rgb[2],255);
     const b=inside&&figure(ref.rgba[j],ref.rgba[j+1],ref.rgba[j+2],ref.rgba[j+3]);
     if(a||b)union++;
     if(rest.rgba[i+3]>24) { restOpaque++; if(rest.alphaCoverageCount[px]>=2)layered++; }
@@ -102,7 +147,7 @@ export function measurePuppet(inp: string, poses: string, source: string, out: s
       openedBy:Object.entries(openedBy).map(([frontPart,pixels])=>({frontPart,pixels})) };
   });
   const report={ input:inp,poses,source,canvas,rest:{silhouetteIoU:shared/union,sharedPixels:shared,
-    unionPixels:union,differingPixels:different,colourDisagreementFraction:different/shared,attribution},frames:rows,
+    unionPixels:union,differingPixels:different,colourDisagreementFraction:different/shared,attribution,darkEdgeFringe:darkEdgeFringe(rest.rgba,width,height)},frames:rows,
     whatThisDoesNotMeasure:'Native GPU pixel parity, correctness of revealed artwork, coupled-channel behavior or human acceptance. Geometry and opacity come from Inochi2D; pixels are rasterized by this repository.' };
   writeFileSync(resolve(out,'measurement.json'),JSON.stringify(report,null,2)+'\n');
   return report;

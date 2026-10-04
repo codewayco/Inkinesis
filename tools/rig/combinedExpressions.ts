@@ -30,6 +30,19 @@ export function constrainClosedEyes(puppet:InpDocument,textures:Buffer[],allowMi
     closed.textures=[textures.length,0xffffffff,0xffffffff];
     textures.push(Buffer.from(encodePNG(texture.rgba,texture.width,texture.height)));
     reports.push({part:closed.name,kind:'alpha-only eye ROI constraint',roi:roi.map((v,i)=>v+(i%2?canvas.height:canvas.width)/2),padding:4,feather:3,geometryUnchanged:true});
+    // Squashing the open eye is not occlusion: its lower rim or iris can still
+    // escape the measured lid patch. Transfer visibility to that patch using
+    // its actual opacity keys, including any intermediate authored keys.
+    const blink=puppet.param.find(p=>p.name===`ParamEye${side.toUpperCase()}Open`);
+    const lid=blink?.bindings.find(b=>b.node===closed.uuid&&b.param_name==='opacity');
+    if(blink&&lid){
+      for(const part of open){
+        if(blink.bindings.some(b=>b.node===part.uuid&&b.param_name==='opacity'))continue;
+        blink.bindings.push({...structuredClone(lid),node:part.uuid,
+          values:(lid.values as number[][]).map(column=>column.map(a=>1-Math.max(0,Math.min(1,a))))});
+      }
+      reports.push({part:closed.name,kind:'Open eye visibility transferred to the measured closed lid',geometryUnchanged:true});
+    }
   }
   return reports;
 }
@@ -50,10 +63,13 @@ export function restoreNeutralMouth(puppet:InpDocument,textures:Buffer[],referen
     const py=b[1]+(v-uv[1])/(uv[3]-uv[1])*(b[3]-b[1])+canvas.height/2;
     const sx=Math.max(0,Math.min(reference.width-1,Math.round((px-ox)/scale))),sy=Math.max(0,Math.min(reference.height-1,Math.round((py-oy)/scale)));
     const j=(sy*reference.width+sx)*4;
-    for(let c=0;c<4;c++)texture.rgba[i+c]=reference.rgba[j+c];
+    // Keep the prepared lip shape: only color comes from the drawing, never a
+    // rectangle of it, which would carry skin boxes and background corners.
+    for(let c=0;c<3;c++)texture.rgba[i+c]=reference.rgba[j+c];
+    texture.rgba[i+3]=Math.min(texture.rgba[i+3],reference.rgba[j+3]);
   }
   part.textures=[textures.length,0xffffffff,0xffffffff];textures.push(Buffer.from(encodePNG(texture.rgba,texture.width,texture.height)));
-  return {part:part.name,kind:'Neutral mouth raster restored from original drawing inside native mouth bounds',geometryUnchanged:true};
+  return {part:part.name,kind:'Neutral mouth color restored from the original drawing inside the prepared lip shape',geometryUnchanged:true};
 }
 
 /** When See-through omitted independent eye layers, retain the drawing's eye/brow identity.

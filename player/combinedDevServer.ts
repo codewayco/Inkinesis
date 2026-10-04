@@ -1,7 +1,7 @@
 /** Development-only asynchronous jobs for the new version. */
 import type { Plugin } from 'vite';
 import { randomUUID } from 'node:crypto';
-import { createReadStream, existsSync, writeFileSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { createReadStream, existsSync, writeFileSync, readFileSync, readdirSync, statSync, copyFileSync, cpSync } from 'node:fs';
 import { resolve, join, extname } from 'node:path';
 import { runPipeline, RUN_ROOT, type RunReport } from '../tools/imageToRig/pipeline';
 import { preflight } from '../tools/imageToRig/config';
@@ -9,10 +9,35 @@ import { uiGpuOptions } from '../tools/imageToRig/decompositionBackend';
 import { bridgeStatus } from '../tools/remote/decompose';
 import { generatedRigs, UI_RIG_URL, type GeneratedRigStore } from './generatedRigStore';
 import { activeRun } from '../tools/imageToRig/lock';
+import {attachUploadRoutes} from './uploadDevServer';
+import {uploadResultReview} from '../tools/imageToRig/uploadResult';
 export function combinedDevServer(store: GeneratedRigStore = generatedRigs): Plugin {
     return { name: 'combined-rig-jobs', apply: 'serve', configureServer(server) {
             let running: string | null = null;
             const jobs = new Map<string, RunReport>();
+            const uploads=attachUploadRoutes(server,{busy:()=>Boolean(running||activeRun()),start:accepted=>{
+                const policy=uiGpuOptions(),p=preflight({local:!policy.remoteQueue||policy.allowLocalFallback});
+                if(!p.available)throw Error('Generation requirements are missing: '+p.missing.join('; '));
+                const id=randomUUID(),out=store.create(id),input=join(out,'upload');
+                copyFileSync(accepted.image,input);running=id;
+                void runPipeline({image:input,out,...policy},r=>{if(r.status==='running')jobs.set(id,r);}).then(report=>{
+                    cpSync(accepted.dir,join(out,'upload-review'),{recursive:true});
+                    report.files.originalUpload='upload-review/original-upload';
+                    report.files.uploadSource='upload-review/original.png';
+                    report.files.uploadChecks='upload-review/original-check.json';
+                    writeFileSync(join(out,'upload-review/accepted.json'),JSON.stringify({selection:accepted.selection,review:accepted.review},null,2)+'\n');
+                    report.files.uploadAcceptance='upload-review/accepted.json';
+                    if(report.files.rig){
+                        let iou:number|undefined;
+                        try{iou=JSON.parse(readFileSync(join(out,'frames/measurement.json'),'utf8')).rest?.silhouetteIoU;}catch{/* An absent measurement is not a visual pass. */}
+                        report.uploadReview=uploadResultReview(report,accepted.selection,iou);
+                        const note='\n## Upload result review\n\nTechnical production: complete. Visual quality: needs review.\n\n'+report.uploadReview.notes.join('\n\n')+'\n\n'+report.uploadReview.limitations.map(c=>`- ${c.region}: ${c.reason}`).join('\n')+'\n';
+                        writeFileSync(join(out,'REPORT.md'),readFileSync(join(out,'REPORT.md'),'utf8')+note);
+                    }
+                    writeFileSync(join(out,'report.json'),JSON.stringify(report,null,2)+'\n');jobs.set(id,report);
+                }).catch(error=>{jobs.set(id,{id,status:'failed',stage:'upload-generation',started:new Date().toISOString(),reasons:[String(error)],stages:[],files:{}});}).finally(()=>{if(running===id)running=null;});
+                return {id,base:store.base(id),saved:false};
+            }});
             server.middlewares.use('/api/rig', (req, res) => {
                 const send = (status: number, value: unknown) => { res.statusCode = status; res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify(value)); };
                 const path = (req.url ?? '/').split('?')[0];
@@ -67,15 +92,16 @@ export function combinedDevServer(store: GeneratedRigStore = generatedRigs): Plu
                 // Reject cross-origin browser writes; generation has real compute/API costs.
                 if (req.headers.origin && req.headers.origin !== `http://${req.headers.host}` && req.headers.origin !== `https://${req.headers.host}`)
                     return send(403, { error: 'Same-origin requests only' });
-                if (running || activeRun())
+                if (running || activeRun() || uploads.busy())
                     return send(409, { error: 'A combined generation is already running.', id: running });
                 const policy=uiGpuOptions();
                         const p = preflight({local:!policy.remoteQueue||policy.allowLocalFallback});
                 if (!p.available)
                     return send(503, { error: 'Generation requirements are missing.', missing: p.missing });
                 const type = (req.headers['content-type'] ?? '').split(';')[0];
-                if (!['application/json', 'image/png', 'image/jpeg', 'image/webp'].includes(type))
-                    return send(415, { error: 'Upload PNG, JPEG or WebP, or send a JSON prompt.' });
+                if(type.startsWith('image/'))return send(409,{error:'Review this upload first using /api/rig/uploads, then confirm the selected image.'});
+                if (type !== 'application/json')
+                    return send(415, { error: 'Send a JSON prompt. Images must use /api/rig/uploads.' });
                 const id = randomUUID();
                 running = id;
                 let size = 0, aborted = false;
@@ -84,7 +110,7 @@ export function combinedDevServer(store: GeneratedRigStore = generatedRigs): Plu
                     running = null; });
                 req.on('data', (chunk: Buffer) => { size += chunk.length; if (size > 20 * 1024 * 1024) {
                     if (!aborted)
-                        send(413, { error: 'Image exceeds 20 MB' });
+                        send(413, { error: 'Request exceeds 20 MB' });
                     aborted = true;
                     if (running === id) running = null;
                 }
@@ -94,25 +120,20 @@ export function combinedDevServer(store: GeneratedRigStore = generatedRigs): Plu
                     if (aborted)
                         return;
                     const bytes = Buffer.concat(chunks);
-                    let prompt: string | undefined;
-                    if (type === 'application/json') {
-                        try {
-                            const body = JSON.parse(bytes.toString());
-                            if (typeof body.prompt !== 'string' || !body.prompt.trim() || body.prompt.length > 6000)
-                                throw new Error();
-                            prompt = body.prompt.trim();
-                        }
-                        catch {
-                            running = null;
-                            return send(400, { error: 'Expected a nonempty prompt (up to 6000 characters).' });
-                        }
+                    let prompt: string;
+                    try {
+                        const body = JSON.parse(bytes.toString());
+                        if (typeof body.prompt !== 'string' || !body.prompt.trim() || body.prompt.length > 6000)
+                            throw new Error();
+                        prompt = body.prompt.trim();
+                    }
+                    catch {
+                        running = null;
+                        return send(400, { error: 'Expected a nonempty prompt (up to 6000 characters).' });
                     }
                     const out = store.create(id);
-                    const input = join(out, 'upload');
-                    if (!prompt)
-                        writeFileSync(input, bytes);
                     send(202, { id, base: `${UI_RIG_URL}/${id}`, saved:false });
-                    void runPipeline({ prompt, image: prompt ? undefined : input, out, ...uiGpuOptions() }, r => jobs.set(id, r)).catch(error => { jobs.set(id, { id, status: 'failed', stage: 'startup', started: new Date().toISOString(), reasons: [String(error)], stages: [], files: {} }); }).finally(() => { if (running === id)
+                    void runPipeline({ prompt, out, ...uiGpuOptions() }, r => jobs.set(id, r)).catch(error => { jobs.set(id, { id, status: 'failed', stage: 'startup', started: new Date().toISOString(), reasons: [String(error)], stages: [], files: {} }); }).finally(() => { if (running === id)
                         running = null; });
                 });
             });

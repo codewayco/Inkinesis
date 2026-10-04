@@ -21,11 +21,18 @@ try {
    if(!r.ok()||createHash('sha256').update(bytes).digest('hex')!==hashes[entry.id+'/'+entry.files[key]])throw new Error('Example download differs: '+entry.id+' '+format);
    await r.dispose();
   }
+  const defaults=new Map<string,string>();
   for(const id of ['yaw','pitch','roll','jaw','body_shoulderL','body_elbowL','body_shoulderR','body_elbowR','body_hipL','body_kneeL','body_hipR','body_kneeR']){
    const control=page.locator('#'+id);
-   if(await control.isEnabled())await control.fill(id==='jaw'?'25':'10');
+   if(await control.isEnabled()){
+    defaults.set(id,await control.inputValue());
+    const target=Math.min(Number(await control.getAttribute('max')),Math.max(Number(await control.getAttribute('min')),id==='jaw'?25:10));
+    await control.fill(String(target));
+    if(Number(await control.inputValue())!==target)throw Error('Control rounded its target: '+entry.id+' '+id);
+   }
   }
   await page.locator('#headReset').click();await page.locator('#bodyRest').click();
+  for(const [id,value] of defaults)if(await page.locator('#'+id).inputValue()!==value)throw Error('Neutral reset differs: '+entry.id+' '+id);
   if(entry.id==='04-purple-couture'){
    mkdirSync('.cache/ui-check',{recursive:true});
    await page.screenshot({path:resolve('.cache/ui-check/example.png')});

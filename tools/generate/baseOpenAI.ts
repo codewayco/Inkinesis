@@ -26,21 +26,33 @@ function brief(description: string, background: 'white' | 'transparent'): string
     'clear and the arms and legs separate. Add outerwear only when requested or required',
     'by an explicitly requested outfit or role. Do not infer clothing colour from hair',
     'or beard colour; apply each requested colour only to the named feature.',
+    'Unless the user asks for a long garment, skirts, shorts and tunics end above',
+    'mid-thigh so that the legs are visible below the hem. No sheer or see-through fabric.',
+    'No held objects unless the user asks for one.',
     '',
     'Pose and framing, which matter as much as the character: the WHOLE figure',
-    'from the top of the head to below the feet, nothing cropped; standing',
-    'upright and facing the viewer straight on; both arms hanging down and held',
-    'clearly away from the torso so that the gap between each arm and the body',
-    'is visible along its whole length; legs slightly apart; both hands open and',
-    'not overlapping the clothing.',
+    'from the top of the head to below the feet, nothing cropped, with empty space',
+    'on every side; standing upright and facing the viewer straight on; both arms',
+    'hanging down and held clearly away from the torso so that the gap between each',
+    'arm, sleeve included, and the body is visible along its whole length; legs',
+    'slightly apart and not crossed, with a visible gap between the thighs below',
+    'the crotch; both hands open and relaxed, not touching the clothing or the body.',
+    '',
+    'Line work: a bold, even, closed outline around every part, including white or',
+    'very light garments and accessories, so that each part is separated from the',
+    'background and from its neighbours. Hair is drawn as solid clumps; no loose',
+    'single strands across the face, the cheeks or the neck. Headwear, hair ornaments',
+    'and earrings have their own closed outline and do not interleave with hair strands.',
     '',
     'Where compatible with the requested design, draw the face in full detail: both eyes',
-    'open and clearly visible with their irises, the mouth visible and closed,',
+    'open and clearly visible with their irises, the fringe or bangs ending above the',
+    'eyebrows and never covering the eyes, the mouth visible, closed and neutral,',
     'the nose visible. Avoid unrequested obstructions across the face. Keep explicitly',
     'requested masks, facial hair and accessories. Both ears need not be visible.',
     '',
     background === 'transparent'
-      ? 'The background is fully transparent. Only the character is drawn.'
+      ? 'The background is fully transparent. Only the character is drawn: no ground'
+        + ' shadow, floor, scenery, furniture or border.'
       : 'The background is a single flat pure white, empty, with no scenery, no'
         + ' shadow on the ground and no border.',
     '',
@@ -69,18 +81,30 @@ async function main(): Promise<void> {
   const description = at('--prompt')?.trim(), output = at('--out');
   if (!description || !output) throw new Error('Supply --prompt and --out for the drawing stage');
   if (!imageApiKey()) throw new Error('Missing OPENAI_API_KEY');
-  const background = at('--background') ?? 'white';
-  if (background !== 'white' && background !== 'transparent') throw new Error('Use white or transparent background');
+  // Transparent by default: the rig takes the character's own alpha instead of matting a white backdrop.
+  const requested = at('--background') ?? 'transparent';
+  if (requested !== 'white' && requested !== 'transparent') throw new Error('Use white or transparent background');
   const model = at('--model') || process.env.IMAGE_MODEL;
   if(!model)throw new Error('Set IMAGE_MODEL to an image model available to your account');
   const quality = at('--quality') ?? 'high';
-  const prompt = brief(description, background), started = Date.now();
-  const { png, usage } = await draw(prompt, background, quality, model);
+  const started = Date.now();
+  let background: 'white' | 'transparent' = requested, fallback: string | undefined;
+  let prompt = brief(description, background), result;
+  try { result = await draw(prompt, background, quality, model); }
+  catch (error) {
+    // A model that rejects transparent output still draws on white; the matte then
+    // separates the figure, as before. Any other provider error is not retried.
+    if (background !== 'transparent' || !/^4\d\d .*background/is.test(String((error as Error).message))) throw error;
+    fallback = String((error as Error).message).slice(0, 300);
+    background = 'white'; prompt = brief(description, background);
+    result = await draw(prompt, background, quality, model);
+  }
+  const { png, usage } = result;
   const path = resolve(output);
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, png);
   writeFileSync(resolve(dirname(path), 'draw.json'), JSON.stringify({
-    generated: true, hosted: true, description, model, background, quality, size: SIZE,
+    generated: true, hosted: true, description, model, background, ...(fallback ? { transparentRejected: fallback } : {}), quality, size: SIZE,
     seconds: (Date.now() - started) / 1000, bytes: png.length, usage, prompt,
     whatLeftThisMachine: 'The supplied character description only.',
   }, null, 2) + '\n');

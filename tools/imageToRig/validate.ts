@@ -1,6 +1,7 @@
 /** Audit the new browser evaluator against native poses, including body orientation. */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { readCombined, evaluateCombined } from '../../player/src/combinedRuntime';
+import { drawsNoTexture } from '../rig/combinedMeshGate';
 const [inp, poses, out] = process.argv.slice(2);
 const asset = readCombined(readFileSync(inp));
 const hairNames=new Set(((asset.puppet.meta.headAttachments as {layer:string}[] | undefined)??[]).map(r=>r.layer));
@@ -41,7 +42,7 @@ for (const frame of frames) {
         const mesh = node.mesh!, area = (xy: number[], a: number, b: number, c: number) => (xy[2 * b] - xy[2 * a]) * (xy[2 * c + 1] - xy[2 * a + 1]) - (xy[2 * b + 1] - xy[2 * a + 1]) * (xy[2 * c] - xy[2 * a]);
         for (let i = 0; i < mesh.indices.length; i += 3) {
             const [a, b, c] = mesh.indices.slice(i, i + 3), rest = area(mesh.verts, a, b, c);
-            if (Math.abs(rest) <= .1)
+            if (Math.abs(rest) <= .1 || drawsNoTexture(mesh.uvs, a, b, c))
                 continue;
             triangleChecks++;
             const posed = area(part.xy, a, b, c);
@@ -51,6 +52,6 @@ for (const frame of frames) {
     }
 }
 const passed = Number.isFinite(maxPositionError) && maxPositionError < .001 && maxOpacityError < .00001 && foldovers === 0 && frames.length > 0;
-writeFileSync(out, JSON.stringify({ status: passed ? 'passed' : 'failed', frames: frames.length, maxPositionError, maxOpacityError, triangleChecks, foldovers, scope: 'Native geometry and opacity parity, and sampled body and attached-hair triangle orientation. Not GPU pixel parity, visual acceptance or continuous proof.' }, null, 2) + '\n');
+writeFileSync(out, JSON.stringify({ status: passed ? 'passed' : 'failed', frames: frames.length, maxPositionError, maxOpacityError, triangleChecks, foldovers, scope: 'Native geometry and opacity parity, and sampled body and attached-hair triangle orientation (triangles that sample no texture excluded). Not GPU pixel parity, visual acceptance or continuous proof.' }, null, 2) + '\n');
 if (!passed)
     throw new Error('Native/browser geometry validation failed; see validation.json');

@@ -13,6 +13,7 @@ import {repairFootOwnership} from './combinedFootwear';
 import {constrainClosedEyes,restoreNeutralMouth,restoreMissingEyeDetails} from './combinedExpressions';
 import {encodePNG} from '../shared/encodePNG';
 import {compactFaceKeys} from './compactFace';
+import {retimeMouth,closedMouthForm} from './mouthMotion';
 import {anchorLongHair} from './garmentHair';
 import {clothingAttachments} from './clothingAttachments';
 import {coherentPitch} from './coherentPitch';
@@ -43,12 +44,13 @@ export function buildCombined(dump:PoseDump,atlases:Map<string,Buffer>,marks:Rec
   const {puppet,textures}=readInp(carried.file);const nodes=inpParts(puppet);const chains=[];
   const expressionRepairs=constrainClosedEyes(puppet,textures,Boolean(capabilities));
   if(reference){if(!capabilities||nodes.some(n=>n.name==='mouth_close'))expressionRepairs.push(restoreNeutralMouth(puppet,textures,reference));if(!capabilities||['eyeL','eyeR','eyeLOuter','eyeROuter'].every(n=>marks[n]))expressionRepairs.push(...restoreMissingEyeDetails(puppet,textures,reference,marks));}
+  const mouthMotion={timing:retimeMouth(puppet),form:closedMouthForm(puppet)};
   const legsReady=!capabilities||['Leg L','Leg R'].every(n=>capabilities.chains[n as ChainName].mode!=='fixed');
   const legOwnershipRepair=legsReady?repairFootOwnership(puppet,textures,marks,'legwear'):{status:'skipped',reason:'Leg attachments are not independently usable'};
   const footwearRepair=legsReady?repairFootOwnership(puppet,textures,marks):{status:'skipped',reason:'Leg attachments are not independently usable'};
   const motion=capabilities?layerCapabilities(puppet,textures,marks,capabilities):undefined;
-  const shirt=nodes.find(n=>n.name==='topwear')!;
-  const shirtMask=renderTextured([{xy:new Float64Array(shirt.mesh!.verts.map((v,k)=>v+(k%2?height:width)/2)),uv:new Float64Array(shirt.mesh!.uvs),indices:new Uint32Array(shirt.mesh!.indices),depth:new Float64Array(shirt.mesh!.verts.length/2),depthOffset:0,opacity:1,texture:inpTextures(textures)[shirt.textures![0]],sampling:'bilinear'} as TexturedMesh],width,height,[0,0,0,0],{selfOverlap:'count'}).rgba;
+  const decoded=inpTextures(textures);
+  const coverage=(parts:InpNode[])=>renderTextured(parts.map(n=>({xy:new Float64Array(n.mesh!.verts.map((v,k)=>v+(k%2?height:width)/2)),uv:new Float64Array(n.mesh!.uvs),indices:new Uint32Array(n.mesh!.indices),depth:new Float64Array(n.mesh!.verts.length/2),depthOffset:0,opacity:1,texture:decoded[n.textures![0]],sampling:'bilinear'} as TexturedMesh)),width,height,[0,0,0,0],{selfOverlap:'count'}).rgba;
   let uuid=Math.max(...puppet.param.map(p=>p.uuid))+1;
   for(const kind of ['Arm','Leg'])for(const side of ['L','R']) {
     const capability=motion?.chains[`${kind} ${side}` as ChainName];
@@ -63,7 +65,16 @@ export function buildCombined(dump:PoseDump,atlases:Map<string,Buffer>,marks:Rec
     // Keep the source's hidden shoulder cap behind the garment. A source-visible
     // overlay shares exactly the same deformation, so no independent elbow seam.
     if(kind==='Arm') {
-      const front=(nodes.find(n=>n.name==='topwear')?.zsort??11)+.25;
+      // The source-visible arm is drawn in front of every torso, lower-body and
+      // prop layer, so an arm swinging inward passes over trousers, tunic, tail
+      // or scarf instead of behind them. Rest coverage of every layer it jumps
+      // over clips the overlay, so the rest pose and every source occlusion
+      // (a sash over the sleeve, a prop over the palm) are unchanged.
+      const own=Math.min(...owned.map(n=>n.zsort));
+      const bodyLayers=nodes.filter(n=>!faceLayers.test(semanticLayer(n.name))&&!/^(arm|hand|handwear)-/.test(n.name)&&!n.name.includes('__front'));
+      const front=Math.max(nodes.find(n=>n.name==='topwear')?.zsort??11,...bodyLayers.map(n=>n.zsort))+.25;
+      const jumped=nodes.filter(n=>n.zsort>own&&n.zsort<front&&!owned.includes(n)&&n.mesh?.indices.length);
+      const shirtMask=coverage(jumped.length?jumped:[nodes.find(n=>n.name==='topwear')!]);
       for(const node of [...owned]) {
         if(node.name.startsWith('hand-')) {node.zsort=front+.01;continue;}
         const texture=decodePNG(new Uint8Array(textures[node.textures![0]]));
@@ -107,7 +118,7 @@ export function buildCombined(dump:PoseDump,atlases:Map<string,Buffer>,marks:Rec
   if(motion)finalizeMotionCapabilities(puppet,motion,textures,marks);
   const bodyMeshGate=combinedMeshGate(puppet);
   const faceCompression=compactFace?compactFaceKeys(puppet):undefined;
-  return {file:writeInp(puppet,textures),report:{motionCapabilities:motion,bodyMeshGate,faceCompression,hairAttachments,garmentBindings,runtimeTopology:Object.fromEntries(inpParts(puppet).filter(p=>body.test(p.name)||/^(topwear|bottomwear)__/.test(p.name)).map(p=>[p.name,p.mesh!.indices])),chains,legOwnershipRepair,footwearRepair,expressionRepairs,faceChannels:carried.channels,sourceMouth:true,sourceDrawOrder:true,bodyTopology:'Whole arm meshes retained; leg/shoe pixels re-owned by connected components and re-meshed continuously, no separate upper/lower limb cuts',whatThisDoesNotMeasure:'Human acceptance, unsupported clothes, source artwork correctness, untested simultaneous face expression interactions.'}};
+  return {file:writeInp(puppet,textures),report:{motionCapabilities:motion,bodyMeshGate,faceCompression,hairAttachments,garmentBindings,runtimeTopology:Object.fromEntries(inpParts(puppet).filter(p=>body.test(p.name)||/^(topwear|bottomwear)__/.test(p.name)).map(p=>[p.name,p.mesh!.indices])),chains,legOwnershipRepair,footwearRepair,expressionRepairs,mouthMotion,faceChannels:carried.channels,sourceMouth:true,sourceDrawOrder:true,bodyTopology:'Whole arm meshes retained; leg/shoe pixels re-owned by connected components and re-meshed continuously, no separate upper/lower limb cuts',whatThisDoesNotMeasure:'Human acceptance, unsupported clothes, source artwork correctness, untested simultaneous face expression interactions.'}};
 }
 
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)) {

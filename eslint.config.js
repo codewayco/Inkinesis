@@ -2,7 +2,7 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['dist/**', 'node_modules/**', '.venv*/**', '.cache/**', 'assets/thirdparty/**', 'outputs/**', 'public/avatars/**', 'example-avatars/**', 'new-avatars/**'] },
+  { ignores: ['dist/**', 'node_modules/**', '.venv*/**', '.cache/**', 'assets/thirdparty/**', 'outputs/**', 'public/avatars/**', 'example-avatars/**', 'new-avatars*/**', 'old-avatars*/**', 'stress-examples/**', 'research/**', 'paper/**', 'tmp/**'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

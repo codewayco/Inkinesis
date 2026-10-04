@@ -94,17 +94,24 @@ try {
   }
  }
  const captures=[];
+ const pictureErrors:{label:string;error:string}[]=[];
  for(const request of requests.filter(r=>r.picture)){
-  const png=await page.evaluate(({values,scale})=>{
-   const h=window.referenceHarness as ReferenceHarness;h.resetTrial({alignment:{scale,offsetX:0,offsetY:0,background:[.125,.13,.14,1]}});
-   h.frame({frame:0,fps:60,values});return h.capture();
-  },{values:request.values,scale:.9});
+  // Pictures are evidence only; the numerical comparison above is complete. A picture the
+  // harness refuses (for example a reduced-range limb whose authored limit the viewer's
+  // range check rejects) is recorded and skipped instead of discarding the validation.
+  let png:string;
+  try{
+   png=await page.evaluate(({values,scale})=>{
+    const h=window.referenceHarness as ReferenceHarness;h.resetTrial({alignment:{scale,offsetX:0,offsetY:0,background:[.125,.13,.14,1]}});
+    h.frame({frame:0,fps:60,values});return h.capture();
+   },{values:request.values,scale:.9});
+  }catch(error){pictureErrors.push({label:request.label,error:String((error as Error).message).slice(0,200)});continue;}
   const file=request.label.replace(/[^a-zA-Z0-9_-]/g,'_')+'.png';const data=Buffer.from(png.split(',')[1],'base64');
   writeFileSync(resolve(evidence,file),data);captures.push({label:request.label,file,sha256:hash(data)});
  }
  const result={status:coreMismatches.length||errors.length?'failed':mismatches.length?'passed_with_runtime_differences':'passed',strictSourceParity:!mismatches.length?'passed':'failed',sourceSha256:hash(bytes),mocSha256:hash(readFileSync(resolve(model,JSON.parse(readFileSync(resolve(out,report.runtimeManifest),'utf8')).FileReferences.Moc))),frames:requests.length,meshes:core.ids.length,parameters:core.parameters,canvas:core.canvas,maxPositionError,maxOpacityError,
    coreSampling:{epsilon:.001,maxPositionError:maxCorePositionError,maxOpacityError:maxCoreOpacityError,mismatchCount:coreMismatches.length,mismatches:coreMismatches.slice(0,20)},nearKeys,
-   mismatches:mismatches.slice(0,20),mismatchCount:mismatches.length,errors,captures,unsupportedControls,
+   mismatches:mismatches.slice(0,20),mismatchCount:mismatches.length,errors,captures,pictureErrors,unsupportedControls,
    scope:'Official Cubism Core vs source combined INP evaluator, strict source values and separately the 0.001-physical-unit key-snapped reference; including full render order, clipping-source assignments, texture assignments and triangle topology (Core reverses each triangle winding): all authored parameter grids, individual limits, simultaneous pose, blink and 64 seeded mixed poses; optional near-key probes at +/-0.0005 and +/-0.0012 physical units. Geometry/opacity only; soft clipping differs from thresholded Inochi stencil. No physics or human acceptance claim.'};
  writeFileSync(resolve(evidence,'validation.json'),JSON.stringify(result,null,2)+'\n');
  console.log(JSON.stringify({...result,captures:captures.length}));

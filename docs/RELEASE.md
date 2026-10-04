@@ -1,13 +1,21 @@
-# Publication scope
+# Release 2 publication
 
-This distribution includes the active player, pipeline, rendering/rigging code, optional quality hooks, external-component adapters, tests, English setup documentation, and metadata/small previews for 27 curated example avatars. The large avatar files are installed on demand from a separately published GitHub Release.
+The source distribution includes the player, generation pipeline, rendering and rigging code, optional quality hooks, external-component adapters, tests, setup documentation, README media, and metadata/small previews for **53** example avatars.
 
-It excludes the research paper, trial prompts, experiment directories, recordings, private reports, deprecated motor, model weights, proprietary SDKs, credentials, generated user jobs, and historical dataset-specific batch/publishing scripts. The original development workspace remains intact.
+Large avatar payloads are separate GitHub Release attachments. Model weights, proprietary SDKs, credentials, generated user jobs, local export workspaces, and research/experiment directories stay outside Git. INP/ZIP files and avatar `export-*` folders are ignored; Git LFS is not used. Local research files are retained on disk.
 
-The publication repository starts with one filtered historical commit containing only the original Apache license. Its author and date are retained from September 14, 2026; its hash differs because all other historical files have been excluded. Current implementation and example files are intentionally left uncommitted for the maintainer. There is no remote and no push has been performed.
+## Publish the matching assets
 
-Do not stage example binaries. INP and ZIP files are ignored and distributed as Release attachments; Git LFS is not used. Dependency caches, `.env`, generated jobs, and research directories are ignored. Keep real API keys and personal server paths out of committed configuration.
+1. Run `npm run prepare:avatar-release` with all current avatars installed. It verifies their sizes and SHA-256 hashes, then replaces the generated `.cache/avatar-release/` directory with exactly **106 attachments plus `SHA256SUMS`**. A failed verification preserves the previous prepared release.
+2. Review and commit/push the source changes. Include the new source/test files and 53 current previews; exclude ignored payloads, `.env`, caches and research data.
+3. Publish the attachments under **`avatars-v2` in `codewayco/Inkinesis`**. This is the exact URL pinned in `example-avatars/catalog.json`. If the code release uses another tag, the avatar release still needs this tag, or the catalog must be changed to match.
+4. Test Download in a fresh checkout after the release is public. Before publication, local installed avatars work but new downloads cannot succeed. The configured release returned HTTP 404 during the October 4 pre-release check.
+5. For inline README playback, upload `docs/media/showcase.mp4` through GitHub Issues and insert the resulting attachment URL at the README comment. Keep the repository video and local player links.
+
+Release preparation does not create commits, tags, pushes, releases or uploads. The October 4 audit left the index empty and performed none of those actions.
 
 ## Validation boundaries
 
-Portable unit tests and UI tests use synthetic fixtures without paid model calls. The real prepared examples can be checked through the picker and both download formats. GPU inference, external API access, and JupyterHub allocation require each user's environment; a portable source release is not proof that every GPU or model account can execute the full pipeline.
+See [the release validation record](VALIDATION.md) for the checked source, installation, browser, archive and dependency paths. Portable tests use synthetic fixtures without paid model calls. Real prepared examples are checked through the picker and both download formats. Saved Cubism validation evidence is matched to the current binaries separately from visual quality.
+
+GPU inference and external API access require each user's environment. The optional `reference:check` requires the separately installed Cubism SDK; it is not a portable-checkout prerequisite. A successful portable source audit does not certify every GPU, account or character design.

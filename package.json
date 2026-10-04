@@ -1,6 +1,6 @@
 {
   "name": "inkinesis",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Image and text to animated character rigs: automatic analysis, semantic layers, measured expressions, articulated limbs, Inochi and Live2D exports.",
   "license": "Apache-2.0",
@@ -25,6 +25,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "verify:ui": "tsx tools/verify/imageToRigSmoke.ts",
+    "verify:upload": "tsx tools/verify/uploadReviewSmoke.ts",
     "prepare:inochi": "sh tools/verify/inochi-puppet/prepare.sh && dub build --root tools/verify/inochi-puppet",
     "check:setup": "tsx tools/imageToRig/pipeline.ts --check",
     "test:python": ".venv/bin/python -m unittest discover -s tools/generate/test -p test_prepare_character.py",

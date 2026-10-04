@@ -4,8 +4,49 @@ import {inpParts,inpTextures,type InpDocument} from './inp';
 import {renderTextured,type TexturedMesh} from '../../engine/src/render/textured';
 import type {LimbPoint} from '../../engine/src/body/continuousLimb';
 import {combinedMeshGate} from './combinedMeshGate';
+import {semanticLayer} from './carryPsd2Live';
 import {evaluateCombined,type CombinedAsset} from '../../player/src/combinedRuntime';
 
+/**
+ * The static prop a hand holds at rest, if any. The hand is the arm's artwork
+ * beyond the middle of the forearm (the hand silhouette, however the fingers
+ * reach), not a radius around the wrist: a fan held at the fingertips lies
+ * farther from the wrist than a fist. Props are judged one connected piece at
+ * a time, since one prop layer can hold a bench and a plate. A piece is held
+ * when it touches the hand along a stretch at least half a forearm long in
+ * pixels (a thin stick crossing a fist qualifies; no area share is needed). A
+ * large piece the hand only touches along its top edge is a seat or a table
+ * the hand rests on.
+ */
+export function heldProp(limb:Uint8ClampedArray|Uint8Array,prop:Uint8ClampedArray|Uint8Array,width:number,height:number,elbow:LimbPoint,wrist:LimbPoint) {
+  const fx=wrist.x-elbow.x,fy=wrist.y-elbow.y,f2=Math.max(1e-6,fx*fx+fy*fy),forearm=Math.sqrt(f2);
+  const hand=new Uint8Array(width*height);let handPixels=0;
+  for(let y=0;y<height;y++)for(let x=0;x<width;x++){const i=y*width+x;if(limb[i*4+3]>128&&((x-elbow.x)*fx+(y-elbow.y)*fy)/f2>=.5){hand[i]=1;handPixels++;}}
+  if(!handPixels)return null;
+  const labels=new Int32Array(width*height),stack:number[]=[];let count=0;
+  const pieces:{area:number;top:number;bottom:number}[]=[];
+  for(let start=0;start<width*height;start++){
+    if(labels[start]||prop[start*4+3]<=128)continue;
+    count++;labels[start]=count;stack.push(start);let area=0,top=height,bottom=0;
+    while(stack.length){const i=stack.pop()!,x=i%width,y=(i-x)/width;area++;top=Math.min(top,y);bottom=Math.max(bottom,y);
+      for(const j of [x>0?i-1:-1,x<width-1?i+1:-1,y>0?i-width:-1,y<height-1?i+width:-1])if(j>=0&&!labels[j]&&prop[j*4+3]>128){labels[j]=count;stack.push(j);}}
+    pieces.push({area,top,bottom});
+  }
+  const contact=new Map<number,{n:number;y:number}>();
+  for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+    if(!hand[y*width+x])continue;const seen=new Set<number>();
+    for(let dy=-3;dy<=3;dy++)for(let dx=-3;dx<=3;dx++){const xx=x+dx,yy=y+dy;if(xx<0||yy<0||xx>=width||yy>=height)continue;const l=labels[yy*width+xx];if(l)seen.add(l);}
+    for(const l of seen){const c=contact.get(l)??{n:0,y:0};c.n++;c.y+=y;contact.set(l,c);}
+  }
+  let best:{contact:number;area:number}|null=null;
+  for(const [l,c] of contact){
+    const piece=pieces[l-1],rows=piece.bottom-piece.top+1;
+    if(c.n<Math.max(24,.5*forearm))continue;
+    if(piece.area>=5*handPixels&&(c.y/c.n-piece.top)<=.1*rows)continue;
+    if(!best||c.n>best.contact)best={contact:c.n,area:piece.area};
+  }
+  return best;
+}
 export const faceLayers=/^(front hair|back hair|side hair|hair|headwear|eyewear|earwear(?:-[lr])?|face|neck|nose|ears?(?:-[lr])?|eyebrow-[lr]|irides-[lr]|eyewhite-[lr]|eyelash-[lr]|eye_close-[lr]|mouth(?:_open|_close)?|lip_upper|lip_lower|tooth-[tb]|tongue)$/;
 export function layerCapabilities(puppet:InpDocument,textures:Buffer[],marks:Record<string,LimbPoint>,source:MotionCapabilities) {
   const caps=structuredClone(source),nodes=inpParts(puppet),decoded=inpTextures(textures);
@@ -33,7 +74,17 @@ export function layerCapabilities(puppet:InpDocument,textures:Buffer[],marks:Rec
       return false;
     });
     c.stage='layers';
-    if(!supported){c.mode='fixed';c.reasons.push('The separated artwork does not cover the expected limb continuously; movement is disabled to avoid detached parts.');}
+    if(!supported){c.mode='fixed';c.reasons.push('The separated artwork does not cover the expected limb continuously; movement is disabled to avoid detached parts.');continue;}
+    // A hand holding a prop the rig cannot carry would leave it floating: a
+    // static prop that touches the hand at rest keeps the arm still.
+    if(arm){
+      const props=nodes.filter(n=>/^(objects|prop)$/.test(semanticLayer(n.name))&&n.mesh?.indices.length);
+      if(props.length){
+        const render=(parts:typeof nodes)=>renderTextured(parts.map(n=>({xy:new Float64Array(n.mesh!.verts.map((v,i)=>v+(i%2?height:width)/2)),uv:new Float64Array(n.mesh!.uvs),indices:new Uint32Array(n.mesh!.indices),depth:new Float64Array(n.mesh!.verts.length/2),depthOffset:0,opacity:1,texture:decoded[n.textures![0]],sampling:'bilinear'} as TexturedMesh)),width,height,[0,0,0,0],{selfOverlap:'count'}).rgba;
+        const held=heldProp(render(owned),render(props),width,height,points[1],points[2]);
+        if(held){c.mode='fixed';c.reasons.push(`The hand holds a prop that does not follow it (${held.contact} hand pixels against a static prop of ${held.area} pixels); the arm stays in its drawn pose so the prop is not left floating.`);}
+      }
+    }
   }
   const has=(name:string)=>nodes.some(n=>n.name===name&&n.mesh?.indices.length);
   if(!['eyewhite-l','eyewhite-r','eye_close-l','eye_close-r'].every(has)) {
@@ -71,6 +122,7 @@ export function finalizeMotionCapabilities(puppet:InpDocument,caps:MotionCapabil
       try {
         const g=combinedMeshGate({...puppet,param:[parameter]});c.mode='limited';c.stage='geometry';(c.checks??=[]).push({name:'mesh foldover sweep',status:'passed',samples:g.coupledKeyAndHalfGridSamples,detail:'Reduced range passed triangle orientation checks.'});
         c.reasons.push('The full movement range failed its mesh test. A reduced range passed; extreme poses are unavailable.');
+        c.reasons.push('Full-range failure: '+(error instanceof Error?error.message:String(error)));
         continue;
       } catch { /* Hold the chain still if even the reduced range is unsafe. */ }
       c.mode='fixed';c.stage='geometry';c.reasons.push('The movement test produced a mesh foldover. This limb is held in its neutral pose.');
