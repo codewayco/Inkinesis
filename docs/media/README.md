@@ -9,7 +9,7 @@ The gallery and browser motion frames are rendered from existing example avatars
 | `showcase-poster.png` | First frame of the two-row showcase, matching the inline video composition. |
 | `showcase-provenance.json` | Source rig and renderer hashes, supported controls, GIF angle targets and timing, sampled range checks, review times, output hashes and encoding settings. |
 | `stages.webp` | Top row of the technical report's teaser figure: Purple Couture's source illustration beside renders of the generated rig with arms, legs, both combined, and a closed-eye open-mouth expression. Rasterized from the figure PDF; panels are the same saved runtime renders used in the report. |
-| `pipeline.webp` | The report's pipeline figure: source, See-through layers, registered expressions, VLM joints, composed rig, and the Live2D export, labelled by reused, ours, and verification. Rasterized from the figure PDF. |
+| `pipeline.webp` | The website’s six updated pipeline panels with Arial HTML labels captured at 2× resolution. Badges map to steps 01/02/02/02/03/04; joints distinguish VLM proposal from Inkinesis verification. Composed and official-Core poses match; the export overlays real Core triangles. |
 | `gallery.webp` | All 53 current example rigs freshly rendered in neutral poses on a pure black background and composed into one labelled grid. No UI or preview-footer pixels are included. |
 | `catalog-validation.json` | Saved official Cubism Core validation reports matched by hash to the 53 current INP files and packaged MOC3 models; both catalog artifacts are also verified. This is an evidence audit, not a new Core run. |
 | `motion.gif` | A four-second, 12 fps loop of Purple Couture, Solstice Mosaic, and Saffron Orbit, rendered at 1040×524. Arms open and close over 0–1.2 s with mirrored shoulders 0–16° and elbows 0–30°. Leg motion overlaps the arm phase by 0.2 s: right hip/knee over 1–1.8 s, then left over 1.8–2.6 s, reaching 18° hip and 45° knee targets. Head/face motion begins at 2.4 s, reaches yaw ±20° and roll ±10° with blink and mouth opening, and returns to neutral over 3.6–4 s. Each capture panel is 30 px wider to avoid clipping. Only presentation controls change; rig data is unchanged. |
@@ -42,7 +42,7 @@ The reference GIF's four-second phase windows and angle targets are used directl
 
 Hip signs mirror the rig's right-knee flexion sign. Body and head phases overlap only at the transitions described for the GIF. No extra pitch, garment sway or body sway is introduced. Head key timing is reconstructed from the reference GIF's frames; the original GIF capture script is not present in this checkout. Mouth opening is capped at 0.65. The prior 60% amplitude multiplier and slower per-character gesture families are removed. Targets are clamped only to each rig's actual exported range, with missing/fixed limbs and individual head/face capabilities left at rest. The source rigs are unchanged.
 
-The generator checks 193 sampled times per rig for finite, in-range values and return to neutral at loop boundaries. Full-body review sheets sample neutral, arms, each leg, and both head directions; separate head-and-neck sheets include the blink and final return. Review sheets remain in ignored `.cache/readme-media/`. No frame synthesis or character generation is involved. Purple Couture's existing GIFs, studio screenshot, pipeline/stages figures and VTube Studio recordings remain unchanged.
+The generator checks 193 sampled times per rig for finite, in-range values and return to neutral at loop boundaries. Full-body review sheets sample neutral, arms, each leg, and both head directions; separate head-and-neck sheets include the blink and final return. Review sheets remain in ignored `.cache/readme-media/`. No frame synthesis or character generation is involved. The showcase regeneration leaves Purple Couture's existing GIFs, studio screenshot, stages figure and VTube Studio recordings unchanged. The pipeline figure was updated separately on 5 October 2026, as documented below.
 
 ### Reproduce locally
 
@@ -68,3 +68,11 @@ python3 tools/media/auditCatalog.py
 ### README and GitHub playback
 
 The README links a video poster to the repository MP4 and includes a standalone local player link. Open `docs/media/showcase.html` directly to watch it before publishing. GitHub does not turn a repository-relative MP4 into an inline attachment player. After uploading the new `showcase.mp4` through GitHub Issues, place the resulting bare attachment URL at the marked comment in the README; retain the repository link so the video remains available locally. The previous attachment URL has been removed. Nothing is uploaded automatically.
+
+### Method panels — 5 October 2026
+
+`method/pipeline-*.webp` contains the six panel images used by the README’s HTML table. Labels stay in HTML so they remain readable rather than shrinking inside one wide raster. `pipeline.webp` is the complete, high-resolution figure for enlargement. The four steps and panel captions match the independent project page.
+
+Source illustration, layers, expression edits and verified landmarks are saved Purple Couture outputs. Composition uses the published rig’s browser preview; export uses the matching MOC3 rendered by official Cubism Core. The right half of that panel overlays actual deformed Core triangles, projected with the reference renderer’s MVP. Only rendered output is included; no SDK binaries are copied. Saved verification: 379 poses, 1 strict mismatch, 0 Core-aware mismatches. This figure capture is not a new validation sweep.
+
+`method/provenance.json` records source and output hashes, exact control values, topology counts and validation values. Other README motion/media assets are unchanged.

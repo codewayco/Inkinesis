@@ -12,7 +12,7 @@
 [![Export: Inochi2D, Live2D](https://img.shields.io/badge/Export-Inochi2D%2C%20Live2D-6b4fbb.svg)](docs/instructions/live2d_export.md)
 <!-- When published: link the Project Website badge and replace the Paper badge with the arXiv link. -->
 
-[See it move](#see-it-move) · [By the numbers](#by-the-numbers) · [Meet the characters](#meet-the-characters) · [Try the viewer](#try-the-viewer) · [VTube Studio](#live-in-vtube-studio) · [How it works](#how-it-works) · [Installation](#installation) · [Documentation](#documentation)
+[See it move](#see-it-move) · [By the numbers](#by-the-numbers) · [Meet the characters](#meet-the-characters) · [Try the viewer](#try-the-viewer) · [VTube Studio](#live-in-vtube-studio) · [Method](#method) · [Installation](#installation) · [Documentation](#documentation)
 
 </div>
 
@@ -93,17 +93,39 @@ Take the character beyond the browser. Here, **Purple Couture's exported Live2D 
 
 Use **Live2D (.zip)** in the viewer to download a model package. See the [export guide](docs/instructions/live2d_export.md) for its contents and requirements. The hand-to-arm mappings shown here are not part of the export and do not animate individual fingers. `tools/remote/configureVtubeArms.py` adds the same four bounded shoulder and elbow mappings to a model's `.vtube.json` profile while VTube Studio is closed, keeping a backup of the original profile.
 
-## How it works
+<a id="how-it-works"></a>
+
+## Method
+
+**A pipeline built around the character, with explicit checks at every boundary.**
+
+1. **Describe or illustrate.** Start with a prompt or a drawing. Image uploads can be reviewed and redrawn for rigging before you approve the source.
+2. **Separate & understand.** See-through decomposes the appearance. Inkinesis checks the proposed landmarks against those layers and prepares registered facial variants.
+3. **Give the pixels a joint.** Compose two-joint limbs with the psd2live face rig. Garments follow their owning limbs; unsupported motion stays still.
+4. **Export & verify.** Deliver an Inochi2D rig and a Live2D package. Compare the control behavior with the browser evaluator, native runtime and official Cubism Core.
+
+<table>
+<tr>
+<td width="33%" valign="top"><strong>01 · Illustration</strong><br>INPUT<img src="docs/media/method/pipeline-input.webp" alt="Purple Couture source illustration." width="240">Prompt or drawing.</td>
+<td width="33%" valign="top"><strong>02 · Semantic layers</strong><br>REUSED<img src="docs/media/method/pipeline-layers.webp" alt="Nine saved semantic layers from See-through." width="240">See-through decomposition.</td>
+<td width="33%" valign="top"><strong>02 · Expressions</strong><br>OURS<img src="docs/media/method/pipeline-expressions.webp" alt="Registered blink and open-mouth expression edits." width="240">Registered eye and mouth edits.</td>
+</tr>
+<tr>
+<td width="33%" valign="top"><strong>02 · Verified joints</strong><br>VERIFIED<img src="docs/media/method/pipeline-joints.webp" alt="Verified shoulder, elbow, wrist, hip, knee and ankle landmarks on the illustration." width="240">VLM proposes; Inkinesis verifies.</td>
+<td width="33%" valign="top"><strong>03 · Composed rig</strong><br>OURS<img src="docs/media/method/pipeline-composed.webp" alt="Purple Couture with articulated arms, bent knees and a tilted head." width="240">Limbs, face and garment ownership.</td>
+<td width="33%" valign="top"><strong>04 · Live2D export</strong><br>VERIFICATION<img src="docs/media/method/pipeline-core.webp" alt="The same posed controls evaluated by official Cubism Core, with its actual deformed triangles overlaid on the right half." width="240">Official Core and deformed mesh.</td>
+</tr>
+</table>
+
+[Open the complete pipeline figure](docs/media/pipeline.webp). The panel numbers match the four steps above. Purple Couture’s export view uses the same controls as the composed rig; its wireframe shows actual posed Core triangles, including overlapping parts and transparent texture margins.
+
+**Reused components:** See-through supplies semantic layers, psd2live supplies the facial source rig, and a VLM proposes joints. **Inkinesis contributions:** landmark verification against the decomposition, registered expression preparation, anatomical garment ownership, continuous two-joint limb composition and a shared facial pitch field. **Export evidence:** Purple Couture’s saved report covers 379 test poses with 0 Core-aware drawable mismatches; the strict comparison reports 1 mismatch due to runtime sampling. See [validation details](docs/instructions/live2d_export.md#near-key-runtime-differences) and [figure provenance](docs/media/method/provenance.json).
 
 ![One illustration of Purple Couture, then the same character with articulated arms, articulated legs, both combined, and a closed-eye open-mouth expression, all rendered from the generated rig.](docs/media/stages.webp)
 
 *From one illustration to a rig with arm, leg and expression controls. Every panel is a render of the generated asset.*
 
-![Pipeline: prompt or illustration, semantic layers from See-through (reused), registered expression edits (ours), joints from VLM landmarks (reused), composed rig in Inochi (ours), Live2D export verified against Cubism Core.](docs/media/pipeline.webp)
-
-Inkinesis reuses strong existing components and adds the layer between them. **Reused:** text-to-image drawing, See-through semantic decomposition, VLM joint landmarks, and psd2live facial keyforms. **Ours:** measured expression edits registered to the unchanged face, anatomical garment ownership, a continuous two-joint limb rig, and a coherent head-pitch field. **Verification:** every export is evaluated by the native Inochi2D runtime and, for Live2D, by the official Cubism Core.
-
-**Movement is assessed region by region:** each arm, leg, head axis, blink and mouth control is checked independently. A hidden hip need not prevent a usable arm from moving; a hand holding a static prop stays in its drawn pose. Clothing and attachments follow their assigned body regions. The UI explains available and reduced controls in **Movement details**. Generated rigs still need visual review.
+**The drawing sets the limits.** A held prop, hidden knee or long garment can constrain motion. Each arm, leg, head axis, blink and mouth control is checked independently; unsupported regions stay still or receive a reduced range. Clothing follows its assigned body regions, and hidden anatomy is not assumed to be available. The UI explains available and reduced controls in **Movement details**. Generated rigs still need visual review.
 
 ## What you get
 

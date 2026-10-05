@@ -1,0 +1,341 @@
+{
+  "created": "2026-10-05",
+  "sources": [
+    {
+      "source": "old-avatars-v0.2/04-purple-couture/run/analysis.json",
+      "sha256": "5dc2de8daa9696c7a688f3df127068e535fb56087b7ec7e7308a970bc71a9a10"
+    },
+    {
+      "source": "example-avatars/04-purple-couture/export-AsIAAw/validation/validation.json",
+      "sha256": "8da855767790b46bda2885cae2759c84bdc2764ed5ecceebf705d63f193be753"
+    },
+    {
+      "source": "example-avatars/04-purple-couture/export-AsIAAw/export.json",
+      "sha256": "c49758caa1b78bd129075bfbde946488f23c97ce296a17c579bc25ff441c867e"
+    },
+    {
+      "source": "old-avatars-v0.2/04-purple-couture/run/assets/landmark-check.json",
+      "sha256": "fd092dd3a6c3213ce0197332f6f71024cf012e8511b6149e52c3fe5770384b4b"
+    },
+    {
+      "source": "old-avatars-v0.2/04-purple-couture/run/input.png",
+      "sha256": "5e402bf093908434b7e47f2fbcbe4517aa8dd21f9e083ef16e9a5af8466de6eb"
+    },
+    {
+      "source": "old-avatars-v0.2/04-purple-couture/run/assets/expression_eyes.png",
+      "sha256": "2ca5f1d71bf9e5329b82d9a0ab99ef95933a2653f2f63c207f3a5c32bdb2c789"
+    },
+    {
+      "source": "old-avatars-v0.2/04-purple-couture/run/assets/expression_mouth.png",
+      "sha256": "ff376b180c4e6f33896258917f6e0c86ed294a27fa548c7aa9c2fb9d90bf8994"
+    },
+    {
+      "source": "old-avatars-v0.2/04-purple-couture/run/assets/layers/back hair.png",
+      "sha256": "f8fc0f215437a2a974a0e2d26abc1d6dba50dbc0d4f1ccda0f72f56549b6b625"
+    },
+    {
+      "source": "old-avatars-v0.2/04-purple-couture/run/assets/layers/face.png",
+      "sha256": "7866b6b2e393862ff9b0e353a55a54e5548511bd0210471b4aa839d4ad5f3254"
+    },
+    {
+      "source": "old-avatars-v0.2/04-purple-couture/run/assets/layers/front hair.png",
+      "sha256": "9fae3385c3a37b07a2ae339649d0753b7adafa490ad47716f397e9d73c11f97c"
+    },
+    {
+      "source": "old-avatars-v0.2/04-purple-couture/run/assets/layers/topwear.png",
+      "sha256": "638a6fc52b19dd7c51a48809fad70fe3a883139f4a9fc7da109965a43ee89531"
+    },
+    {
+      "source": "old-avatars-v0.2/04-purple-couture/run/assets/layers/bottomwear.png",
+      "sha256": "54484897f020d9389b7e1bef0903778283cc243852a4944729ad29066aa60156"
+    },
+    {
+      "source": "old-avatars-v0.2/04-purple-couture/run/assets/layers/arm-l.png",
+      "sha256": "a264cbdc32ae95757fe654e230fb311b0d456f5941cc52b77e93bb597839f5c0"
+    },
+    {
+      "source": "old-avatars-v0.2/04-purple-couture/run/assets/layers/legwear-l.png",
+      "sha256": "3f9942dea5fd4a6e50299b717892ce83b7e942cc7ae4fbd52630220ce07d9d23"
+    },
+    {
+      "source": "old-avatars-v0.2/04-purple-couture/run/assets/layers/footwear-l.png",
+      "sha256": "e3418c7129166cd049aaef80b7bba25e9ec6105a81f9a467acc519d6401ed2c2"
+    },
+    {
+      "source": "old-avatars-v0.2/04-purple-couture/run/assets/layers/neck.png",
+      "sha256": "be30fe36028c2900498a74382361c29e7bcef97701029cfa1f817b9d638e218b"
+    }
+  ],
+  "pipeline": {
+    "character": "04-purple-couture",
+    "sourceSha256": "859212b34c778af9b6e13f846e00a5ad86ea607dc2b77996f2a7a48423e29bf5",
+    "values": {
+      "ParamAngleX": -15,
+      "ParamAngleY": 8,
+      "ParamAngleZ": 10,
+      "ParamMouthOpenY": 0.35,
+      "ParamShoulderL": -18,
+      "ParamElbowL": -30,
+      "ParamShoulderR": 16,
+      "ParamElbowR": 30,
+      "ParamHipL": 12,
+      "ParamKneeL": 25,
+      "ParamHipR": -10,
+      "ParamKneeR": 10
+    },
+    "nativeValues": {
+      "ParamAngleZ": [
+        10,
+        0
+      ],
+      "ParamEyeLOpen": [
+        1,
+        0
+      ],
+      "ParamEyeROpen": [
+        1,
+        0
+      ],
+      "ParamEyeBallX": [
+        0,
+        0
+      ],
+      "ParamEyeBallY": [
+        0,
+        0
+      ],
+      "ParamBrowLY": [
+        0,
+        0
+      ],
+      "ParamBrowRY": [
+        0,
+        0
+      ],
+      "ParamMouthForm": [
+        0,
+        0
+      ],
+      "ParamMouthOpenY": [
+        0.35,
+        0
+      ],
+      "Head Angles": [
+        -15,
+        8
+      ],
+      "Arm L": [
+        -18,
+        -30
+      ],
+      "Arm R": [
+        16,
+        30
+      ],
+      "Leg L": [
+        12,
+        25
+      ],
+      "Leg R": [
+        -10,
+        10
+      ]
+    },
+    "renderer": "Browser rig evaluator for composition; official Cubism Core for export with actual deformed drawable triangles overlaid on its right half.",
+    "verification": {
+      "frames": 379,
+      "status": "passed_with_runtime_differences",
+      "strictMismatches": 1,
+      "coreAware": {
+        "epsilon": 0.001,
+        "maxPositionError": 0.00022164408687785908,
+        "maxOpacityError": 2.384185791015625e-07,
+        "mismatchCount": 0,
+        "mismatches": []
+      }
+    },
+    "drawables": [
+      {
+        "id": "ArtMesh1000",
+        "vertices": 162,
+        "triangles": 209
+      },
+      {
+        "id": "ArtMesh8",
+        "vertices": 450,
+        "triangles": 784
+      },
+      {
+        "id": "ArtMesh7",
+        "vertices": 450,
+        "triangles": 784
+      },
+      {
+        "id": "ArtMesh6",
+        "vertices": 60,
+        "triangles": 90
+      },
+      {
+        "id": "ArtMesh5",
+        "vertices": 60,
+        "triangles": 90
+      },
+      {
+        "id": "ArtMesh4",
+        "vertices": 119,
+        "triangles": 128
+      },
+      {
+        "id": "ArtMesh3",
+        "vertices": 121,
+        "triangles": 136
+      },
+      {
+        "id": "ArtMesh2",
+        "vertices": 134,
+        "triangles": 176
+      },
+      {
+        "id": "ArtMesh1",
+        "vertices": 166,
+        "triangles": 240
+      },
+      {
+        "id": "ArtMesh2004",
+        "vertices": 119,
+        "triangles": 128
+      },
+      {
+        "id": "ArtMesh2003",
+        "vertices": 121,
+        "triangles": 136
+      },
+      {
+        "id": "ArtMesh1001",
+        "vertices": 45,
+        "triangles": 48
+      },
+      {
+        "id": "ArtMesh1002",
+        "vertices": 13,
+        "triangles": 12
+      },
+      {
+        "id": "ArtMesh1003",
+        "vertices": 11,
+        "triangles": 9
+      },
+      {
+        "id": "ArtMesh1004",
+        "vertices": 85,
+        "triangles": 133
+      },
+      {
+        "id": "ArtMesh1005",
+        "vertices": 8,
+        "triangles": 6
+      },
+      {
+        "id": "ArtMesh1006",
+        "vertices": 12,
+        "triangles": 11
+      },
+      {
+        "id": "ArtMesh1007",
+        "vertices": 10,
+        "triangles": 9
+      },
+      {
+        "id": "ArtMesh1008",
+        "vertices": 10,
+        "triangles": 9
+      },
+      {
+        "id": "ArtMesh1009",
+        "vertices": 9,
+        "triangles": 8
+      },
+      {
+        "id": "ArtMesh1010",
+        "vertices": 18,
+        "triangles": 18
+      },
+      {
+        "id": "ArtMesh1011",
+        "vertices": 22,
+        "triangles": 23
+      },
+      {
+        "id": "ArtMesh1012",
+        "vertices": 20,
+        "triangles": 19
+      },
+      {
+        "id": "ArtMesh1013",
+        "vertices": 21,
+        "triangles": 20
+      },
+      {
+        "id": "ArtMesh1014",
+        "vertices": 12,
+        "triangles": 10
+      },
+      {
+        "id": "ArtMesh1015",
+        "vertices": 14,
+        "triangles": 12
+      },
+      {
+        "id": "ArtMesh1016",
+        "vertices": 10,
+        "triangles": 9
+      },
+      {
+        "id": "ArtMesh1017",
+        "vertices": 13,
+        "triangles": 13
+      },
+      {
+        "id": "ArtMesh1018",
+        "vertices": 120,
+        "triangles": 139
+      },
+      {
+        "id": "ArtMesh1019",
+        "vertices": 17,
+        "triangles": 17
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "file": "docs/media/method/pipeline-composed.webp",
+      "sha256": "f415fa44875e5e90a3ec743af3b661d60a236bc8f89b0bdeacc7a848d67c9b92"
+    },
+    {
+      "file": "docs/media/method/pipeline-core.webp",
+      "sha256": "08dd0c0ef6941e83b13ee9649adea37a5d790a62cb65dcbce5fe97c23317b65b"
+    },
+    {
+      "file": "docs/media/method/pipeline-expressions.webp",
+      "sha256": "ec7fb77f9479a57a0f2a4beff5dfccf7c7c294003ff7b56d6d2faab2e4cd7c46"
+    },
+    {
+      "file": "docs/media/method/pipeline-input.webp",
+      "sha256": "914aef7be2d5cb8634d78ef5120b8427c99af57fb4685262c96f9c1aafb98947"
+    },
+    {
+      "file": "docs/media/method/pipeline-joints.webp",
+      "sha256": "51926859327fad16294fd6725b84a1a427cc4a7fe3391a78b98a9d4424d763ad"
+    },
+    {
+      "file": "docs/media/method/pipeline-layers.webp",
+      "sha256": "cd29ca4cab0330cd94557ba7f6b6b9409c50238143b8ff2c5b3137bd7a237d75"
+    },
+    {
+      "file": "docs/media/pipeline.webp",
+      "sha256": "f0db8e3a0cba67d859970c3b5afe3a5448fd5241dd6f03f6c2f9715b7370c4d5"
+    }
+  ],
+  "presentation": "Six HTML-labelled panels in the README; pipeline.webp is a 2x-resolution capture of the website panels with Arial labels and 01/02/02/02/03/04 step badges."
+}
