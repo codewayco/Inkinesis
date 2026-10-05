@@ -6,11 +6,11 @@
 
 **Describe a character. Bring your own illustration. Make it move.**
 
-![Project Website](https://img.shields.io/badge/Project%20Website-coming%20soon-lightgrey.svg)
 ![Paper](https://img.shields.io/badge/Paper-coming%20soon-lightgrey.svg)
+[![Project Website](https://img.shields.io/badge/Project%20Website-1769aa.svg)](https://codewayco.github.io/inkinesis-webpage/)
 [![Apache-2.0](https://img.shields.io/badge/Apache--2.0-blue.svg)](LICENSE)
 [![Export: Inochi2D, Live2D](https://img.shields.io/badge/Export-Inochi2D%2C%20Live2D-6b4fbb.svg)](docs/instructions/live2d_export.md)
-<!-- When published: link the Project Website badge and replace the Paper badge with the arXiv link. -->
+<!-- When the paper is published, replace the Paper badge with the arXiv link. -->
 
 [See it move](#see-it-move) · [By the numbers](#by-the-numbers) · [Meet the characters](#meet-the-characters) · [Try the viewer](#try-the-viewer) · [VTube Studio](#live-in-vtube-studio) · [Method](#method) · [Installation](#installation) · [Documentation](#documentation)
 
