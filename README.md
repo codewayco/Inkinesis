@@ -1,6 +1,9 @@
 <div align="center">
 
-# Inkinesis
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/media/title-dark.png">
+  <img src="docs/media/title-light.png" alt="Inkinesis" width="259">
+</picture>
 
 ### Prompt-to-Rig for Anime Characters with Garment Ownership, Held-Object Carriers, and Verified Live2D Export
 

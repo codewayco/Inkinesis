@@ -4,6 +4,7 @@ The gallery, showcase, contribution figures and browser motion frames are render
 
 | File | Content |
 | --- | --- |
+| `title-light.png`, `title-dark.png` | The README title in the website's heading font (Google Sans Flex 600, −0.045 em tracking) at 64 px, rendered at 3× on a transparent background; dark text for GitHub's light theme and light text for its dark theme. |
 | `wacv-2027.png` | The WACV 2027 badge from the project website (`.publication-venue`: #380513 fill, #fd084d border, Google Sans Flex 26 px bold), captured from the site at 3× pixel density on a transparent background and shown at the site's 222 px width. |
 | `showcase.mp4` | 40 of the 94 evaluated rigs in an aligned, right-to-left scrolling showcase: neutral above, the repeating four-second “See it move” sequence below. 2400×1500, 60 fps, H.264 (CRF 24, animation tuning), 94.5 seconds, about 21 MB, no audio. Each rig is rendered at three times its on-screen size and downscaled with high-quality smoothing, so line art stays free of texture aliasing. Cells are wider than the character spacing and are composited with a lighten blend, so a neighbour's black background never cuts off an outstretched arm or held object. Two-second opening and five-second closing holds; one character-width of travel every 2.5 seconds. |
 | `showcase.html` | Standalone local video player. Open directly in a browser, or visit `/docs/media/showcase.html` while the dev server runs. |
