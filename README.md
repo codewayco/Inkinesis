@@ -1,11 +1,10 @@
 <div align="center">
 
-<picture>
+<h3><picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/media/title-dark.png">
-  <img src="docs/media/title-light.png" alt="Inkinesis" width="259">
-</picture>
-
-### Prompt-to-Rig for Anime Characters with Garment Ownership, Held-Object Carriers, and Verified Live2D Export
+  <img src="docs/media/title-light.png" alt="Inkinesis" width="258">
+</picture><br>
+Prompt-to-Rig for Anime Characters with Garment Ownership, Held-Object Carriers, and Verified Live2D Export</h3>
 
 <p><a href="https://wacv.thecvf.com/"><img src="docs/media/wacv-2027.png" alt="WACV 2027" width="222"></a><br><b>Describe a character. Make it move.</b></p>
 
