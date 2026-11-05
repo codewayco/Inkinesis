@@ -71,10 +71,11 @@ python3 tools/media/auditCatalog.py <core-report-dir>
 
 ### README and GitHub playback
 
-The README links the repository MP4 and a standalone local player. Open `docs/media/showcase.html` directly to watch it before publishing. GitHub does not turn a repository-relative MP4 into an inline attachment player. GitHub attachments are limited to 10 MB on the free plan, so upload a 1280×800 copy (about 7.7 MB) instead of the full-resolution file:
+The README links the repository MP4 and a standalone local player. Open `docs/media/showcase.html` directly to watch it before publishing. GitHub does not turn a repository-relative MP4 into an inline attachment player. GitHub video attachments are limited to 10 MB for repositories on a free plan, so upload a 1600×1000, 30 fps copy encoded in two passes to about 9.7 MB instead of the full-resolution file:
 
 ```sh
-ffmpeg -y -i docs/media/showcase.mp4 -vf scale=1280:800:flags=lanczos -c:v libx264 -crf 29 -preset slow -tune animation -pix_fmt yuv420p -movflags +faststart .cache/readme-media/showcase-github.mp4
+ffmpeg -y -i docs/media/showcase.mp4 -vf "fps=30,scale=1600:1000:flags=lanczos" -c:v libx264 -preset veryslow -tune animation -b:v 820k -pass 1 -passlogfile .cache/readme-media/x264 -an -f mp4 /dev/null
+ffmpeg -y -i docs/media/showcase.mp4 -vf "fps=30,scale=1600:1000:flags=lanczos" -c:v libx264 -preset veryslow -tune animation -b:v 820k -pass 2 -passlogfile .cache/readme-media/x264 -pix_fmt yuv420p -movflags +faststart -an .cache/readme-media/showcase-github.mp4
 ```
 
 Upload that copy through GitHub Issues and replace the attachment URL at the marked comment in the README; retain the repository link so the full-resolution video remains available. Nothing is uploaded automatically.

@@ -18,9 +18,9 @@
 
 </div>
 
-<!-- GitHub renders a bare attachment URL as an inline video player (a 1280x800 copy under the 10 MB limit). The full-resolution file is docs/media/showcase.mp4, linked below. -->
+<!-- GitHub renders a bare attachment URL as an inline video player (a 1600x1000, 30 fps copy under the 10 MB limit). The full-resolution file is docs/media/showcase.mp4, linked below. -->
 
-https://github.com/user-attachments/assets/3e1b327f-c22d-42cc-a241-5bd9bf5d7b9e
+https://github.com/user-attachments/assets/59a07596-c1aa-4210-a329-8bc3e9509ae1
 
 [**Watch the showcase · 1.5 min**](docs/media/showcase.mp4) · [Open the local video player](docs/media/showcase.html)
 
