@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {poseContinuousLimb,type ContinuousLimb} from '../src/body/continuousLimb';
+import {poseContinuousLimb,continuousLimbWeights,type ContinuousLimb} from '../src/body/continuousLimb';
 const c:ContinuousLimb={root:{x:0,y:0},joint:{x:0,y:100},tip:{x:0,y:200},rootBlend:28,jointBlend:18};
 describe('continuous articulated limb',()=>{
  it('pins the root, preserves rest and composes both rotations at the distal tip',()=>{
@@ -18,5 +18,17 @@ describe('continuous articulated limb',()=>{
  it('rejects degenerate landmarks and zero blend widths',()=>{
   expect(()=>poseContinuousLimb(c.tip,{...c,joint:c.root},10,10)).toThrow('Degenerate');
   expect(()=>poseContinuousLimb(c.tip,{...c,rootBlend:0},10,10)).toThrow('Positive');
+ });
+ it('keeps a folded-back wrist distal while keeping its shoulder anchored',()=>{
+  const folded:ContinuousLimb={root:{x:0,y:0},joint:{x:60,y:120},tip:{x:25,y:-10},rootBlend:70,jointBlend:25,weightMode:'segments',blendMode:'angle'};
+  expect(continuousLimbWeights(folded.tip,folded).distal).toBeCloseTo(1,10);
+  expect(continuousLimbWeights(folded.root,folded).root).toBeCloseTo(0,10);
+  const tip=poseContinuousLimb(folded.tip,folded,0,30);
+  expect(Math.hypot(tip.x-folded.joint.x,tip.y-folded.joint.y)).toBeCloseTo(Math.hypot(folded.tip.x-folded.joint.x,folded.tip.y-folded.joint.y),8);
+  expect(Math.hypot(tip.x-folded.tip.x,tip.y-folded.tip.y)).toBeGreaterThan(50);
+ });
+ it('angle blending preserves hinge radius under a partial distal weight',()=>{
+  const p={x:10,y:100},posed=poseContinuousLimb(p,{...c,blendMode:'angle'},0,60);
+  expect(Math.hypot(posed.x,posed.y-100)).toBeCloseTo(10,10);
  });
 });

@@ -1,18 +1,18 @@
-# Release 2 publication
+# Version 1.0 publication
 
-The source distribution includes the player, generation pipeline, rendering and rigging code, optional quality hooks, external-component adapters, tests, setup documentation, README media, and metadata/small previews for **53** example avatars.
+The source distribution includes the player, generation pipeline, rendering and rigging code, optional quality hooks, external-component adapters, tests, setup documentation, README media, and metadata/small previews for the **30** example avatars, selected from the 94 characters evaluated in the paper. The README gallery and showcase video still show all 94.
 
 Large avatar payloads are separate GitHub Release attachments. Model weights, proprietary SDKs, credentials, generated user jobs, local export workspaces, and research/experiment directories stay outside Git. INP/ZIP files and avatar `export-*` folders are ignored; Git LFS is not used. Local research files are retained on disk.
 
 ## Publish the matching assets
 
-1. Run `npm run prepare:avatar-release` with all current avatars installed. It verifies their sizes and SHA-256 hashes, then replaces the generated `.cache/avatar-release/` directory with exactly **106 attachments plus `SHA256SUMS`**. A failed verification preserves the previous prepared release.
-2. Review and commit/push the source changes. Include the new source/test files and 53 current previews; exclude ignored payloads, `.env`, caches and research data.
-3. Publish the attachments under **`avatars-v2` in `codewayco/Inkinesis`**. This is the exact URL pinned in `example-avatars/catalog.json`. If the code release uses another tag, the avatar release still needs this tag, or the catalog must be changed to match.
-4. Test Download in a fresh checkout after the release is public. Before publication, local installed avatars work but new downloads cannot succeed. The configured release returned HTTP 404 during the October 4 pre-release check.
-5. For inline README playback, upload `docs/media/showcase.mp4` through GitHub Issues and insert the resulting attachment URL at the README comment. Keep the repository video and local player links.
+1. Run `npm run prepare:avatar-release` with all current avatars installed. It verifies their sizes and SHA-256 hashes, then replaces the generated `.cache/avatar-release/` directory with exactly **60 attachments plus `SHA256SUMS`**. A failed verification preserves the previous prepared release.
+2. Review and commit/push the source changes. Include the new source/test files and the 30 current previews; exclude ignored payloads, `.env`, caches and research data.
+3. Create the GitHub Release **`v1.0.0` in `codewayco/Inkinesis`** and attach the 60 files plus `SHA256SUMS` to it. The code and the avatar payloads share this one release; `example-avatars/catalog.json` is pinned to `https://github.com/codewayco/Inkinesis/releases/download/v1.0.0`. Earlier versions used separate `avatars-v1` and `avatars-v2` tags.
+4. Test Download in a fresh checkout after the release is public. Before publication, local installed avatars work but new downloads cannot succeed.
+5. For inline README playback, upload the 1280×800 copy described in [README media](media/README.md#readme-and-github-playback) through GitHub Issues and replace the attachment URL at the README comment. Keep the repository video and local player links.
 
-Release preparation does not create commits, tags, pushes, releases or uploads. The October 4 audit left the index empty and performed none of those actions.
+Release preparation does not create commits, tags, pushes, releases or uploads.
 
 ## Validation boundaries
 

@@ -7,13 +7,15 @@
  * or on the leg's own visible artwork, in every sampled pose, up to the
  * tolerance across the hidden leg's width. A shorts tube the thigh slides out
  * of fails; a skirt the thigh swings under passes. Without leg artwork to test, the covering rule applies. */
+import {armGarmentCoverage} from './armGarmentCoverage';
 import {inpParts,inpTextures,type InpDocument} from './inp';
 import {renderTextured,type TexturedMesh} from '../../engine/src/render/textured';
 import {poseContinuousLimb,type ContinuousLimb,type LimbPoint} from '../../engine/src/body/continuousLimb';
 import {evaluateCombined,type CombinedAsset} from '../../player/src/combinedRuntime';
 import type {ChainName} from '../imageToRig/capabilities';
 import {legWeight,type LegBlend} from './clothingAttachments';
-export function attachmentMotionGate(puppet:InpDocument,textures:Buffer[],name:ChainName) {
+export function attachmentMotionGate(puppet:InpDocument,textures:Buffer[],name:ChainName,options:{armMatteCoverage?:boolean;poseFunction?:typeof poseContinuousLimb}={}) {
+  const pose=options.poseFunction??poseContinuousLimb;
   const {width,height}=puppet.meta.canvas as {width:number;height:number},nodes=inpParts(puppet);
   const record=(puppet.meta.combined as {chains:{name:string;chain:ContinuousLimb;distalSign:number;parts?:string[]}[]}).chains.find(c=>c.name===name)!;
   const param=puppet.param.find(p=>p.name===name)!;
@@ -21,13 +23,16 @@ export function attachmentMotionGate(puppet:InpDocument,textures:Buffer[],name:C
   const upper=Math.hypot(record.chain.joint.x-record.chain.root.x,record.chain.joint.y-record.chain.root.y);
   const probes: LimbPoint[]=Array.from({length:5},(_,i)=>{const t=.4+i*.15;return {x:record.chain.root.x+(record.chain.joint.x-record.chain.root.x)*t,y:record.chain.root.y+(record.chain.joint.y-record.chain.root.y)*t};});
   const render=(parts:typeof nodes)=>renderTextured(parts.map(n=>({xy:new Float64Array(n.mesh!.verts.map((v,i)=>v+(i%2?height:width)/2)),uv:new Float64Array(n.mesh!.uvs),indices:new Uint32Array(n.mesh!.indices),depth:new Float64Array(n.mesh!.verts.length/2),depthOffset:0,opacity:1,texture:decoded[n.textures![0]],sampling:'bilinear'} as TexturedMesh)),width,height,[0,0,0,0],{selfOverlap:'count'}).rgba;
+  const armParts=name.startsWith('Arm')?nodes.filter(n=>record.parts?.includes(n.name.replace(/__influence_[01]+$/,''))&&!n.name.includes('__front')&&n.mesh?.indices.length):[];
+  const armAlpha=options.armMatteCoverage&&armParts.length?render(armParts):undefined;
   const owners=garments.map(n=>{
     const rgba=render([n]);
-    const covered=probes.filter(p=>{const x=Math.round(p.x),y=Math.round(p.y);return x>=0&&y>=0&&x<width&&y<height&&rgba[(y*width+x)*4+3]>128;});
-    return {n,rgba,covered,bound:param.bindings.some(b=>b.node===n.uuid&&b.param_name==='deform')};
+    const coverage=armAlpha?probes.map(p=>armGarmentCoverage(rgba,armAlpha,width,height,record.chain,p)):undefined;
+    const covered=probes.filter((p,i)=>{if(coverage)return coverage[i].substantial;const x=Math.round(p.x),y=Math.round(p.y);return x>=0&&y>=0&&x<width&&y<height&&rgba[(y*width+x)*4+3]>128;});
+    return {n,rgba,covered,coverage,bound:param.bindings.some(b=>b.node===n.uuid&&b.param_name==='deform')};
   });
   // Leg artwork hidden under each static garment at rest (legs only), sampled every other pixel.
-  const legParts=name.startsWith('Leg')?nodes.filter(n=>record.parts?.includes(n.name)&&n.mesh?.indices.length):[];
+  const legParts=name.startsWith('Leg')?nodes.filter(n=>record.parts?.includes(n.name.replace(/__influence_[01]+$/,''))&&n.mesh?.indices.length):[];
   const legAlpha=legParts.length?render(legParts):undefined;
   const hidden=new Map<number,{points:LimbPoint[];width:number}>(),skirts=new Set<number>();
   if(legAlpha)for(const {n,rgba,covered,bound} of owners){
@@ -75,19 +80,20 @@ export function attachmentMotionGate(puppet:InpDocument,textures:Buffer[],name:C
           // below a skirt hem onto its own visible artwork is not exposed; one sliding out
           // beside a shorts tube onto the background is.
           let exposed=0;
-          for(const p of under.points){const q=poseContinuousLimb(p,record.chain,x,y*record.distalSign),qx=Math.round(q.x),qy=Math.round(q.y);if(qx<0||qy<0||qx>=width||qy>=height||(rgba[(qy*width+qx)*4+3]<=128&&legAlpha![(qy*width+qx)*4+3]<=128))exposed+=4;}
+          for(const p of under.points){const q=pose(p,record.chain,x,y*record.distalSign),qx=Math.round(q.x),qy=Math.round(q.y);if(qx<0||qy<0||qx>=width||qy>=height||(rgba[(qy*width+qx)*4+3]<=128&&legAlpha![(qy*width+qx)*4+3]<=128))exposed+=4;}
           maxExposed=Math.max(maxExposed,exposed);exposureAllowance=Math.min(exposureAllowance,tolerance*under.width);
-        } else if(covered.length>=2)for(const p of covered){const q=poseContinuousLimb(p,record.chain,x,y*record.distalSign);maxUnownedDisplacement=Math.max(maxUnownedDisplacement,Math.hypot(q.x-p.x,q.y-p.y));}
+        } else if(covered.length>=2)for(const p of covered){const q=pose(p,record.chain,x,y*record.distalSign);maxUnownedDisplacement=Math.max(maxUnownedDisplacement,Math.hypot(q.x-p.x,q.y-p.y));}
       } else {
         const xy=posed.get(n.uuid)!.xy,v=n.mesh!.verts;
-        const blend=name.startsWith('Leg')?blends.get(n.name):undefined;
-        for(let i=0;i<v.length;i+=2){const p={x:v[i]+width/2,y:v[i+1]+height/2},q=poseContinuousLimb(p,record.chain,x,y*record.distalSign),w=blend?legWeight(p,blend.blend,side,blend.tube):1;maxSharedFieldError=Math.max(maxSharedFieldError,Math.hypot(xy[i]+width/2-(p.x+(q.x-p.x)*w),xy[i+1]+height/2-(p.y+(q.y-p.y)*w)));}
+        const blend=name.startsWith('Leg')?blends.get(n.name.replace(/__influence_[01]+$/,'')):undefined;
+        for(let i=0;i<v.length;i+=2){const p={x:v[i]+width/2,y:v[i+1]+height/2},q=pose(p,record.chain,x,y*record.distalSign),w=blend?legWeight(p,blend.blend,side,blend.tube):1;maxSharedFieldError=Math.max(maxSharedFieldError,Math.hypot(xy[i]+width/2-(p.x+(q.x-p.x)*w),xy[i+1]+height/2-(p.y+(q.y-p.y)*w)));}
       }
     }
   }
   const passed=maxUnownedDisplacement<=tolerance&&maxSharedFieldError<=tolerance&&maxExposed<=exposureAllowance;
   const region=name.startsWith('Leg')?'thigh':'upper arm';
   return {name:'garment attachment sweep',status:passed?'passed' as const:'failed' as const,samples,maxUnownedDisplacement,maxSharedFieldError,tolerance,
+    ...(armAlpha?{armMatteCoverage:owners.filter(o=>!o.bound).map(o=>({part:o.n.name,probes:o.coverage}))}:{}),
     ...(hidden.size?{maxExposedHiddenLeg:maxExposed,exposureAllowance}:{}),
     ...(skirts.size?{skirtLike:skirts.size}:{}),
     detail:passed?(hidden.size?'Sampled clothing bindings follow the limb field; the leg hidden under the static hem stays under it in the sampled poses.':'Sampled clothing bindings follow the limb field; no substantial static garment overlap was detected.')

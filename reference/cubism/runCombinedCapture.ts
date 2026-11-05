@@ -7,6 +7,8 @@ import { chromium } from 'playwright';
 import { readCombined, evaluateCombined } from '../../player/src/combinedRuntime';
 import type { ReferenceHarness } from './src/main';
 import { coreKeyValues } from './coreKeyValues';
+import { decodePNG } from '../../tools/generate/png';
+import { sampleTexture } from '../../engine/src/render/textured';
 const [input,output]=process.argv.slice(2);
 if(!input||!output)throw new Error('Usage: reference:combined source.inp export-directory');
 const nearKeys=process.argv.includes('--near-keys');
@@ -61,13 +63,28 @@ try {
    model.update();
    return model.drawables.ids.map((id,i)=>({id,xy:Array.from(model.drawables.vertexPositions[i]),opacity:model.drawables.opacities[i],renderOrder:model.getRenderOrders()[i]}));
   });
-  const result={frames,ids:model.drawables.ids,masks:model.drawables.masks.map(m=>Array.from(m).map(i=>model.drawables.ids[i])),textures:Array.from(model.drawables.textureIndices),indices:model.drawables.indices.map(v=>Array.from(v)),canvas:{width:model.canvasinfo.CanvasWidth,height:model.canvasinfo.CanvasHeight,ppu:model.canvasinfo.PixelsPerUnit},parameters:model.parameters.ids};
+  const result={frames,ids:model.drawables.ids,masks:model.drawables.masks.map(m=>Array.from(m).map(i=>model.drawables.ids[i])),textures:Array.from(model.drawables.textureIndices),uvs:model.drawables.vertexUvs.map(v=>Array.from(v)),indices:model.drawables.indices.map(v=>Array.from(v)),canvas:{width:model.canvasinfo.CanvasWidth,height:model.canvasinfo.CanvasHeight,ppu:model.canvasinfo.PixelsPerUnit},parameters:model.parameters.ids};
   model.release();moc._release();return result;
  },requests);
  for(const part of asset.parts){
   const i=core.ids.indexOf(`ArtMesh${part.uuid}`);
-  if(i<0||JSON.stringify(core.masks[i])!==JSON.stringify((part.masks??[]).map(m=>`ArtMesh${m.source}`))||core.textures[i]!==part.textures![0]||core.indices[i].length!==part.mesh!.indices.length||core.indices[i].some((v,k)=>v!==part.mesh!.indices[Math.floor(k/3)*3+2-k%3]))throw new Error(JSON.stringify({reason:'Core masks, textures or triangles differ from source',part:part.name,masks:core.masks[i],sourceMasks:part.masks,texture:core.textures[i],sourceTexture:part.textures![0],indices:core.indices[i]?.slice(0,12),sourceIndices:part.mesh!.indices.slice(0,12)}));
+  if(i<0||JSON.stringify(core.masks[i])!==JSON.stringify((part.masks??[]).map(m=>`ArtMesh${m.source}`))||core.textures[i]==null||core.indices[i].length!==part.mesh!.indices.length||core.indices[i].some((v,k)=>v!==part.mesh!.indices[Math.floor(k/3)*3+2-k%3]))throw new Error(JSON.stringify({reason:'Core masks, textures or triangles differ from source',part:part.name,masks:core.masks[i],sourceMasks:part.masks,texture:core.textures[i],sourceTexture:part.textures![0],indices:core.indices[i]?.slice(0,12),sourceIndices:part.mesh!.indices.slice(0,12)}));
  }
+ // The exporter repacks texture pages, so pages and UVs differ from the INP. Each triangle centre
+ // is sampled from the exported page at Core's UVs (v up) and from the source page at INP UVs.
+ const manifestTextures=JSON.parse(readFileSync(resolve(out,report.runtimeManifest),'utf8')).FileReferences.Textures as string[];
+ const pages=manifestTextures.map(f=>decodePNG(readFileSync(resolve(model,f)))),sources=asset.textures.map(b=>decodePNG(b));
+ let maxTexelDifference=0,texelSamples=0;
+ for(const part of asset.parts){
+  const i=core.ids.indexOf(`ArtMesh${part.uuid}`),idx=part.mesh!.indices,source=part.mesh!.uvs,exported=core.uvs[i];
+  if(!pages[core.textures[i]]||exported.length!==source.length)throw new Error(`Core texture page or UVs missing for ${part.name}`);
+  const centre=(uv:number[],flip:boolean,t:number)=>{let u=0,v=0;for(let j=0;j<3;j++){u+=uv[idx[t+j]*2]/3;v+=uv[idx[t+j]*2+1]/3;}return [u,flip?1-v:v];};
+  for(let t=0;t<idx.length;t+=3){
+   const a=sampleTexture(sources[part.textures![0]],...centre(source,false,t) as [number,number],'bilinear'),b=sampleTexture(pages[core.textures[i]],...centre(exported,true,t) as [number,number],'bilinear');
+   maxTexelDifference=Math.max(maxTexelDifference,...a.map((x,k)=>Math.abs(x-b[k])));texelSamples++;
+  }
+ }
+ const texelMismatch=maxTexelDifference>2/255;
  let maxPositionError=0,maxOpacityError=0;const mismatches:{label:string;id:string;position:number;opacity:number}[]=[];
  let maxCorePositionError=0,maxCoreOpacityError=0;const coreMismatches:{label:string;id:string;position:number;opacity:number}[]=[];
  for(let f=0;f<requests.length;f++){
@@ -109,10 +126,10 @@ try {
   const file=request.label.replace(/[^a-zA-Z0-9_-]/g,'_')+'.png';const data=Buffer.from(png.split(',')[1],'base64');
   writeFileSync(resolve(evidence,file),data);captures.push({label:request.label,file,sha256:hash(data)});
  }
- const result={status:coreMismatches.length||errors.length?'failed':mismatches.length?'passed_with_runtime_differences':'passed',strictSourceParity:!mismatches.length?'passed':'failed',sourceSha256:hash(bytes),mocSha256:hash(readFileSync(resolve(model,JSON.parse(readFileSync(resolve(out,report.runtimeManifest),'utf8')).FileReferences.Moc))),frames:requests.length,meshes:core.ids.length,parameters:core.parameters,canvas:core.canvas,maxPositionError,maxOpacityError,
-   coreSampling:{epsilon:.001,maxPositionError:maxCorePositionError,maxOpacityError:maxCoreOpacityError,mismatchCount:coreMismatches.length,mismatches:coreMismatches.slice(0,20)},nearKeys,
+ const result={status:coreMismatches.length||errors.length||texelMismatch?'failed':mismatches.length?'passed_with_runtime_differences':'passed',strictSourceParity:!mismatches.length?'passed':'failed',sourceSha256:hash(bytes),mocSha256:hash(readFileSync(resolve(model,JSON.parse(readFileSync(resolve(out,report.runtimeManifest),'utf8')).FileReferences.Moc))),frames:requests.length,meshes:core.ids.length,parameters:core.parameters,canvas:core.canvas,maxPositionError,maxOpacityError,
+   textureSampling:{tolerance:2/255,maxTexelDifference,samples:texelSamples},coreSampling:{epsilon:.001,maxPositionError:maxCorePositionError,maxOpacityError:maxCoreOpacityError,mismatchCount:coreMismatches.length,mismatches:coreMismatches.slice(0,20)},nearKeys,
    mismatches:mismatches.slice(0,20),mismatchCount:mismatches.length,errors,captures,pictureErrors,unsupportedControls,
-   scope:'Official Cubism Core vs source combined INP evaluator, strict source values and separately the 0.001-physical-unit key-snapped reference; including full render order, clipping-source assignments, texture assignments and triangle topology (Core reverses each triangle winding): all authored parameter grids, individual limits, simultaneous pose, blink and 64 seeded mixed poses; optional near-key probes at +/-0.0005 and +/-0.0012 physical units. Geometry/opacity only; soft clipping differs from thresholded Inochi stencil. No physics or human acceptance claim.'};
+   scope:'Official Cubism Core vs source combined INP evaluator, strict source values and separately the 0.001-physical-unit key-snapped reference; including full render order, clipping-source assignments, texel-level texture sampling at every triangle centre (exported page and Core UVs vs source page and INP UVs) and triangle topology (Core reverses each triangle winding): all authored parameter grids, individual limits, simultaneous pose, blink and 64 seeded mixed poses; optional near-key probes at +/-0.0005 and +/-0.0012 physical units. Geometry/opacity only; soft clipping differs from thresholded Inochi stencil. No physics or human acceptance claim.'};
  writeFileSync(resolve(evidence,'validation.json'),JSON.stringify(result,null,2)+'\n');
  console.log(JSON.stringify({...result,captures:captures.length}));
  if(result.status==='failed')process.exitCode=1;

@@ -1,4 +1,26 @@
-# Release 2 validation
+# Release validation
+
+## Version 1.0 source checks
+
+Checked on November 5, 2026, on macOS Apple Silicon in the development checkout with all 30 example avatars installed. No paid model calls or GPU inference were made.
+
+| Check | Result |
+| --- | --- |
+| TypeScript application and engine | Passed |
+| ESLint | Passed with no warnings |
+| Portable unit suite | 74 files; **325 passed**, 2 optional private-reference tests skipped |
+| Python preparation tests | **58 passed** (November 3; Python sources unchanged since) |
+| Production build | Passed; catalog metadata and 30 previews, no INP/ZIP payloads |
+| npm dependency audit (production) | **0 known vulnerabilities** |
+| Browser checks | `verify:ui`, `verify:upload`, `verify:example-download` and the save smoke test passed |
+| Catalog/checksum consistency | 30 avatars; all 60 artifact sizes and hashes agree with `checksums.json` and the installed files |
+| Local library service | All 30 installed avatars report ready; every example loads and its controls execute (`verify:examples`) |
+| Live2D packages | Runtime files only; the `.cmo3` editor project is omitted and every package passes a ZIP integrity test |
+| Saved Cubism Core evidence | All 30 packaged MOC3 models match saved official Core reports by hash; 164 poses each, worst 0.18 × 10⁻³ px ([catalog audit](media/catalog-validation.json)) |
+
+The version 1.0 Live2D packages target Cubism 5.0 or newer. The catalog points at the `v1.0.0` GitHub Release; until its attachments are published, a fresh checkout shows previews but cannot download avatars. The record below describes the full version 0.2 audit; its counts refer to the 53 avatars of that version.
+
+## Version 0.2 validation
 
 Checked on October 4, 2026, on macOS Apple Silicon. A separate source-only copy was assembled from publishable files, without `.env`, research directories, local avatar payloads, model caches or proprietary SDKs. It received a fresh `npm ci` under Node 22.23.3 and a fresh Python 3.14 virtual environment using `requirements.txt`.
 
@@ -26,7 +48,7 @@ Checked on October 4, 2026, on macOS Apple Silicon. A separate source-only copy 
 
 The browser tests completed without JavaScript page errors. Purple Couture's rendered preview was visually inspected. All-53 control checks verify runtime operation and resets, not the aesthetic quality of every pose. The saved Core evidence audit rechecks artifact identity; it does not rerun Core or certify visual quality.
 
-## Corrections made during this audit
+### Corrections made during this audit
 
 - Removed the unused error formatting/exit helpers, unreachable direct-image generation branch, unused upload-normalization return value, obsolete deprecated-directory configuration and unreferenced legacy character figure. Import/reference searches checked remaining modules against the player, pipeline, CLI commands, tests and documentation; optional adapters and documented tools remain active entry points.
 - Fixed strict H100 CLI preflight incorrectly requiring local inference dependencies when `allowLocalFallback` was omitted. Added policy regression coverage; the UI prompt path keeps its existing backend policy.
@@ -36,7 +58,7 @@ The browser tests completed without JavaScript page errors. Purple Couture's ren
 - Excluded local export workspaces from Git and ignored research directories from lint. Updated obsolete 27-avatar publication instructions and release URLs.
 - Added the upload browser regression to CI and refreshed vulnerable transitive dependency pins within their existing version ranges.
 
-## Generation and publication boundaries
+### Generation and publication boundaries
 
 This release audit made no new paid image/analysis calls or GPU inference runs. The preceding upload integration check used one real photo, reviewed its redraw, completed H100 decomposition and local rigging, saved the result and reopened it. That run's rest silhouette IoU was approximately **0.993**, with articulated limbs, head axes, blink and mouth; its visual state remained **needs review**. One successful example is not a guarantee for arbitrary uploads or identity preservation.
 
@@ -44,7 +66,7 @@ The optional two native parity tests require private fixtures via `RIG_TEST_ASSE
 
 The catalog targets `codewayco/Inkinesis` release **`avatars-v2`**, which returned HTTP 404 at audit time. Installed local avatars and synthetic download tests pass, but a real fresh-checkout download cannot be certified until the maintainer publishes the matching attachments. Follow [release instructions](RELEASE.md). No files were staged or committed, and no release, tag, push or media upload was performed.
 
-## Reproduce
+### Reproduce
 
 ```sh
 npm ci
@@ -62,6 +84,6 @@ npm run verify:ui
 # With all current avatar payloads installed:
 npm run verify:examples
 npm run prepare:avatar-release
-# With saved local Cubism export reports:
-python3 tools/media/auditCatalog.py
+# With the directory of saved Cubism Core report JSON files:
+python3 tools/media/auditCatalog.py <core-report-dir>
 ```

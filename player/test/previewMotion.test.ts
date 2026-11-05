@@ -26,4 +26,12 @@ describe('preview actions',()=>{
  it('closes and reopens a blink without retaining a closed expression',()=>{
   expect([0,50,100,130,240,340,1000].map(blinkOpenness)).toEqual([1,.5,0,0,.5,1,1]);
  });
+ it('demonstrates a shared held-object control without inventing independent arm commands',()=>{
+  const p={name:'ParamGripLift',min:[-12.8,0],max:[0,0],defaults:[0,0]};
+  const caps={chains:{'Arm L':{mode:'fixed'},'Arm R':{mode:'fixed'}}} as MotionCapabilities;
+  expect(motionDemoValues([p],caps,0)).toEqual({ParamGripLift:[0,0]});
+  let minimum=0;
+  for(let t=0;t<8;t+=.1){const v=motionDemoValues([p],caps,t);expect(Object.keys(v)).toEqual(['ParamGripLift']);expect(v[p.name][0]).toBeGreaterThanOrEqual(p.min[0]);expect(v[p.name][0]).toBeLessThanOrEqual(0);minimum=Math.min(minimum,v[p.name][0]);}
+  expect(minimum).toBeLessThan(-6);
+ });
 });

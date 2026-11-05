@@ -1,6 +1,6 @@
 {
   "name": "inkinesis",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Image and text to animated character rigs: automatic analysis, semantic layers, measured expressions, articulated limbs, Inochi and Live2D exports.",
   "license": "Apache-2.0",

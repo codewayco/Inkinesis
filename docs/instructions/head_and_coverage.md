@@ -1,4 +1,4 @@
-# Earlier head attachments and source-visible coverage
+# Head attachments and source-visible coverage
 
 New pipeline runs enable `headAttachmentSafety` on both the visible-limb and experimental garment routes. The source meshes and native facial keyforms remain the reference for both routes. Native head/neck bindings are retained. The algorithm accepts meshes, source poses, canvas dimensions and inferred anatomy; it does not inspect character IDs, image filenames, hair colors or fixture-specific coordinates.
 
@@ -29,5 +29,5 @@ The foreground mask is not ground truth. Opaque images can include enclosed back
 - Three real garment characters are rebuilt with isolated roll, opposite simultaneous yaw/pitch/roll limits, expressions and garment/body controls. Native/browser and official Cubism Core checks use the exact exported files.
 - New standard runs use the same hair-only attachment rule on both routes. Face and neck motion is not replaced.
 
-The geometric certificate does not prove perceptual quality, texture continuity, layer ordering, collision freedom or valid artwork behind hair. A shoulder absent from every source layer cannot be recovered from a motion constraint. Those are separate decomposition/completion and visual acceptance problems. These tests support a bounded attachment and recovery mechanism, not a universal long-hair success claim. Generalization to a representative held-out dataset and a blinded visual evaluation are still needed before making a broader paper claim.
+The geometric certificate does not prove perceptual quality, texture continuity, layer ordering, collision freedom or valid artwork behind hair. A shoulder absent from every source layer cannot be recovered from a motion constraint. Those are separate decomposition/completion and visual acceptance problems. These tests support a bounded attachment and recovery mechanism, not a universal long-hair success claim. Generalization to a representative held-out dataset and a blinded visual evaluation are still needed before making a broader claim.
 

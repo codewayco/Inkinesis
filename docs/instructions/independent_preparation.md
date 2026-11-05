@@ -32,7 +32,7 @@ node --import tsx tools/imageToRig/pipeline.ts --prompt "A front-facing adult ch
 
 Generation sends the source/crops to the configured analysis and image providers and incurs API usage. See-through inference, preparation, rigging and geometry checks run locally. Use a new output directory.
 
-The run report links `assets/character.psd` and `assets/preparation.json` in addition to the original decomposition, INP, evidence and optional Live2D package. Review the two sets of layers separately. A natively validated rig is reported as `success`; that is not a visual approval.
+The run report links `assets/character.psd` and `assets/preparation.json` in addition to the original decomposition, INP, evidence and optional Live2D package. Review the two sets of layers separately. A natively validated rig is normally reported as `success`; that is not a visual approval. If source grasp evidence has no matching active object carrier, the report instead remains `needs_review` and includes `carrierAudit`.
 
 For official Core validation, first install the optional SDK described in the Live2D runbook, then run:
 
@@ -47,3 +47,7 @@ Absent eye controls are recorded as unsupported, not tested as a successful blin
 Official Core snaps parameter values within 0.001 physical units of an authored key. Our native renderer interpolates continuously. The verifier reports strict source parity separately from a reference evaluated with Core's sampling convention. `passed_with_runtime_differences` means the latter passed the original tolerances; it does not mean exact cross-format equality.
 
 Low-confidence anatomy, unusual clothing, absent eye layers, generated expression quality, and extreme head poses still need visual review. The publication examples are retained development outputs, not fresh outputs of each dependency installation. The release contains no private research evidence folders.
+
+## Held-object instances
+
+The body builder groups short-gap alpha components within an explicit object layer and assigns unambiguous physical instances to separate wrist carriers. This supports two independent objects in one layer and thin disconnected pieces of one object. Ambiguous shared objects retain the existing contact gates. Recovery of an existing rig must preserve every exposed limb range and pass the coupled-motion gate; no character names or IDs select this behavior.

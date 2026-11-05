@@ -52,7 +52,7 @@ export function live2dDevServer(): Plugin {
         // Isolate identical rigs in different trials so each Save includes its own exports.
         const runId=source.match(/\/([a-f0-9-]{36})\/character\.inp$/)?.[1];
         if(runId)hash.update(runId);
-        for (const file of ['export.ts', 'CombinedExport.kt', 'export.gradle', 'download.ts']) hash.update(readFileSync(resolve('tools/rig/live2d', file)));
+        for (const file of ['export.ts', 'CombinedExport.kt', 'export.gradle', 'download.ts', 'writeJson.ts', 'linearKeys.ts']) hash.update(readFileSync(resolve('tools/rig/live2d', file)));
         const id = hash.digest('hex');
         const isGenerated=source.includes('/image-to-rig/') || String(JSON.parse(body).source).startsWith(UI_RIG_URL+'/');
         destinations.set(id,isGenerated?join(dirname(source),'live2d-downloads'):generatedRigs.exportRoot());

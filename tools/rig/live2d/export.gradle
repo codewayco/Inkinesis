@@ -7,7 +7,9 @@ allprojects { project ->
             dependsOn project.tasks.named('classes')
             classpath = project.sourceSets.main.output + project.configurations.compileClasspath
             mainClass = 'io.github.psd2live.combinedexport.CombinedExportKt'
-            jvmArgs '-Xmx8g', '-Dfile.encoding=UTF-8', '-Djava.awt.headless=true'
+            def exportHeap = System.getenv('INKINESIS_LIVE2D_JAVA_HEAP') ?: '16g'
+            if (!(exportHeap ==~ /[1-9][0-9]*[mg]/)) throw new GradleException('Invalid INKINESIS_LIVE2D_JAVA_HEAP')
+            jvmArgs "-Xmx${exportHeap}", '-Dfile.encoding=UTF-8', '-Djava.awt.headless=true'
             args project.property('combinedInput').toString(), project.property('combinedOutput').toString()
         }
     }

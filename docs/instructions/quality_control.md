@@ -1,6 +1,6 @@
 # Experimental quality assessment and bounded repair
 
-The optional pipeline quality hooks default to `quality=off` in the UI and CLI. They do not modify the 53 example rigs. Upload source checks and redraw previews run separately before generation. A model finding does not invalidate an existing avatar.
+The optional pipeline quality hooks default to `quality=off` in the UI and CLI. They do not modify the example rigs. Upload source checks and redraw previews run separately before generation. A model finding does not invalidate an existing avatar.
 
 ## Pipeline hooks
 

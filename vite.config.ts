@@ -19,7 +19,7 @@ export default defineConfig({
   }],
   server: {
     host: '127.0.0.1', port: 5200, strictPort: true, open: '/',
-    watch: { ignored: ['**/outputs/**', '**/example-avatars/**', '**/new-avatars/**'] },
+    watch: { ignored: ['**/outputs/**', '**/example-avatars/**', '**/new-avatars*/**', '**/old-avatars*/**', '**/stress-examples/**', '**/anime-avatars/**', '**/other-avatars/**', '**/paper/**'] },
     fs: { deny: ['.env', '.env.*', '*.{crt,pem}', '**/.git/**', '**/example-avatars/.downloads/**'] },
   },
   preview: { host: '127.0.0.1', open: false },

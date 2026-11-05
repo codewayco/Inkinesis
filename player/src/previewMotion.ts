@@ -24,6 +24,9 @@ export function motionDemoValues(parameters: Pick<InpParameter,'name'|'min'|'max
                 const amount = Math.sign(target[i]) * Math.min(Math.abs(target[i]), room*.65);
                 return Math.max(p.min[i],Math.min(p.max[i],rest+amount));
             });
+        } else if (p.name==='ParamGripLift') {
+            const amount=(1-Math.cos(phase))*.5;
+            result[p.name]=[p.defaults[0]+(p.min[0]-p.defaults[0])*amount*.65,0];
         } else if (['ParamGarmentSway','ParamBodySway','ParamBreath'].includes(p.name)) {
             const wave = p.name==='ParamBreath' ? (1-Math.cos(phase))*.5 : Math.sin(phase);
             const rest=p.defaults[0],room=wave<0?rest-p.min[0]:p.max[0]-rest;

@@ -7,7 +7,7 @@ export function drawsNoTexture(uvs:number[],a:number,b:number,c:number) {
 /** Reject foldovers at authored coupled keys and half-grid samples before export. */
 export function combinedMeshGate(puppet:InpDocument) {
   const parts=new Map(inpParts(puppet).map(p=>[p.uuid,p]));let samples=0,triangles=0;
-  for(const p of puppet.param.filter(p=>/^(Arm|Leg) [LR]$/.test(p.name))) {
+  for(const p of puppet.param.filter(p=>/^(?:(Arm|Leg) [LR]|ParamGripLift)$/.test(p.name))) {
     const nx=p.axis_points[0].length,ny=p.axis_points[1].length;
     for(let x=0;x<=nx-1;x+=.5)for(let y=0;y<=ny-1;y+=.5){
       samples++;

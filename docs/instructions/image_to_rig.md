@@ -31,7 +31,7 @@ Once built, uploaded-image results distinguish **technical completion** from **v
 
 UI runs stay in OS temporary directories until you click **Save**. Saving copies the complete run into `outputs/<job-id>/` by default: prompt, image, analysis, layers, rig, validation, previews, logs, and any prepared Live2D exports. `RIG_OUTPUT_DIR` changes that destination. **Load last saved** reopens the latest completed saved rig. Unsaved previews expire on normal server shutdown; abrupt crashes can leave temporary files.
 
-The **Live2D (.zip)** button prepares the second format on demand. Save does not itself run a Live2D conversion. Exporting after Save stores the export beside the saved rig. The ZIP contains model files, not VTube Studio hand-tracking configuration. [Export details](live2d_export.md).
+The **Live2D (.zip)** button prepares the second format on demand. Save does not itself run a Live2D conversion. Exporting after Save stores the export beside the saved rig. The ZIP contains model files only, no application-specific tracking configuration. [Export details](live2d_export.md).
 
 ## Actual stages
 
@@ -68,7 +68,7 @@ The UI explains unavailable movements and disables their sliders and incompatibl
 
 ## Environment
 
-The existing configured API credentials are read from `.env` without entering the browser bundle. Analysis uses `ANTHROPIC_API_KEY`; image/expression generation uses `OPEN_AI_API_KEY` (the direct edit adapter also supports `OPENAI_API_KEY` and `LLM_API_KEY`). Uploaded images leave the machine for these configured providers. See-through runs on H100 when available, with a local GPU fallback. Generation has API usage costs.
+The existing configured API credentials are read from `.env` without entering the browser bundle. Analysis uses `ANTHROPIC_API_KEY`; image/expression generation uses `OPENAI_API_KEY` (legacy aliases `OPEN_AI_API_KEY` and `LLM_API_KEY` are also accepted). Uploaded images leave the machine for these configured providers. See-through runs on the local GPU by default; `RIG_GPU_BACKEND=h100-first` or `h100` uses the remote H100 bridge. Generation has API usage costs.
 
 The local defaults reuse the prepared development dependencies. Set these environment variables to use persistent installations elsewhere:
 
@@ -81,7 +81,7 @@ The local defaults reuse the prepared development dependencies. Set these enviro
 | `RIG_DIRECT_SEE_THROUGH` | `.cache/rig/see-through` |
 | `RIG_DIRECT_MODELS` | `.cache/rig/models` |
 | `RIG_DEVICE` | `mps` (`cuda` is also supported) |
-| `RIG_ANALYSIS_MODEL` | Existing repository default `claude-opus-5` |
+| `RIG_ANALYSIS_MODEL` | None; required (an Anthropic vision model enabled for your account) |
 
 The preflight checks paths, model-file sizes and credential presence; it does not certify provider availability, Python imports, GPU availability or downloaded-weight integrity. The stage runners perform those checks. Temporary dependencies can disappear after system cleanup; they are not vendored into this repository. See [the component runbook](component_runbook.md) for exact pins, dependency preparation and licensing, and [the combined method runbook](independent_preparation.md) for the rig contract and known limitations.
 
@@ -91,4 +91,4 @@ The browser reads the restricted INP subset emitted by `buildCombined`: linear s
 
 `npm run build:player` builds the current player. Model generation requires the development server and prepared local tools; a static build does not host the generation service. Record uses the existing browser recorder and produces silent video.
 
-No avatar is loaded automatically. **Pick an Avatar** lists the 53 example characters; select one and press **Download** to install its files. Saved Inochi and Live2D packages require no model requests.
+No avatar is loaded automatically. **Pick an Avatar** lists the 30 example characters; select one and press **Download** to install its files. Saved Inochi and Live2D packages require no model requests.

@@ -2,9 +2,11 @@
 
 # Inkinesis
 
-### Turning Illustrations into Portable 2D Character Rigs
+### Prompt-to-Rig for Anime Characters with Garment Ownership, Held-Object Carriers, and Verified Live2D Export
 
-**Describe a character. Bring your own illustration. Make it move.**
+<a href="https://wacv.thecvf.com/"><img src="https://img.shields.io/badge/WACV-2027-4b44ce?style=for-the-badge&amp;labelColor=241f6b" alt="WACV 2027" height="34"></a>
+
+**Describe a character. Make it move.**
 
 ![Paper](https://img.shields.io/badge/Paper-coming%20soon-lightgrey.svg)
 [![Project Website](https://img.shields.io/badge/Project%20Website-1769aa.svg)](https://codewayco.github.io/inkinesis-webpage/)
@@ -12,53 +14,69 @@
 [![Export: Inochi2D, Live2D](https://img.shields.io/badge/Export-Inochi2D%2C%20Live2D-6b4fbb.svg)](docs/instructions/live2d_export.md)
 <!-- When the paper is published, replace the Paper badge with the arXiv link. -->
 
-[See it move](#see-it-move) · [By the numbers](#by-the-numbers) · [Meet the characters](#meet-the-characters) · [Try the viewer](#try-the-viewer) · [VTube Studio](#live-in-vtube-studio) · [Method](#method) · [Installation](#installation) · [Documentation](#documentation)
+[News](#news) · [See it move](#see-it-move) · [Contributions](#contributions) · [By the numbers](#by-the-numbers) · [Meet the characters](#meet-the-characters) · [Try the viewer](#try-the-viewer) · [Live2D export](#live2d-export) · [Method](#method) · [Installation](#installation) · [Documentation](#documentation) · [Citation](#citation)
 
 </div>
 
 <!-- GitHub renders a bare attachment URL as an inline video player (a 1280x800 copy under the 10 MB limit). The full-resolution file is docs/media/showcase.mp4, linked below. -->
 
-https://github.com/user-attachments/assets/b8d0e076-d97c-4a18-a5d3-48bc4ffaf8bd
+https://github.com/user-attachments/assets/3e1b327f-c22d-42cc-a241-5bd9bf5d7b9e
 
-[**Watch the showcase · 1 min 45 sec**](docs/media/showcase.mp4) · [Open the local video player](docs/media/showcase.html)
+[**Watch the showcase · 1.5 min**](docs/media/showcase.mp4) · [Open the local video player](docs/media/showcase.html)
 
-*All 53 characters in a scrolling showcase: neutral rigs above, the four-second “See it move” sequence below. Arms, right leg, left leg, then head and expressions repeat with the GIF’s angle targets and phase timing; unavailable controls stay still. Actual Inkinesis playback; no generated animation frames.*
+*40 of the 94 characters, read left to right: characters holding objects alternate with empty-handed anime characters, neutral rigs above and the four-second “See it move” sequence below. Arms, right leg, left leg, then head and expressions repeat with the GIF’s angle targets and phase timing (arm targets halved for three characters so their held objects stay in hand); unavailable controls stay still. Actual Inkinesis playback; no generated animation frames.*
+
+## News
+
+- **November 2026:** Inkinesis is accepted at **WACV 2027**. Version 1.0 adds the method described in the paper: anatomical garment ownership, per-chain hinge profiles for the two-joint limbs, rigid wrist carriers for held objects, and Live2D export for Cubism 5.0, together with 30 ready-to-try example characters from the 94-character evaluation.
 
 ## See it move
 
 <table>
 <tr>
-<td width="67%"><img src="docs/media/motion.gif" alt="Purple Couture, Solstice Mosaic, and Saffron Orbit showing head, arm, hip, and knee motion in the Inkinesis renderer." width="100%"></td>
+<td width="67%"><img src="docs/media/motion.gif" alt="Purple Couture, Ember Forge Smith with a hammer and tongs, and Asphalt Comet Skater with a skateboard showing head, arm, hip, and knee motion in the Inkinesis renderer." width="100%"></td>
 <td width="33%"><img src="docs/media/face.gif" alt="Close-up of Purple Couture turning and tilting her head, blinking, and opening her mouth." width="100%"></td>
 </tr>
 </table>
 
-*Actual playback of existing rigs: head and expression controls, articulated arms, and hip and knee movement. Available movements vary by character.*
-
-Inkinesis turns a text prompt or a character illustration into a layered, animated 2D rig. Explore the result in your browser, save the complete asset, and export it for **Inochi2D** or **Live2D**.
+Inkinesis turns a text prompt into a layered, animated 2D rig. Explore the result in your browser, save the complete asset, and export it for **Inochi2D** or **Live2D**.
 
 | Create | Animate | Take it with you |
 | --- | --- | --- |
-| Start with a description or upload an illustration. | Preview head movement, expressions, and supported limb motion. | Save the complete run and export `.inp` or a Live2D package. |
+| Start with a description of your character. | Preview head movement, expressions, and supported limb motion. | Save the complete run and export `.inp` or a Live2D package. |
+
+## Contributions
+
+**Garment ownership.** Each garment pixel is assigned to the limb that carries it: sleeves follow the arms, trouser tubes follow the legs, the seat blends both legs, and everything else stays with the torso. Against nearest-bone assignment, torso drift falls from 11.77% to 0.28% on 64 measurable characters.
+
+![Garment ownership on Saffron Orbit and Papaya Broadcaster: artwork, garment pixels colored by owning limb at rest and in motion, and the delivered rig in the same pose.](docs/media/ownership.webp)
+
+**Held-object carriers.** Every object touching a hand rides a rigid carrier that follows that wrist. Removing the carriers raises new hand–object contact loss from 2.86% to 95.71% at the same arm trajectories.
+
+![Cedar Ridge Ranger raising an axe and a horn: with carriers both objects stay in the hands; with carriers removed they are left where they were drawn.](docs/media/carriers.webp)
+
+**Verified Live2D export.** Every rig is delivered as an Inochi2D puppet and a Live2D MOC3. All 94 exports reproduce the source geometry within 0.005 px under the official Cubism Core across the 164-pose protocol.
+
+![Emerald Star Wand in a pose, half rendered and half shown as its posed triangle mesh, beside the Cubism Core verification results.](docs/media/export.webp)
 
 ## By the numbers
 
-| | |
+| Result | What it measures |
 | --- | --- |
 | **230–237 seconds** | saved illustration to first export across four recorded runs; remote H100 80GB decomposition, with local preparation and export |
-| **53 characters** | ready to download, each as an Inochi2D `.inp` and a Live2D package |
-| **53 / 53** | current exported Live2D models with matching saved official Cubism Core reports and zero Core-aware drawable mismatches |
+| **94 evaluated characters** | the full paper evaluation; 30 of them ship as ready-to-try examples, each with an Inochi2D `.inp` and a Live2D package |
+| **94 / 94** | Live2D exports pass the recorded official Cubism Core geometry checks at ≤0.005 px |
 | **Up to 780 limb poses per rig** | authored keys and half-grid samples cover each enabled limb; the count varies with available controls |
 
-Timings include decomposition inference and transfers, but exclude image generation, later revisions and repeated validation. The [catalog evidence audit](docs/media/catalog-validation.json) matches saved validation reports to all 53 current rigs and packaged Live2D models: 8 have zero strict source mismatches; 45 pass with documented runtime sampling differences, and all 53 have zero Core-aware mismatches. This audit rechecks artifact identities, not a fresh Core run. Runtime checks measure technical compatibility, not visual quality; see [validation details](docs/instructions/live2d_export.md#near-key-runtime-differences). A technical report describing the method and these measurements is in preparation.
+Timings include decomposition inference and transfers, but exclude image generation, later revisions and repeated validation. The recorded Core checks concern geometric export fidelity, not visual quality or universal support. The [catalog audit](docs/media/catalog-validation.json) matches the 30 shipped Live2D packages to their saved Core reports.
 
 ## Meet the characters
 
-These examples were built from AI-generated illustrations using Inkinesis and saved as reusable rigs so you can try the viewer without a GPU or API key. You can also describe your own character or upload an illustration; supported movements depend on the design and the results of layer and motion checks.
+These examples were built from AI-generated illustrations using Inkinesis and saved as reusable rigs so you can try the viewer without a GPU or API key. You can also describe your own character; supported movements depend on the design and the results of layer and motion checks.
 
-![All 53 current example characters in labelled neutral poses rendered from their rigs, including human, fantasy, seated and accessory-bearing designs.](docs/media/gallery.webp)
+![All 94 evaluated characters in labelled neutral poses rendered from their rigs, including anime, human, fantasy, seated and object-holding designs.](docs/media/gallery.webp)
 
-*Neutral-pose previews rendered from the 53 example rigs. Open any of them with **Pick an Avatar** in the viewer; the first Download installs both formats locally. To make your own, see [Installation](#installation).*
+*Neutral previews of all 94 characters evaluated in the paper. You can try 30 of them in the viewer with **Pick an Avatar**: the characters featured in the paper and those that move most reliably. The first Download installs both formats locally. To make your own, see [Installation](#installation).*
 
 ## Try the viewer
 
@@ -69,7 +87,9 @@ npm ci
 npm run dev
 ```
 
-The browser opens at **http://localhost:5200/**. Use **Pick an Avatar** to browse the 53 example characters, or **Choose File** to open a compatible Inkinesis `.inp`. Playing a prepared rig needs no GPU or API key.
+The browser opens at **http://localhost:5200/**. Use **Pick an Avatar** to try the 30 example characters, or **Choose File** to open a compatible Inkinesis `.inp`. Playing a prepared rig needs no GPU or API key.
+
+Newly generated rigs use the full method by default: adaptive limb sampling, ownership-aware clothing motion, held-object attachments, and geometry-gated arm and knee refinement run automatically, with no feature flags to enable. Motion limits remain source-dependent; two-hand objects and ambiguous contacts may be restricted. The 94-character evaluation deliberately keeps difficult cases and known failures, such as the static helmet of Starberry Spacefarer; those appear in the gallery above and in the paper, while the viewer ships the 30 examples.
 
 Select an example and press **Download**. The app installs its rig files in `example-avatars/<id>/`, verifies the download, and opens the character for animation. The button changes to **Downloaded**, and future sessions reuse those local files.
 
@@ -77,21 +97,13 @@ Select an example and press **Download**. The app installs its rig files in `exa
 
 *Inspect the rig, try its controls, and save only the results you want to keep. To generate new characters, complete the [installation](#installation).*
 
-## Live in VTube Studio
+## Live2D export
 
-Take the character beyond the browser. Here, **Purple Couture's exported Live2D model runs in VTube Studio**, with live face tracking driving expressions and hand positions mapped to the rig's shoulder and elbow controls.
+Take the character beyond the browser. Every character also exports as a Live2D package that runs in **Live2D-compatible applications**.
 
-<table>
-<tr><th>Face tracking</th><th>Face + hand-driven arm gestures</th></tr>
-<tr>
-<td width="41%"><img src="docs/media/vtube-face.gif" alt="Recorded VTube Studio face tracking: Purple Couture responds with mouth movement, a wink, and a blink beside the tracking landmarks." width="100%"></td>
-<td width="59%"><img src="docs/media/vtube-hands.gif" alt="Recorded VTube Studio face and hand tracking: Purple Couture opens her mouth and moves her arms as the tracking inputs change." width="100%"></td>
-</tr>
-</table>
+Use **Live2D (.zip)** in the viewer to download a model package. See the [export guide](docs/instructions/live2d_export.md) for its contents and requirements.
 
-*Selected four-second excerpts from actual local sessions, at original speed. Cropped to the avatar and tracking panels; no desktop or raw camera image is shown.*
-
-Use **Live2D (.zip)** in the viewer to download a model package. See the [export guide](docs/instructions/live2d_export.md) for its contents and requirements. The hand-to-arm mappings shown here are not part of the export and do not animate individual fingers. `tools/remote/configureVtubeArms.py` adds the same four bounded shoulder and elbow mappings to a model's `.vtube.json` profile while VTube Studio is closed, keeping a backup of the original profile.
+**New Live2D exports require Cubism 5.0 or newer**, including a compatible Viewer/Editor and runtime. Channel blend shapes are enabled by default; the new export path does not target Cubism 4.2.
 
 <a id="how-it-works"></a>
 
@@ -99,21 +111,21 @@ Use **Live2D (.zip)** in the viewer to download a model package. See the [export
 
 **A pipeline built around the character, with explicit checks at every boundary.**
 
-1. **Describe or illustrate.** Start with a prompt or a drawing. Image uploads can be reviewed and redrawn for rigging before you approve the source.
+1. **Describe.** Start with a prompt; an image model draws the character for rigging.
 2. **Separate & understand.** See-through decomposes the appearance. Inkinesis checks the proposed landmarks against those layers and prepares registered facial variants.
-3. **Give the pixels a joint.** Compose two-joint limbs with the psd2live face rig. Garments follow their owning limbs; unsupported motion stays still.
+3. **Give the pixels a joint.** Compose two-joint limbs with the psd2live face rig. Missing joints can be proposed from prepared limb alpha and garment/footwear bounds. Geometry, attachment and simultaneous-leg checks decide which proposals move; garments follow their owning limbs.
 4. **Export & verify.** Deliver an Inochi2D rig and a Live2D package. Compare the control behavior with the browser evaluator, native runtime and official Cubism Core.
 
 <table>
 <tr>
-<td width="33%" valign="top"><strong>01 · Illustration</strong><br>INPUT<img src="docs/media/method/pipeline-input.webp" alt="Purple Couture source illustration." width="240">Prompt or drawing.</td>
-<td width="33%" valign="top"><strong>02 · Semantic layers</strong><br>REUSED<img src="docs/media/method/pipeline-layers.webp" alt="Nine saved semantic layers from See-through." width="240">See-through decomposition.</td>
-<td width="33%" valign="top"><strong>02 · Expressions</strong><br>OURS<img src="docs/media/method/pipeline-expressions.webp" alt="Registered blink and open-mouth expression edits." width="240">Registered eye and mouth edits.</td>
+<td width="33%" align="center" valign="top"><strong>01 · Illustration</strong><br><sub>INPUT</sub><br><img src="docs/media/method/pipeline-input.webp" alt="Purple Couture source illustration." width="240"><br><sub>Drawn from the prompt.</sub></td>
+<td width="33%" align="center" valign="top"><strong>02 · Semantic layers</strong><br><sub>REUSED</sub><br><img src="docs/media/method/pipeline-layers.webp" alt="Nine saved semantic layers from See-through." width="240"><br><sub>See-through decomposition.</sub></td>
+<td width="33%" align="center" valign="top"><strong>02 · Expressions</strong><br><sub>OURS</sub><br><img src="docs/media/method/pipeline-expressions.webp" alt="Registered blink and open-mouth expression edits." width="240"><br><sub>Registered eye and mouth edits.</sub></td>
 </tr>
 <tr>
-<td width="33%" valign="top"><strong>02 · Verified joints</strong><br>VERIFIED<img src="docs/media/method/pipeline-joints.webp" alt="Verified shoulder, elbow, wrist, hip, knee and ankle landmarks on the illustration." width="240">VLM proposes; Inkinesis verifies.</td>
-<td width="33%" valign="top"><strong>03 · Composed rig</strong><br>OURS<img src="docs/media/method/pipeline-composed.webp" alt="Purple Couture with articulated arms, bent knees and a tilted head." width="240">Limbs, face and garment ownership.</td>
-<td width="33%" valign="top"><strong>04 · Live2D export</strong><br>VERIFICATION<img src="docs/media/method/pipeline-core.webp" alt="The same posed controls evaluated by official Cubism Core, with its actual deformed triangles overlaid on the right half." width="240">Official Core and deformed mesh.</td>
+<td width="33%" align="center" valign="top"><strong>02 · Verified joints</strong><br><sub>VERIFIED</sub><br><img src="docs/media/method/pipeline-joints.webp" alt="Verified shoulder, elbow, wrist, hip, knee and ankle landmarks on the illustration." width="240"><br><sub>VLM proposes; Inkinesis verifies.</sub></td>
+<td width="33%" align="center" valign="top"><strong>03 · Composed rig</strong><br><sub>OURS</sub><br><img src="docs/media/method/pipeline-composed.webp" alt="Purple Couture with articulated arms, bent knees and a tilted head." width="240"><br><sub>Limbs, face and garment ownership.</sub></td>
+<td width="33%" align="center" valign="top"><strong>04 · Live2D export</strong><br><sub>VERIFICATION</sub><br><img src="docs/media/method/pipeline-core.webp" alt="The same posed controls evaluated by official Cubism Core, with its actual deformed triangles overlaid on the right half." width="240"><br><sub>Official Core and deformed mesh.</sub></td>
 </tr>
 </table>
 
@@ -148,7 +160,7 @@ outputs/<run-id>/
     └── *.png                   texture atlases
 ```
 
-Prepared example downloads contain the same `character.inp` and a `Live2D.zip` with the `model/` folder above.
+Prepared example downloads contain the same `character.inp` and a `Live2D.zip` with the `model/` folder above, without the `.cmo3` editor project.
 
 ## Installation
 
@@ -271,17 +283,14 @@ npm run check:setup
 npm run dev
 ```
 
-Open **http://localhost:5200/**, describe a character and press **Generate**, or upload an image. Restart the dev server after changing `.env`. If setup or a run fails, follow [setup troubleshooting](docs/instructions/setup_troubleshooting.md).
-
-Image uploads open a review before rigging: inspect source warnings, choose **Use as-is** or request **Redraw for rigging**, then confirm the image. Redrawing adds an image-edit API call and may change the face, style or details; the original is retained. [Upload review and saved results](docs/instructions/image_to_rig.md#review-an-uploaded-image-before-rigging).
+Open **http://localhost:5200/**, describe a character and press **Generate**. Restart the dev server after changing `.env`. If setup or a run fails, follow [setup troubleshooting](docs/instructions/setup_troubleshooting.md).
 
 ## Generating from the command line
 
 ```sh
-npm run inkinesis -- --prompt "An adult adventurer with teal hair and a fitted jacket"
-npm run image-to-rig -- --image /path/to/character.png --out outputs/my-character
-npm run image-to-rig -- --image /path/to/character.png --out outputs/my-character --resume
-npm run image-to-rig -- --image /path/to/character.png --live2d
+npm run inkinesis -- --prompt "An adult adventurer with teal hair and a fitted jacket" --out outputs/my-character
+npm run inkinesis -- --prompt "An adult adventurer with teal hair and a fitted jacket" --out outputs/my-character --resume
+npm run inkinesis -- --prompt "An adult adventurer with teal hair and a fitted jacket" --live2d
 npm run export:live2d -- outputs/my-character/character.inp outputs/my-live2d Character
 ```
 
@@ -289,8 +298,8 @@ CLI runs write directly to an output directory. UI runs stay temporary until you
 
 ## Limits
 
-- **One front-facing character** per image, full body, on a transparent or plain background. Multiple characters and unsuitable face views are refused.
-- **Separated limbs and visible joints** give the best rigs. A hidden joint restricts only its own chain: an arm under a coat stays fixed while the other arm and the head keep moving.
+- **One front-facing, full-body character** per prompt. Several characters or unsuitable face views are refused.
+- **Separated limbs and visible joints** give the best rigs. Hidden joints can be estimated from prepared layers, but a chain stays fixed when the source support or motion checks fail. Existing moving control domains are retained when selecting a fallback proposal; the checks cover sampled poses, not every possible image artifact.
 - **Clothing, facial hair and accessories are preserved**, not simplified to make rigging easier.
 - **The mouth is a measured patch**, not separately articulated teeth and tongue; seams can show at extreme poses or on unusual designs.
 - **A successful export still needs visual review.** `success` means the rig was exported and passed native validation. Geometry and runtime checks do not establish texture quality or natural anatomy.
@@ -308,7 +317,7 @@ npx playwright install chromium
 npm run verify:ui
 npm run verify:upload
 npm run verify:example-download
-# Optional: after installing all 53 example avatars locally:
+# Optional: after installing all 30 example avatars locally:
 npm run verify:examples
 node --import tsx tools/verify/uiSaveSmoke.ts
 ```
@@ -321,6 +330,7 @@ Portable tests use authored synthetic geometry. Optional native parity tests req
 - [Example avatar distribution](docs/instructions/avatar_library.md)
 - [Pipeline stages, saving and downloads](docs/instructions/image_to_rig.md)
 - [Preparation and motion](docs/instructions/independent_preparation.md)
+- [Head attachments and source-visible coverage](docs/instructions/head_and_coverage.md)
 - [Live2D export](docs/instructions/live2d_export.md)
 - [Remote H100 setup](docs/instructions/remote_gpu.md)
 - [Optional quality checks](docs/instructions/quality_control.md)
@@ -336,6 +346,19 @@ Inkinesis stands on work we are grateful for:
 - **[Live2D Cubism SDK](https://www.live2d.com/en/sdk/about/)** for the official Core used in export validation.
 - **[eSpeak NG](https://github.com/espeak-ng/espeak-ng)** for phoneme timing behind the speech preview.
 
+## Citation
+
+If you use Inkinesis in your work, please cite:
+
+```bibtex
+@inproceedings{celiktenyildiz2027inkinesis,
+  title     = {Inkinesis: Prompt-to-Rig for Anime Characters with Garment Ownership, Held-Object Carriers, and Verified Live2D Export},
+  author    = {Çeliktenyıldız, Mehmet Salih},
+  booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV) Workshops},
+  year      = {2027}
+}
+```
+
 ## Licensing
 
-Core project code is Apache-2.0. The psd2live adapters have GPL-3.0-only headers and run in a separate process. External software, model weights, SDKs, and user artwork retain their own terms. See [NOTICE](NOTICE) and [asset licensing](LICENSE-ASSETS.md). To cite this project, use [CITATION.cff](CITATION.cff).
+Core project code is Apache-2.0. The psd2live adapters have GPL-3.0-only headers and run in a separate process. External software, model weights, SDKs, and user artwork retain their own terms. See [NOTICE](NOTICE) and [asset licensing](LICENSE-ASSETS.md). To cite this project, see [Citation](#citation) or [CITATION.cff](CITATION.cff).

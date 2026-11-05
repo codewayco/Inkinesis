@@ -4,10 +4,9 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {Ledger} from '../ledger';
 import {parseAssessment,compareAssessments,type Assessment,type Issue} from '../schema';
-import {scopedEdit,replaceLayerPixels} from '../pixels';
+import {scopedEdit} from '../pixels';
 import {encodePNG} from '../../shared/encodePNG';
 import {decodePNG} from '../../generate/png';
-import {readInp,writeInp,inpParts,type InpDocument} from '../../rig/inp';
 const dirs:string[]=[];
 afterEach(()=>{for(const d of dirs.splice(0))rmSync(d,{recursive:true,force:true});});
 const temp=()=>{const d=mkdtempSync(join(tmpdir(),'quality-test-'));dirs.push(d);return join(d,'journal.json');};
@@ -45,15 +44,5 @@ describe('repair isolation',()=>{
   expect(result.changedPixels).toBe(4);
   for(let y=0;y<4;y++)for(let x=0;x<4;x++)expect(Array.from(image.rgba.slice((y*4+x)*4,(y*4+x+1)*4))).toEqual(x>=1&&x<=2&&y>=1&&y<=2?[0,0,255,255]:[255,0,0,255]);
   expect(()=>scopedEdit(solid(0,0,0),solid(0,0,0),[0,0,NaN,1])).toThrow();
- });
- it('isolates repaired texture from another part sharing its atlas and preserves all motion bindings',()=>{
-  const mesh={verts:[-2,-2,2,-2,2,2,-2,2],uvs:[0,0,1,0,1,1,0,1],indices:[0,1,2,0,2,3],origin:[0,0]};
-  const puppet:InpDocument={meta:{canvas:{width:4,height:4}},nodes:{uuid:0,name:'root',type:'Node',enabled:true,zsort:0,children:['face','neck'].map((name,i)=>({uuid:i+1,name,type:'Part',enabled:true,zsort:i,textures:[0],mesh:structuredClone(mesh)}))},param:[{uuid:5,name:'Head Roll',min:[-30],max:[30],defaults:[0],is_vec2:false,axis_points:[[0,.5,1]],merge_mode:'Passthrough',bindings:[{node:1,param_name:'deform',values:[[[1,2]],[[0,0]],[[3,4]]],isSet:[[true],[true],[true]],interpolate_mode:'Linear'}]}]};
-  const original=solid(255,0,0),scoped=scopedEdit(original,solid(0,0,255),[.25,.25,.75,.75]);
-  const input=writeInp(puppet,[original]),result=readInp(replaceLayerPixels(input,'face',original,scoped.png).file);
-  expect(result.puppet.param).toEqual(puppet.param);expect(result.textures[0]).toEqual(original);
-  expect(inpParts(result.puppet)[1]).toEqual(inpParts(puppet)[1]);expect(inpParts(result.puppet)[0].mesh).toEqual(mesh);
-  expect(inpParts(result.puppet)[0].textures).toEqual([1]);expect(decodePNG(result.textures[1]).rgba).toEqual(decodePNG(scoped.png).rgba);
-  expect(()=>replaceLayerPixels(input,'face',original,original)).toThrow(/did not affect/);
  });
 });

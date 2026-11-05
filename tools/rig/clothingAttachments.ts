@@ -4,10 +4,13 @@
 import {inpParts,inpTextures,type InpDocument,type InpNode,type InpParameter} from './inp';
 import {poseContinuousLimb,type ContinuousLimb,type LimbPoint} from '../../engine/src/body/continuousLimb';
 import {renderTextured,type TexturedMesh} from '../../engine/src/render/textured';
+import {pinRecoveredSeams} from './pinRecoveredSeams';
+import {sourceSleeveMaterialAgreement} from './sourceSleeveMaterialAgreement';
+import {detachedSleeveOwnership} from './detachedSleeveOwnership';
 import {encodePNG} from '../shared/encodePNG';
 /** A sparse canvas grid keeps disjoint alpha islands from sharing triangles. */
-export function canvasMesh(rgba:Uint8ClampedArray,width:number,height:number) {
-    const step=Math.max(6,Math.round(Math.max(width,height)/128));
+export function canvasMesh(rgba:Uint8ClampedArray,width:number,height:number,requestedStep?:number) {
+    const step=requestedStep??Math.max(6,Math.round(Math.max(width,height)/128));
     const verts:number[]=[],uvs:number[]=[],indices:number[]=[],ids=new Map<string,number>();
     const vertex=(x:number,y:number)=>{const key=x+'/'+y;if(ids.has(key))return ids.get(key)!;const id=verts.length/2;ids.set(key,id);verts.push(x-width/2,y-height/2);uvs.push(x/width,y/height);return id;};
     for(let y=0;y<height;y+=step)for(let x=0;x<width;x+=step){
@@ -18,7 +21,7 @@ export function canvasMesh(rgba:Uint8ClampedArray,width:number,height:number) {
     return {verts,uvs,indices,origin:[0,0]};
 }
 /** `nearestBone` is an ablation baseline: every garment pixel joins the nearest of the torso spine and the two arm chains. Production uses `anatomical`. */
-export interface ClothingAttachmentOptions { assignment?:'anatomical'|'nearestBone' }
+export interface ClothingAttachmentOptions { assignment?:'anatomical'|'nearestBone'; detachedSleeves?:boolean; sustainedSleeveSupport?:boolean; recoveryArms?:string[] }
 function segmentDistance(p:LimbPoint,a:LimbPoint,b:LimbPoint) {
     const dx=b.x-a.x,dy=b.y-a.y,len2=dx*dx+dy*dy,t=len2?Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/len2)):0;
     return Math.hypot(p.x-a.x-dx*t,p.y-a.y-dy*t);
@@ -93,7 +96,9 @@ export function clothingAttachments(puppet:InpDocument,textures:Buffer[],marks:R
     const legMarks=['hipL','hipR','kneeL','kneeR'].every(id=>marks[id]);
     for(const node of nodes.filter(n=>n.name==='topwear'||n.name==='bottomwear')){
         const top=node.name==='topwear';
-        const armOwners=top?puppet.param.filter(p=>p.name.startsWith('Arm ')):[];
+        const allArms=puppet.param.filter(p=>p.name.startsWith('Arm '));
+        const detached=!top&&options.detachedSleeves?detachedSleeveOwnership(render([node]),allArms.map(p=>({name:p.name,rgba:render(nodes.filter(n=>n.name==='handwear-'+p.name.at(-1)!.toLowerCase()))})),width,height):undefined;
+        const armOwners=top||detached?.components.length?allArms:[];
         const legOwners=legMarks?puppet.param.filter(p=>p.name.startsWith('Leg ')):[];
         if(!armOwners.length&&!legOwners.length)continue;
         const rgba=render([node]);
@@ -103,7 +108,7 @@ export function clothingAttachments(puppet:InpDocument,textures:Buffer[],marks:R
         // A torso garment carries leg tubes only when they wrap the legs like
         // shorts or overalls; coat panels or tails beside the legs stay with the torso.
         if(fork&&top&&!fittedTubes(alpha,render(nodes.filter(n=>/^legwear-[lr]$/.test(n.name))),width,height,marks,fork))fork=null;
-        if(!top&&!fork){report.push({layer:node.name,status:'retained',reason:'No alpha-supported trouser/short-leg separation; skirt retained.'});continue;}
+        if(!top&&!fork&&!detached?.components.length){report.push({layer:node.name,status:'retained',reason:'No alpha-supported trouser/short-leg separation; skirt retained.'});continue;}
         if(!armOwners.length&&!fork){report.push({layer:node.name,status:'retained',reason:'No supported sleeve pixels'});continue;}
         if(puppet.param.some(p=>p.bindings.some(b=>b.node===node.uuid)))throw new Error('Clothing attachment expects an unbound source garment');
         const chains=armOwners.map(param=>{const side=param.name.at(-1)!,record=combined?.chains?.find(c=>c.name===param.name);if(!record)throw new Error('Missing limb chain');const {root,joint,tip}=record.chain,upper=Math.hypot(joint.x-root.x,joint.y-root.y),lower=Math.hypot(tip.x-joint.x,tip.y-joint.y);let cuff=0;
@@ -114,7 +119,14 @@ export function clothingAttachments(puppet:InpDocument,textures:Buffer[],marks:R
             if(cuff>0){const t=cuff*.55/upper,center={x:root.x+(joint.x-root.x)*t,y:root.y+(joint.y-root.y)*t};
                 for(let d=0;d<upper*.4;d+=Math.max(1,upper*.005)){const p={x:center.x+(joint.y-root.y)/upper*d*(side==='L'?1:-1),y:center.y-(joint.x-root.x)/upper*d*(side==='L'?1:-1)};if(alpha(p)<.5)break;outerWidth=d;}
             }
-            return {param,side,record,upper,cuff,outerWidth};});
+            // A long narrow sleeve may miss the single-width threshold even though
+            // it has substantial lateral support over its full length. Require
+            // three separated cross-sections, so a one-off strap does not qualify.
+            const supportWidths=[.3,.5,.7].map(f=>{const t=cuff*f/upper,center={x:root.x+(joint.x-root.x)*t,y:root.y+(joint.y-root.y)*t};let span=0;
+                for(let d=0;d<upper*.4;d+=Math.max(1,upper*.005)){if(alpha({x:center.x+(joint.y-root.y)/upper*d*(side==='L'?1:-1),y:center.y-(joint.x-root.x)/upper*d*(side==='L'?1:-1)})<.5)break;span=d;}return span;});
+            const sustainedSupport=!!options.sustainedSleeveSupport&&cuff>upper*.5&&supportWidths.every(w=>w>upper*.06);
+            return {param,side,record,upper,cuff,outerWidth,supportWidths,sustainedSupport};});
+        const sourceSleeves=top&&options.recoveryArms?.length?sourceSleeveMaterialAgreement(rgba,chains.map(c=>({name:c.param.name,chain:c.record.chain,eligible:options.recoveryArms!.includes(c.param.name),rgba:render(nodes.filter(n=>['arm-'+c.side.toLowerCase(),'handwear-'+c.side.toLowerCase()].includes(n.name)))})),width,height):undefined;
         const legs=fork?legOwners.map(param=>{const record=combined?.chains?.find(c=>c.name===param.name);if(!record)throw new Error('Missing limb chain');return {param,side:param.name.at(-1)! as 'L'|'R',record};}):[];
         // Labels: 0 torso, 1..arms sleeves, then one tube per moving leg, then the seat.
         const tubeLabel=(side:string)=>{const j=legs.findIndex(l=>l.side===side);return j<0?0:chains.length+1+j;},seatLabel=chains.length+legs.length+1;
@@ -130,8 +142,8 @@ export function clothingAttachments(puppet:InpDocument,textures:Buffer[],marks:R
         const axisMid=(y:number)=>{const at=(s:string)=>{const h=marks['hip'+s],k=marks['knee'+s];return h.x+(k.x-h.x)*(y-h.y)/Math.max(1e-6,k.y-h.y);};return (at('L')+at('R'))/2;};
         const labels=new Uint8Array(width*height),counts=new Array(seatLabel+1).fill(0);
         for(let i=0;i<labels.length;i++){if(!rgba[i*4+3])continue;const p={x:i%width,y:Math.floor(i/width)};
-            let label=0;
-            if(chains.length){
+            let label=detached?.owners[i]??0;
+            if(chains.length&&!label&&top){
                 if(assignment==='nearestBone'){
                     const spineTop={x:(marks.shoulderL.x+marks.shoulderR.x)/2,y:(marks.shoulderL.y+marks.shoulderR.y)/2},spineBottom={x:(marks.hipL.x+marks.hipR.x)/2,y:(marks.hipL.y+marks.hipR.y)/2};
                     let best=segmentDistance(p,spineTop,spineBottom);
@@ -141,9 +153,10 @@ export function clothingAttachments(puppet:InpDocument,textures:Buffer[],marks:R
                     const {root,joint}=c.record.chain,dx=joint.x-root.x,dy=joint.y-root.y;
                     const along=((p.x-root.x)*dx+(p.y-root.y)*dy)/c.upper;
                     const outward=((p.x-root.x)*dy-(p.y-root.y)*dx)/c.upper*(c.side==='L'?1:-1);
-                    if(c.cuff>c.upper*.12&&c.outerWidth>c.upper*.1&&along>0&&along<c.cuff+c.upper*.08&&outward>-c.outerWidth*.75){label=j+1;break;}
+                    if(c.cuff>c.upper*.12&&(c.outerWidth>c.upper*.1||c.sustainedSupport)&&along>0&&along<c.cuff+c.upper*.08&&outward>-c.outerWidth*.75){label=j+1;break;}
                 }
             }
+            if(!label&&sourceSleeves)label=sourceSleeves.owners[i];
             if(!label&&apex&&(!top||p.y>=hipTop)){
                 // Character left is image right.
                 if(p.y>=apex.y)label=tubeLabel(p.x>=apex.x+axisMid(p.y)-axisMid(apex.y)?'L':'R');
@@ -151,7 +164,8 @@ export function clothingAttachments(puppet:InpDocument,textures:Buffer[],marks:R
             }
             labels[i]=label;counts[label]++;
         }
-        if(counts.slice(1).reduce((a,b)=>a+b,0)<32){report.push({layer:node.name,status:'retained',reason:fork?'No supported sleeve or leg pixels':'No supported sleeve pixels'});continue;}
+        if(counts.slice(1).reduce((a,b)=>a+b,0)<32){report.push({layer:node.name,status:'retained',reason:fork?'No supported sleeve or leg pixels':'No supported sleeve pixels',cuffs:chains.map(c=>({side:c.side,distance:c.cuff,outerWidth:c.outerWidth,supportWidths:c.supportWidths,sustainedSupport:c.sustainedSupport}))});continue;}
+        const seamPins=sourceSleeves?pinRecoveredSeams(puppet,labels,rgba,width,height,chains.filter(c=>options.recoveryArms?.includes(c.param.name)).map(c=>({label:chains.indexOf(c)+1,param:c.param,record:c.record}))):[];
         const fragments=[];const blended:Record<string,'L'|'R'|'seat'>={};
         const bind=(fragment:InpNode,param:InpParameter,record:{chain:ContinuousLimb;distalSign:number},weight:(p:LimbPoint)=>number)=>{
             const xs=param.axis_points[0].map(t=>param.min[0]+t*(param.max[0]-param.min[0])),ys=param.axis_points[1].map(t=>param.min[1]+t*(param.max[1]-param.min[1]));
@@ -183,7 +197,7 @@ export function clothingAttachments(puppet:InpDocument,textures:Buffer[],marks:R
                 if(neighbors.some(j=>rgba[j*4+3]>0&&labels[j]===label))pixels.set(rgba.subarray(i*4,i*4+4),i*4);
             }
             const suffix=!label?'torso':label<=chains.length?chains[label-1].param.name.replace(' ','_'):label===seatLabel?'seat':legs[label-chains.length-1].param.name.replace(' ','_');
-            const fragment:InpNode={...node,uuid:nextId++,name:node.name+'__'+suffix,mesh:canvasMesh(pixels,width,height),textures:[textures.length]};
+            const fragment:InpNode={...node,uuid:nextId++,name:node.name+'__'+suffix,mesh:canvasMesh(pixels,width,height,label>0&&label<=chains.length&&options.recoveryArms?.includes(chains[label-1].param.name)?4:undefined),textures:[textures.length]};
             textures.push(Buffer.from(encodePNG(pixels,width,height)));puppet.nodes.children!.push(fragment);fragments.push(fragment.name);
             // The torso holds the tube of a leg that does not move: the moving leg's blend still reaches it at the apex.
             const tube=label===seatLabel?undefined:label>chains.length?legs[label-chains.length-1].side:!label&&fixedSide?fixedSide:null;
@@ -192,7 +206,7 @@ export function clothingAttachments(puppet:InpDocument,textures:Buffer[],marks:R
             const {param,record}=chains[label-1];bind(fragment,param,record,()=>1);
         }
         puppet.nodes.children=puppet.nodes.children!.filter(n=>n.uuid!==node.uuid);
-        report.push({layer:node.name,status:'partitioned',fragments,pixelOwnership:counts,cuffs:chains.map(c=>({side:c.side,distance:c.cuff,outerWidth:c.outerWidth})),...(blend?{legBlend:{...blend,fragments:blended}}:{}),
+        report.push({layer:node.name,status:'partitioned',materialRecovery:sourceSleeves?.components,seamPins,detachedSleeves:detached?.components,fragments,pixelOwnership:counts,cuffs:chains.map(c=>({side:c.side,distance:c.cuff,outerWidth:c.outerWidth,supportWidths:c.supportWidths,sustainedSupport:c.sustainedSupport})),...(blend?{legBlend:{...blend,fragments:blended}}:{}),
             method:assignment==='nearestBone'?'Ablation baseline: nearest-bone pixel assignment among torso spine and arm chains; garment and skin share identical continuous limb fields.':'Alpha-supported anatomical cutouts; garment and skin share identical continuous limb fields. Leg tubes part below the fork; the seat above it blends both leg fields. One-pixel internal cut overlap; no generated hidden artwork.'});
     }
     puppet.meta.clothingAttachments=report;return {parts:report};

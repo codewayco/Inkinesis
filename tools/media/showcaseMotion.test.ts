@@ -1,6 +1,6 @@
 import {describe,expect,it} from 'vitest';
 import type {InpDocument,InpParameter} from '../rig/inp';
-import {recipeFor,showcaseValues,showcaseOrder} from './showcaseMotion';
+import {recipeFor,showcaseValues,showcaseOrder,showcaseCast,showcaseArmScale} from './showcaseMotion';
 
 function puppet():InpDocument {
     const parameter=(name:string,min:number[],max:number[],defaults=[0,0]):InpParameter=>({uuid:1,name,min,max,defaults,is_vec2:true,axis_points:[[0,1],[0,1]],merge_mode:'Passthrough',bindings:[{node:1,param_name:'deform',values:[],isSet:[],interpolate_mode:'Linear'}]});
@@ -22,6 +22,13 @@ describe('README GIF motion',()=>{
         expect(right['Leg R'][0]).toBeCloseTo(18);expect(right['Leg R'][1]).toBeCloseTo(45);expect(right['Leg L']).toEqual([0,0]);
         expect(left['Leg L'][0]).toBeCloseTo(-18);expect(left['Leg L'][1]).toBeCloseTo(45);expect(left['Leg R']).toEqual([0,0]);
         expect(right['Arm L']).toEqual([0,0]);expect(left['Arm R']).toEqual([0,0]);
+    });
+    it('halves only the arm targets of the listed showcase rigs',()=>{
+        const p=puppet(),id=Object.keys(showcaseArmScale)[0],recipe=recipeFor(p,id);
+        expect(showcaseCast).toContain(id);
+        expect(showcaseValues(p,recipe,.6)['Arm R']).toEqual([8,15]);
+        expect(showcaseValues(p,recipe,1.4)['Leg R'][1]).toBeCloseTo(45);
+        expect(recipeFor(p,'not-listed').armScale).toBe(1);
     });
     it('makes the full head excursion and repeats after four seconds',()=>{
         const p=puppet(),recipe=recipeFor(p);
@@ -45,10 +52,10 @@ describe('README GIF motion',()=>{
         expect(showcaseValues(p,recipe,3.3).ParamEyeLOpen[0]).toBe(1);
         expect(showcaseValues(p,recipe,1).ParamMouthOpenY[0]).toBe(0);
     });
-    it('opens with Purple Couture and keeps garment-only avatars at the end without changing the catalog',()=>{
-        const recipe=recipeFor(puppet()),entries=['01-tidal-glass','02-ember-waltz','03-solstice-mosaic','04-purple-couture','06-saffron-orbit','05-ultramarine-tempo','09-desert-ranger'].map(id=>({id,recipe}));
-        const ordered=showcaseOrder(entries);
-        expect(ordered.slice(0,5).map(e=>e.id)).toEqual(['04-purple-couture','03-solstice-mosaic','06-saffron-orbit','05-ultramarine-tempo','09-desert-ranger']);
-        expect(ordered.slice(-2).map(e=>e.id)).toEqual(['01-tidal-glass','02-ember-waltz']);expect(entries[0].id).toBe('01-tidal-glass');
+    it('presents the explicit cast in order without changing the catalog',()=>{
+        const recipe=recipeFor(puppet()),entries=[...showcaseCast].reverse().map(id=>({id,recipe}));
+        expect(showcaseOrder(entries).map(e=>e.id)).toEqual(showcaseCast);expect(entries[0].id).toBe(showcaseCast.at(-1));
+        expect(new Set(showcaseCast).size).toBe(showcaseCast.length);
+        expect(()=>showcaseOrder(entries.slice(1))).toThrow('Missing showcase avatar');
     });
 });

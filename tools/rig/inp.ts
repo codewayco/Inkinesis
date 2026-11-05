@@ -1,5 +1,6 @@
 /** Small checked reader/writer for the PNG-only INP subset this exporter owns. */
 import { decodePNG } from '../generate/png';
+import type { ContinuousLimb } from '../../engine/src/body/continuousLimb';
 export interface InpBinding {
   node: number; param_name: string; values: unknown[][]; isSet: boolean[][]; interpolate_mode: string;
 }
@@ -16,6 +17,12 @@ export interface InpNode {
 export interface InpDocument {
   meta: Record<string, unknown>; nodes: InpNode; param: InpParameter[];
 }
+export interface ChainSampling { xs?: number[]; ys?: number[]; prior?: ChainSampling; [detail: string]: unknown }
+/** Per-limb record in `meta.combined.chains`; refinement stages append their own audit fields. */
+export interface CombinedChainRecord {
+  name: string; chain: ContinuousLimb; range: number[][]; distalSign: number; parts?: string[]; sampling?: ChainSampling; [detail: string]: unknown;
+}
+export const combinedChains = (puppet: InpDocument) => (puppet.meta.combined as { chains: CombinedChainRecord[] }).chains;
 export function readInp(bytes: Buffer) {
   let at = 0;
   const take = (n: number) => {

@@ -51,7 +51,7 @@ export function packageExport(folder: string, sourceSha256: string): Buffer {
   for (const name of [refs.Moc, ...refs.Textures, refs.DisplayInfo].filter(Boolean)) {
     if (!files.some(f => f.name === name)) throw new Error(`Missing runtime dependency: ${name}`);
   }
-  files.push({ name: 'README.txt', bytes: Buffer.from(`Extract this ZIP before opening ${manifestName} in Live2D Cubism Viewer.\nKeep the textures folder beside the model files.\nThe CMO3 is a reconstructed editor project. Custom limb parameters require explicit tracking mappings.\nNo animation clips or physics are synthesized.\nSource INP SHA-256: ${sourceSha256}\n`) });
+  files.push({ name: 'README.txt', bytes: Buffer.from(`Requires Live2D Cubism 5.0 or newer (channel blend shapes).\nExtract this ZIP before opening ${manifestName} in Live2D Cubism Viewer.\nKeep the textures folder beside the model files.\nThe CMO3 is a reconstructed editor project. Custom limb parameters require explicit tracking mappings.\nNo animation clips or physics are synthesized.\nSource INP SHA-256: ${sourceSha256}\n`) });
   return zipFiles(files);
 }
 function buildDownload(source: string, zip: string) {

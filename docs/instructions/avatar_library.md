@@ -2,7 +2,7 @@
 
 ## User flow
 
-Start `npm run dev`, expand **Pick an Avatar**, select an example and press **Download**. Selection alone does not download missing files. The button displays **Downloading…** and byte progress, followed by **Downloaded** once both files have passed size and SHA-256 validation. The selected rig then opens in the player. Its ordinary Inochi/Live2D links can also save copies using the browser's download dialog.
+Start `npm run dev`, expand **Pick an Avatar**, select one of the 30 avatars and press **Download**. Selection alone does not download missing files. The button displays **Downloading…** and byte progress, followed by **Downloaded** once both files have passed size and SHA-256 validation. The selected rig then opens in the player. Its ordinary Inochi/Live2D links can also save copies using the browser's download dialog.
 
 The local Node service installs `character.inp` and `Live2D.zip` into `example-avatars/<id>/`. These files are ignored by Git. Restarting the server rechecks and reuses installed files; there is no repeated download. Generation dependencies, model keys and a GPU are unnecessary for examples. A static-only deployment cannot write into a local checkout and therefore requires `npm run dev` for this feature.
 
@@ -10,24 +10,26 @@ Failed, truncated or corrupt transfers are removed without replacing existing fi
 
 ## Publication layout
 
+The example Live2D packages contain the runtime model (`.model3.json`, `.moc3`, textures and display info) without the reconstructed Cubism Editor project (`.cmo3`), which keeps each download small. Exporting a rig yourself with **Live2D (.zip)** or `npm run export:live2d` still produces the `.cmo3`.
+
 Git includes `catalog.json`, `checksums.json`, `previews/*.webp`, code and documentation. Git excludes INP/ZIP payloads, local `export-*` workspaces and `.downloads/` temporary directories. Do not enable Git LFS for these assets. The Vite build emits metadata and small previews only, even if payloads are installed locally.
 
 The public catalog contains each avatar's label, stable ID, preview path, local paths and two artifact descriptors (`file`, unique release `asset` name, exact `bytes`, `sha256`). The checksum list provides the same hashes by local path. Download sources are pinned to a versioned release, not a mutable `latest` URL.
 
 ## Prepare attachments locally (no upload)
 
-With all 53 existing avatars installed and verified:
+With all 30 example avatars installed and verified:
 
 ```sh
 npm run prepare:avatar-release
 ```
 
-This verifies all files against the catalog and prepares 106 uniquely named attachments, plus `SHA256SUMS`, in ignored `.cache/avatar-release/`. It replaces the previous generated attachment directory only after all files verify, so removed or renamed avatars cannot leak into a new release. Each avatar has `<id>.inp` and `<id>-live2d.zip`. Separate attachments avoid nested archive extraction. The command does not commit, push, create tags or upload anything.
+This verifies all files against the catalog and prepares 60 uniquely named attachments, plus `SHA256SUMS`, in ignored `.cache/avatar-release/`. It replaces the previous generated attachment directory only after all files verify, so removed or renamed avatars cannot leak into a new release. Each avatar has `<id>.inp` and `<id>-live2d.zip`. Separate attachments avoid nested archive extraction. The command does not commit, push, create tags or upload anything.
 
 ## Publish later
 
 1. Commit/push the code, metadata and previews only when ready. Confirm `git diff --cached --name-only` contains no INP or ZIP payloads.
-2. Publish the prepared files from `.cache/avatar-release/` (including `SHA256SUMS`) on the **`avatars-v2`** GitHub Release in **`codewayco/Inkinesis`**. The catalog is already pinned to that exact repository and tag. A differently named code release does not satisfy the download URL.
+2. Publish the prepared files from `.cache/avatar-release/` (including `SHA256SUMS`) on the **`v1.0.0`** GitHub Release in **`codewayco/Inkinesis`**, the same release as the code. The catalog is already pinned to that exact repository and tag.
 3. If using a different repository or tag, update `release.baseUrl` in `example-avatars/catalog.json` and ship that metadata with the matching attachments. Until the configured release is public, a fresh checkout can show previews but cannot download these avatars.
 4. Test a clean checkout without local payloads. It should show previews immediately and install the selected avatar only after **Download** is pressed.
 
@@ -37,4 +39,4 @@ To update assets, create a new versioned release, regenerate catalog sizes/hashe
 
 ## Verification
 
-`npm run verify:example-download` runs a local synthetic browser test with corrupt-transfer/retry coverage and no GitHub calls. `npm run verify:examples` checks all 53 actual installed avatars against a running dev server; install them first. Unit tests cover integrity, path checks, missing publication configuration, truncated/oversized files, and reuse after restart.
+`npm run verify:example-download` runs a local synthetic browser test with corrupt-transfer/retry coverage and no GitHub calls. `npm run verify:examples` checks all 30 actual installed avatars against a running dev server; install them first. Unit tests cover integrity, path checks, missing publication configuration, truncated/oversized files, and reuse after restart.

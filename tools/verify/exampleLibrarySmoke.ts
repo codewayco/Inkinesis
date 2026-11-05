@@ -33,7 +33,7 @@ try {
   }
   await page.locator('#headReset').click();await page.locator('#bodyRest').click();
   for(const [id,value] of defaults)if(await page.locator('#'+id).inputValue()!==value)throw Error('Neutral reset differs: '+entry.id+' '+id);
-  if(entry.id==='04-purple-couture'){
+  if(entry.id==='20-purple-couture'){
    mkdirSync('.cache/ui-check',{recursive:true});
    await page.screenshot({path:resolve('.cache/ui-check/example.png')});
   }

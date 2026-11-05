@@ -86,7 +86,8 @@ function showCapabilities(caps?:MotionCapabilities, ready=true) {
     if(!caps){capabilityDialog.close();return;}
     el('generatedActions').hidden=false;
     const intro=document.createElement('p');intro.textContent=ready?'Your character design is preserved. Only supported movements are enabled; other regions stay in their drawn pose. Preview the result before saving.':'Source assessment only — no animated rig is available. Candidate movements still require layer and geometry checks.';capabilityPanel.append(intro);
-    const notes=designNotes(caps);
+    const hasPairedGrip=ready&&asset?.puppet.param.some(p=>p.name==='ParamGripLift');
+    const notes=designNotes(caps).filter(note=>!hasPairedGrip||!/^(Left|Right) arm stays in its drawn pose:/.test(note));
     if(notes.length){
         const heading=document.createElement('strong');heading.textContent='What this drawing limits';
         const list=document.createElement('ul');list.style.margin='4px 0 10px';
@@ -96,7 +97,8 @@ function showCapabilities(caps?:MotionCapabilities, ready=true) {
     const labels:Record<string,string>={'Arm L':'Left arm','Arm R':'Right arm','Leg L':'Left leg','Leg R':'Right leg',yaw:'Head turn (yaw)',pitch:'Head tilt (pitch)',roll:'Head lean (roll)',head:'Head',blink:'Blink',mouth:'Mouth'};
     for(const [name,c] of [...Object.entries(caps.headAxes??{head:caps.face.head}),...Object.entries({blink:caps.face.blink,mouth:caps.face.mouth}),...Object.entries(caps.chains)]) {
         const row=document.createElement('p');row.style.margin='5px 0';
-        row.textContent=`${labels[name]}: ${c.mode==='fixed'?'held still':!ready?'candidate, not validated':c.mode==='limited'?'reduced movement range':'movement enabled'}${c.reasons.length?' — '+c.reasons.filter(r=>!r.startsWith('Body foldover:')).join(' '):''}`;
+        const paired=ready&&/^Arm [LR]$/.test(name)&&asset?.puppet.param.some(p=>p.name==='ParamGripLift');
+        row.textContent=paired?`${labels[name]}: moves together with the held object; independent arm movement is unavailable.`:`${labels[name]}: ${c.mode==='fixed'?'held still':!ready?'candidate, not validated':c.mode==='limited'?'reduced movement range':'movement enabled'}${c.reasons.length?' — '+c.reasons.filter(r=>!r.startsWith('Body foldover:')).join(' '):''}`;
         capabilityPanel.append(row);
         for(const check of c.checks??[]){const detail=document.createElement('small');detail.style.display='block';detail.textContent=`${check.name}: ${check.status}${check.samples?' ('+check.samples+' poses)':''}. ${check.detail}`;capabilityPanel.append(detail);}
     }
@@ -106,13 +108,14 @@ garmentControls.className = 'grid';
 garmentControls.style.marginTop = '5px';
 garmentControls.hidden = true;
 el('bodyRest').parentElement!.before(garmentControls);
-for (const [name, label] of [['ParamGarmentSway','Cloth'],['ParamBodySway','Sway'],['ParamBreath','Breath']]) {
+for (const [name, label] of [['ParamGarmentSway','Cloth'],['ParamBodySway','Sway'],['ParamBreath','Breath'],['ParamGripLift','Lift held object']]) {
     const row = document.createElement('label'); row.className = 'slider';
+    if(name==='ParamGripLift'){row.style.gridColumn='1 / -1';row.style.gridTemplateColumns='110px 1fr 40px';}
     const title = document.createElement('span'); title.textContent = label;
     const input = document.createElement('input'); input.type = 'range'; input.id = name; input.step = '.01';
     const output = document.createElement('output'); output.id = name + 'Out';
     row.append(title, input, output); garmentControls.append(row);
-    mappings[name] = [name,0,1];
+    mappings[name] = [name,0,name==='ParamGripLift'?-1:1];
 }
 
 function syncControls(displayValues = values) { for (const [id, [name, axis, multiplier]] of Object.entries(mappings)) {
@@ -121,12 +124,12 @@ function syncControls(displayValues = values) { for (const [id, [name, axis, mul
     const caps=asset?.puppet.meta.motionCapabilities as MotionCapabilities|undefined;
     const c=caps?.chains[name as keyof MotionCapabilities['chains']]??(name==='ParamMouthOpenY'?caps?.face.mouth:(name==='Head Angles'||name==='ParamAngleZ')?(caps?.headAxes?.[id as 'yaw'|'pitch'|'roll']??caps?.face.head):undefined);
     input.disabled=!p||c?.mode==='fixed';
-    input.title=c?.reasons.join(' ')??(!p?'This rig has no independent control for this movement.':'');
+    input.title=name==='ParamGripLift'&&p?'Move both hands and the held object together within the supported range.':c?.reasons.join(' ')??(!p?'This rig has no independent control for this movement.':'');
     input.parentElement!.title=input.title;
     if (id.startsWith('Param')) input.parentElement!.style.display = p ? '' : 'none';
     if (p) {
-        input.min = String(p.min[axis] * multiplier);
-        input.max = String(p.max[axis] * multiplier);
+        input.min = String(Math.min(p.min[axis] * multiplier,p.max[axis] * multiplier));
+        input.max = String(Math.max(p.min[axis] * multiplier,p.max[axis] * multiplier));
         // Reduced ranges can have fractional endpoints (e.g. -12.5..12.5).
         // An integer step anchored at that minimum silently rounds neutral 0.
         input.step = 'any';
@@ -135,21 +138,21 @@ function syncControls(displayValues = values) { for (const [id, [name, axis, mul
     el(id + 'Out').textContent = id === 'jaw' ? (Number(input.value) / multiplier).toFixed(2) : String(Number(Number(input.value).toFixed(2)));
 }
     garmentControls.hidden = false;
-    garmentControls.style.display = ['ParamGarmentSway','ParamBodySway','ParamBreath'].some(name => values[name]) ? '' : 'none';
+    garmentControls.style.display = ['ParamGarmentSway','ParamBodySway','ParamBreath','ParamGripLift'].some(name => values[name]) ? '' : 'none';
     const caps=asset?.puppet.meta.motionCapabilities as MotionCapabilities|undefined;
     motionButton.disabled = !asset || !Object.keys(motionDemoValues(asset.puppet.param,caps,1)).length;
     motionButton.textContent = clip ? 'Stop Motion Demo' : 'Motion Demo';
     motionButton.setAttribute('aria-pressed', String(Boolean(clip)));
-    motionButton.title = motionButton.disabled ? 'This avatar has no supported body movement.' : 'Preview supported arm, elbow, hip and knee motion.';
+    motionButton.title = motionButton.disabled ? 'This avatar has no supported body movement.' : 'Preview the supported body and held-object movements.';
 }
 for (const [id, [name, axis, multiplier]] of Object.entries(mappings))
     el<HTMLInputElement>(id).oninput = () => { clip = ''; if (values[name])
         values[name][axis] = Number(el<HTMLInputElement>(id).value) / multiplier; syncControls(); };
-function resetBody() { clip = ''; for (const name of ['Arm L', 'Arm R', 'Leg L', 'Leg R','ParamGarmentSway','ParamBodySway','ParamBreath'])
+function resetBody() { clip = ''; for (const name of ['Arm L', 'Arm R', 'Leg L', 'Leg R','ParamGarmentSway','ParamBodySway','ParamBreath','ParamGripLift'])
     if (values[name])
         values[name] = [...parameterByName(asset!, name)!.defaults]; syncControls(); }
 function resetHead() { blinkStarted = null; for (const p of asset?.puppet.param ?? [])
-    if (!/^(Arm|Leg) /.test(p.name))
+    if (!/^(Arm|Leg) /.test(p.name)&&p.name!=='ParamGripLift')
         values[p.name] = [...p.defaults]; syncControls(); }
 el('bodyRest').onclick = resetBody;
 el('headReset').onclick = resetHead;

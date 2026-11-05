@@ -15,6 +15,20 @@ describe('prepared regional motion',()=>{
     const result=layerCapabilities(doc,[Buffer.from(encodePNG(rgba,64,64))],marks,caps());expect(result.chains['Arm L'].mode).toBe('fixed');
     rgba.fill(255);const supported=layerCapabilities(doc,[Buffer.from(encodePNG(rgba,64,64))],marks,caps());expect(supported.chains['Arm L'].mode).toBe('articulated');expect(supported.chains['Arm R'].mode).toBe('fixed');
   });
+  it('reassesses supplied joints only when explicitly requested and prepared support is present',()=>{
+    const doc=document(),marks={shoulderL:{x:16,y:5},elbowL:{x:16,y:25},wristL:{x:16,y:50}},c=caps();c.chains['Arm L'].mode='fixed';c.chains['Arm L'].reasons=['Occluded root'];
+    const rgba=new Uint8ClampedArray(64*64*4).fill(255),textures=[Buffer.from(encodePNG(rgba,64,64))];
+    expect(layerCapabilities(doc,textures,marks,c).chains['Arm L'].mode).toBe('fixed');
+    expect(layerCapabilities(doc,textures,marks,c,new Set(),{reassessPreparedLimbs:true}).chains['Arm L'].mode).toBe('articulated');
+    rgba.fill(0);expect(layerCapabilities(doc,[Buffer.from(encodePNG(rgba,64,64))],marks,c,new Set(),{reassessPreparedLimbs:true}).chains['Arm L'].mode).toBe('fixed');
+  });
+  it('keeps the largest verified range from bounded search rather than always halving',()=>{
+    const doc=document(),zero=Array.from({length:4},()=>[0,0]);
+    doc.param=[{uuid:2,name:'Arm L',is_vec2:true,min:[0,0],max:[1,1],defaults:[0,0],axis_points:[[0,1],[0,1]],merge_mode:'Passthrough',bindings:[{node:1,param_name:'deform',interpolate_mode:'Linear',isSet:[[true,true],[true,true]],values:[[zero,zero],[zero,[[0,0],[-128,0],[0,0],[-128,0]]]]}]}];
+    const c=caps();finalizeMotionCapabilities(doc,c,undefined,undefined,{adaptiveRanges:true});
+    expect(c.chains['Arm L'].mode).toBe('limited');expect(doc.param[0].max[0]).toBeGreaterThan(.5);expect(doc.param[0].max[0]).toBeLessThan(1);
+    expect(c.chains['Arm L'].checks?.[0].status).toBe('passed');
+  });
   it('restricts only the chain whose mesh folds and leaves face tracks intact',()=>{
     const doc=document(),zero=Array.from({length:4},()=>[0,0]);
     const parameter:InpParameter={uuid:2,name:'Arm L',is_vec2:true,min:[0,0],max:[1,1],defaults:[0,0],axis_points:[[0,1],[0,1]],merge_mode:'Passthrough',bindings:[{node:1,param_name:'deform',interpolate_mode:'Linear',isSet:[[true,true],[true,true]],values:[[zero,zero],[zero,[[0,0],[-128,0],[0,0],[-128,0]]]]}]};

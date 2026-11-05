@@ -1,3 +1,4 @@
+import {rememberRestrictedSource} from './exactRestrictedGrid';
 import {attachmentMotionGate} from './attachmentMotionGate';
 import {chainJoints,type ChainName,type MotionCapabilities} from '../imageToRig/capabilities';
 import {inpParts,inpTextures,type InpDocument} from './inp';
@@ -18,11 +19,11 @@ import {evaluateCombined,type CombinedAsset} from '../../player/src/combinedRunt
  * large piece the hand only touches along its top edge is a seat or a table
  * the hand rests on.
  */
-export function heldProp(limb:Uint8ClampedArray|Uint8Array,prop:Uint8ClampedArray|Uint8Array,width:number,height:number,elbow:LimbPoint,wrist:LimbPoint) {
+export function heldPropComponents(limb:Uint8ClampedArray|Uint8Array,prop:Uint8ClampedArray|Uint8Array,width:number,height:number,elbow:LimbPoint,wrist:LimbPoint) {
   const fx=wrist.x-elbow.x,fy=wrist.y-elbow.y,f2=Math.max(1e-6,fx*fx+fy*fy),forearm=Math.sqrt(f2);
   const hand=new Uint8Array(width*height);let handPixels=0;
   for(let y=0;y<height;y++)for(let x=0;x<width;x++){const i=y*width+x;if(limb[i*4+3]>128&&((x-elbow.x)*fx+(y-elbow.y)*fy)/f2>=.5){hand[i]=1;handPixels++;}}
-  if(!handPixels)return null;
+
   const labels=new Int32Array(width*height),stack:number[]=[];let count=0;
   const pieces:{area:number;top:number;bottom:number}[]=[];
   for(let start=0;start<width*height;start++){
@@ -38,26 +39,43 @@ export function heldProp(limb:Uint8ClampedArray|Uint8Array,prop:Uint8ClampedArra
     for(let dy=-3;dy<=3;dy++)for(let dx=-3;dx<=3;dx++){const xx=x+dx,yy=y+dy;if(xx<0||yy<0||xx>=width||yy>=height)continue;const l=labels[yy*width+xx];if(l)seen.add(l);}
     for(const l of seen){const c=contact.get(l)??{n:0,y:0};c.n++;c.y+=y;contact.set(l,c);}
   }
-  let best:{contact:number;area:number}|null=null;
+  const matches:{component:number;contact:number;area:number}[]=[];
   for(const [l,c] of contact){
     const piece=pieces[l-1],rows=piece.bottom-piece.top+1;
     if(c.n<Math.max(24,.5*forearm))continue;
     if(piece.area>=5*handPixels&&(c.y/c.n-piece.top)<=.1*rows)continue;
-    if(!best||c.n>best.contact)best={contact:c.n,area:piece.area};
+    matches.push({component:l,contact:c.n,area:piece.area});
   }
-  return best;
+  return {labels,pieces,matches:matches.sort((a,b)=>b.contact-a.contact)};
+}
+export function heldProp(...args:Parameters<typeof heldPropComponents>) {
+  const best=heldPropComponents(...args).matches[0];
+  return best?{contact:best.contact,area:best.area}:null;
 }
 export const faceLayers=/^(front hair|back hair|side hair|hair|headwear|eyewear|earwear(?:-[lr])?|face|neck|nose|ears?(?:-[lr])?|eyebrow-[lr]|irides-[lr]|eyewhite-[lr]|eyelash-[lr]|eye_close-[lr]|mouth(?:_open|_close)?|lip_upper|lip_lower|tooth-[tb]|tongue)$/;
-export function layerCapabilities(puppet:InpDocument,textures:Buffer[],marks:Record<string,LimbPoint>,source:MotionCapabilities) {
-  const caps=structuredClone(source),nodes=inpParts(puppet),decoded=inpTextures(textures);
+export function preparedMotionCandidates(source:MotionCapabilities,marks:Record<string,LimbPoint>,width:number,height:number) {
+  const caps=structuredClone(source);
+  for(const name of Object.keys(chainJoints) as ChainName[]){const c=caps.chains[name];
+    if(c.mode==='fixed'&&chainJoints[name].every(id=>marks[id]&&[marks[id].x,marks[id].y].every(Number.isFinite))){
+      const [a,b,d]=chainJoints[name].map(id=>marks[id]);
+      if(Math.min(Math.hypot(a.x-b.x,a.y-b.y),Math.hypot(b.x-d.x,b.y-d.y))>=.025*Math.min(width,height)){
+        c.mode='articulated';c.reasons.push('Supplied joint coordinates are retained; prepared layer coverage, garment attachment and mesh checks determine the usable motion. Source occlusion remains an anatomical uncertainty.');
+      }
+    }
+  }
+  return caps;
+}
+export function layerCapabilities(puppet:InpDocument,textures:Buffer[],marks:Record<string,LimbPoint>,source:MotionCapabilities,carriedProps:ReadonlySet<string>=new Set(),options:{reassessPreparedLimbs?:boolean;garmentLegs?:ReadonlySet<string>}={}) {
   const {width,height}=puppet.meta.canvas as {width:number;height:number};
+  const caps=options.reassessPreparedLimbs?preparedMotionCandidates(source,marks,width,height):structuredClone(source),nodes=inpParts(puppet),decoded=inpTextures(textures);
   for(const name of Object.keys(chainJoints) as ChainName[]) {
-    const c=caps.chains[name];if(c.mode==='fixed')continue;
+    const c=caps.chains[name];
+    if(c.mode==='fixed')continue;
     const side=name.at(-1)!.toLowerCase(),arm=name.startsWith('Arm');
     const names=arm?[`arm-${side}`,`hand-${side}`,`handwear-${side}`]:[`legwear-${side}`,`footwear-${side}`];
     const owned=nodes.filter(n=>names.includes(n.name));
     const missing=chainJoints[name].filter(id=>!marks[id]);
-    if(missing.length||!owned.some(n=>arm?/^(arm|handwear)-/.test(n.name):n.name.startsWith('legwear-'))) {
+    if(missing.length||!owned.some(n=>arm?/^(arm|handwear)-/.test(n.name):n.name.startsWith('legwear-'))&&!options.garmentLegs?.has(name)) {
       c.mode='fixed';c.stage='layers';c.reasons.push('See-through did not provide independently usable limb layers and joint locations.');continue;
     }
     if(!arm&&nodes.some(n=>n.name==='bottomwear')&&!['hipL','hipR','kneeL','kneeR'].every(id=>marks[id])) {
@@ -77,7 +95,7 @@ export function layerCapabilities(puppet:InpDocument,textures:Buffer[],marks:Rec
     if(!supported){c.mode='fixed';c.reasons.push('The separated artwork does not cover the expected limb continuously; movement is disabled to avoid detached parts.');continue;}
     // A hand holding a prop the rig cannot carry would leave it floating: a
     // static prop that touches the hand at rest keeps the arm still.
-    if(arm){
+    if(arm&&!carriedProps.has(name)){
       const props=nodes.filter(n=>/^(objects|prop)$/.test(semanticLayer(n.name))&&n.mesh?.indices.length);
       if(props.length){
         const render=(parts:typeof nodes)=>renderTextured(parts.map(n=>({xy:new Float64Array(n.mesh!.verts.map((v,i)=>v+(i%2?height:width)/2)),uv:new Float64Array(n.mesh!.uvs),indices:new Uint32Array(n.mesh!.indices),depth:new Float64Array(n.mesh!.verts.length/2),depthOffset:0,opacity:1,texture:decoded[n.textures![0]],sampling:'bilinear'} as TexturedMesh)),width,height,[0,0,0,0],{selfOverlap:'count'}).rgba;
@@ -98,18 +116,38 @@ export function layerCapabilities(puppet:InpDocument,textures:Buffer[],marks:Rec
 }
 
 /** Removing a channel freezes it at its imported neutral state, not at an arbitrary key. */
-export function finalizeMotionCapabilities(puppet:InpDocument,caps:MotionCapabilities,textures?:Buffer[],_marks?:Record<string,LimbPoint>) {
+export function finalizeMotionCapabilities(puppet:InpDocument,caps:MotionCapabilities,textures?:Buffer[],_marks?:Record<string,LimbPoint>,options:{exactRestrictedGrid?:boolean;adaptiveRanges?:boolean;armMatteCoverage?:boolean}={}) {
   for(const name of Object.keys(chainJoints) as ChainName[]) {
     const c=caps.chains[name],parameter=puppet.param.find(p=>p.name===name);
     if(!parameter){c.mode='fixed';continue;}
     if(textures && puppet.meta.combined) {
-      const check=attachmentMotionGate(puppet,textures,name);(c.checks??=[]).push(check);
+      const check=attachmentMotionGate(puppet,textures,name,{armMatteCoverage:options.armMatteCoverage});(c.checks??=[]).push(check);
       if(check.status==='failed'){c.mode='fixed';c.stage='geometry';c.reasons.push(check.detail);puppet.param=puppet.param.filter(p=>p!==parameter);continue;}
     }
     try {const g=combinedMeshGate({...puppet,param:[parameter]});c.stage='geometry';(c.checks??=[]).push({name:'mesh foldover sweep',status:'passed',samples:g.coupledKeyAndHalfGridSamples,detail:'Authored poses and intermediate poses passed triangle orientation checks.'});}
     catch(error) {
       // Try one bounded subrange using the actual existing evaluator. Resample all
       // skin AND clothing bindings together; never change a neighboring chain.
+      if(options.adaptiveRanges){
+        const original=structuredClone(parameter),nodes=inpParts(puppet),{width,height}=puppet.meta.canvas as {width:number;height:number};
+        const asset:CombinedAsset={puppet:{...puppet,param:[original]},parts:nodes,width,height,textures:[]};
+        const atScale=(scale:number)=>{
+          parameter.min=original.min.map((v,i)=>original.defaults[i]+(v-original.defaults[i])*scale);
+          parameter.max=original.max.map((v,i)=>original.defaults[i]+(v-original.defaults[i])*scale);
+          const frames=parameter.axis_points[0].map(x=>parameter.axis_points[1].map(y=>new Map(evaluateCombined(asset,{[name]:[parameter.min[0]+x*(parameter.max[0]-parameter.min[0]),parameter.min[1]+y*(parameter.max[1]-parameter.min[1])]}).map(p=>[p.uuid,p]))));
+          for(const b of parameter.bindings){const n=nodes.find(n=>n.uuid===b.node)!;b.values=frames.map(col=>col.map(frame=>b.param_name==='opacity'?frame.get(b.node)!.opacity:n.mesh!.verts.filter((_,i)=>i%2===0).map((_,i)=>[frame.get(b.node)!.xy[i*2]-n.mesh!.verts[i*2],frame.get(b.node)!.xy[i*2+1]-n.mesh!.verts[i*2+1]])));}
+          return combinedMeshGate({...puppet,param:[parameter]});
+        };
+        let good=0,bad=1,best:InpDocument['param'][number]|undefined,check:ReturnType<typeof combinedMeshGate>|undefined;
+        for(const scale of [.5,.25,.125]){try{check=atScale(scale);good=scale;best=structuredClone(parameter);break;}catch{bad=scale;}}
+        if(best){
+          for(let i=0;i<4;i++){const scale=(good+bad)/2;try{const g=atScale(scale);good=scale;best=structuredClone(parameter);check=g;}catch{bad=scale;}}
+          Object.assign(parameter,best);if(options.exactRestrictedGrid)rememberRestrictedSource(parameter,original);c.mode='limited';c.stage='geometry';
+          (c.checks??=[]).push({name:'mesh foldover sweep',status:'passed',samples:check!.coupledKeyAndHalfGridSamples,detail:`Adaptively restricted range (${good.toFixed(6)} of the requested span) passed orientation checks.`});
+          c.reasons.push(`The full range failed its mesh test. Bounded range search retained ${(100*good).toFixed(2)}% of each requested angle span.`,'Full-range failure: '+(error instanceof Error?error.message:String(error)));continue;
+        }
+        Object.assign(parameter,original);
+      }
       const original=structuredClone(parameter),nodes=inpParts(puppet),{width,height}=puppet.meta.canvas as {width:number;height:number};
       const asset:CombinedAsset={puppet:{...puppet,param:[original]},parts:nodes,width,height,textures:[]};
       parameter.min=original.min.map((v,i)=>original.defaults[i]+(v-original.defaults[i])*.5);
@@ -120,7 +158,7 @@ export function finalizeMotionCapabilities(puppet:InpDocument,caps:MotionCapabil
         b.values=frames.map(col=>col.map(frame=>b.param_name==='opacity'?frame.get(b.node)!.opacity:n.mesh!.verts.filter((_,i)=>i%2===0).map((_,i)=>[frame.get(b.node)!.xy[i*2]-n.mesh!.verts[i*2],frame.get(b.node)!.xy[i*2+1]-n.mesh!.verts[i*2+1]])));
       }
       try {
-        const g=combinedMeshGate({...puppet,param:[parameter]});c.mode='limited';c.stage='geometry';(c.checks??=[]).push({name:'mesh foldover sweep',status:'passed',samples:g.coupledKeyAndHalfGridSamples,detail:'Reduced range passed triangle orientation checks.'});
+        const g=combinedMeshGate({...puppet,param:[parameter]});if(options.exactRestrictedGrid)rememberRestrictedSource(parameter,original);c.mode='limited';c.stage='geometry';(c.checks??=[]).push({name:'mesh foldover sweep',status:'passed',samples:g.coupledKeyAndHalfGridSamples,detail:'Reduced range passed triangle orientation checks.'});
         c.reasons.push('The full movement range failed its mesh test. A reduced range passed; extreme poses are unavailable.');
         c.reasons.push('Full-range failure: '+(error instanceof Error?error.message:String(error)));
         continue;

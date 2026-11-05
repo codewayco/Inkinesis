@@ -48,6 +48,6 @@ For connection, token, transfer, and recovery details, see [remote troubleshooti
 
 ## Interface and saved results
 
-`npm run dev` opens the local app on port 5200 with no avatar automatically loaded. Select an example or upload a compatible rig. New UI runs remain temporary until **Save**; see [saving and downloads](../../README.md#saving-and-downloads).
+`npm run dev` opens the local app on port 5200 with no avatar automatically loaded. Select an example or upload a compatible rig. New UI runs remain temporary until **Save**; see [saving and downloads](image_to_rig.md#saving-and-downloads).
 
 A static production build supports uploaded-rig preview. Generation, example installation, and export preparation require the local service. This service is intended for a trusted local machine, not an authenticated multi-user deployment.

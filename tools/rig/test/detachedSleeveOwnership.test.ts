@@ -1,0 +1,7 @@
+import {describe,it,expect} from 'vitest';import {detachedSleeveOwnership} from '../detachedSleeveOwnership';
+const make=()=>new Uint8ClampedArray(32*32*4);const square=(a:Uint8ClampedArray,x0:number,y0:number,size:number,color:number[])=>{for(let y=y0;y<y0+size;y++)for(let x=x0;x<x0+size;x++)a.set([...color,255],(y*32+x)*4);};
+describe('detached sleeve artwork ownership',()=>{
+ it('moves only the disconnected matching sleeve island and leaves the skirt anchored',()=>{const g=make(),arm=make();square(g,1,1,10,[100,150,200]);square(arm,1,1,10,[103,148,201]);square(g,15,15,15,[100,150,200]);const r=detachedSleeveOwnership(g,[{name:'Arm L',rgba:arm}],32,32);expect(r.components).toHaveLength(1);expect(r.owners[1*32+1]).toBe(1);expect(r.owners[20*32+20]).toBe(0);});
+ it('does not attach a continuous skirt touched by a hand or similarly placed artwork of a different color',()=>{const g=make(),arm=make();square(g,1,1,25,[100,150,200]);square(arm,1,1,10,[100,150,200]);expect(detachedSleeveOwnership(g,[{name:'Arm L',rgba:arm}],32,32).components).toHaveLength(0);square(arm,1,1,25,[230,20,20]);expect(detachedSleeveOwnership(g,[{name:'Arm L',rgba:arm}],32,32).components).toHaveLength(0);});
+ it('rejects ambiguous ownership shared by both arm layers',()=>{const g=make();square(g,1,1,10,[100,150,200]);expect(detachedSleeveOwnership(g,[{name:'Arm L',rgba:g},{name:'Arm R',rgba:g}],32,32).components).toHaveLength(0);});
+});

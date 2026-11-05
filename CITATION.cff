@@ -1,7 +1,8 @@
 cff-version: 1.2.0
-message: "If you use Inkinesis in your work, please cite it as below. A technical report is in preparation; this entry will be updated with its identifier when it is published."
-title: "Inkinesis: Turning Illustrations into Portable 2D Character Rigs"
+message: "If you use Inkinesis in your work, please cite the WACV 2027 paper below."
+title: "Inkinesis: Prompt-to-Rig for Anime Characters with Garment Ownership, Held-Object Carriers, and Verified Live2D Export"
 type: software
+version: "1.0.0"
 authors:
   - family-names: "Çeliktenyıldız"
     given-names: "Mehmet Salih"
@@ -15,3 +16,14 @@ keywords:
   - illustration animation
   - virtual avatars
 abstract: "Inkinesis turns a text prompt or a character illustration into a layered, animated 2D rig with head, expression and limb controls, previews it in the browser, and exports it for Inochi2D and Live2D runtimes."
+preferred-citation:
+  type: conference-paper
+  title: "Inkinesis: Prompt-to-Rig for Anime Characters with Garment Ownership, Held-Object Carriers, and Verified Live2D Export"
+  authors:
+    - family-names: "Çeliktenyıldız"
+      given-names: "Mehmet Salih"
+      affiliation: "Codeway"
+  collection-title: "Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV) Workshops"
+  conference:
+    name: "IEEE/CVF Winter Conference on Applications of Computer Vision (WACV 2027)"
+  year: 2027

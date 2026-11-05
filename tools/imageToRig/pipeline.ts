@@ -1,4 +1,5 @@
-/** One isolated input-to-delivery run. Existing experiments are never overwritten. */
+import {DEFAULT_BODY_MOTION} from '../rig/buildCombined';
+/** One isolated input-to-delivery run. Existing runs are never overwritten. */
 import { spawn } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync, copyFileSync, renameSync, readdirSync } from 'node:fs';
@@ -16,6 +17,7 @@ import {preparedQuality} from '../quality/prepared';
 import {motionQuality} from '../quality/motion';
 import {assessCapabilities,type MotionCapabilities,type SourceCheckItem} from './capabilities';
 export interface RunReport {
+    carrierAudit?: ReturnType<typeof import('../rig/expectedPropCarriers').expectedPropCarriers>;
     uploadReview?: import('./uploadResult').UploadResultReview;
     motionCapabilities?: MotionCapabilities;
     qualityMode?: 'off' | 'observe' | 'repair';
@@ -251,13 +253,14 @@ export async function runPipeline(options: {
         }
         await command('source-bust', cfg.python, ['tools/rig/psd2live/prepareDirect.py', '--engine', cfg.engine, '--java-home', cfg.java, '--psd', join(assets, 'character.psd'), '--output', rig]);
         if (!options.experimentalGarments && analysis.capabilities) (analysis.capabilities as MotionCapabilities).sourceCheck = sourceCheck.checks.filter(c => c.status === 'fail');
-        const config = { compactFace: true, headAttachmentSafety: true, sourcePoses: join(rig, 'model/poses.json'), landmarks: join(home, 'analysis.json'), reference: source, out: home, visibleSeparateLimbs: analysis.assessment.separateLimbs, longGarment: analysis.assessment.longGarment, ...(!options.experimentalGarments?{capabilities:analysis.capabilities}:{}) };
+        const config = { motionOptions: DEFAULT_BODY_MOTION, compactFace: true, headAttachmentSafety: true, sourcePoses: join(rig, 'model/poses.json'), landmarks: join(home, 'analysis.json'), reference: source, out: home, visibleSeparateLimbs: analysis.assessment.separateLimbs, longGarment: analysis.assessment.longGarment, ...(!options.experimentalGarments?{capabilities:analysis.capabilities}:{}) };
         writeFileSync(join(home, 'combined-config.json'), JSON.stringify(config, null, 2) + '\n');
         await node('combined-rig', options.experimentalGarments ? 'tools/rig/buildGarment.ts' : 'tools/rig/buildCombined.ts', [join(home, 'combined-config.json')]);
         // Keep build provenance precise without changing the builder's contract.
         const build = JSON.parse(readFileSync(join(home, 'build.json'), 'utf8'));
+        if(build.carrierAudit)report.carrierAudit=build.carrierAudit;
         if(build.motionCapabilities)report.motionCapabilities=build.motionCapabilities;
-        build.landmarkMode = 'Automatic model inference with confidence, bounds and support gates; see analysis.json';
+        build.landmarkMode = 'Observed source anchors plus layer-supported missing-joint proposals; ownership, range and simultaneous-leg gates; see analysis.json and layerMotion';
         writeFileSync(join(home, 'build.json'), JSON.stringify(build, null, 2) + '\n');
         const samples = [{ label: 'rest', values: {} }, ...Array.from({ length: 12 }, (_, i) => { const t = i / 12 * Math.PI * 2; return { label: `demo_${String(i).padStart(2, '0')}`, values: { 'Head Angles': [15 * Math.sin(t), 10 * Math.cos(t)], 'ParamAngleZ': [8 * Math.sin(t)], 'ParamMouthOpenY': [(1 + Math.sin(t)) / 2], 'ParamGarmentSway':[Math.sin(t)], 'ParamBodySway':[Math.sin(t)*.5], 'ParamBreath':[(1+Math.cos(t))/2], 'Arm L': [18 * Math.sin(t), 25 * (1 + Math.sin(t))], 'Arm R': [-18 * Math.sin(t), 25 * (1 - Math.sin(t))], 'Leg L': [12 * Math.sin(t), 12 * (1 + Math.sin(t))], 'Leg R': [-12 * Math.sin(t), 12 * (1 - Math.sin(t))] } }; })];
         if (options.experimentalGarments) for (const value of [-1,-.5,0,.5,1]) samples.push({label:`cloth_${value}`,values:{ParamGarmentSway:[value],ParamBodySway:[value],ParamBreath:[Math.abs(value)]} as typeof samples[number]['values']});
@@ -309,6 +312,10 @@ export async function runPipeline(options: {
         report.reasons = [error instanceof Error ? error.message : String(error)];
     }
     finally {
+        if(report.status==='success' && report.carrierAudit?.reviewRequired){
+            report.status='needs_review';
+            report.reasons.push('Source artwork indicates a held object without a matching active carrier. Review the object layers and hand assignment; native geometry validation does not establish attachment.');
+        }
         report.finished = new Date().toISOString();
         writeFileSync(join(home, 'REPORT.md'), `# Image-to-rig result\n\nStatus: **${report.status}**\n\n${report.reasons.join('\n\n')}\n\n${report.motionCapabilities ? '## Regional motion\n\n'+(report.files.rig?'Prepared rig; visual review required.':'Source candidates only; no rig produced.')+'\n\n| Region | Movement | Evidence stage | Reason |\n| --- | --- | --- | --- |\n'+Object.entries({...(report.motionCapabilities.headAxes?{blink:report.motionCapabilities.face.blink,mouth:report.motionCapabilities.face.mouth}:report.motionCapabilities.face),...report.motionCapabilities.headAxes,...report.motionCapabilities.chains}).map(([name,c])=>'| '+[name,c.mode,c.stage,[...c.reasons,...(c.checks??[]).map(check=>check.name+': '+check.status+(check.samples?' ('+check.samples+' poses)':'')+'. '+check.detail)].join(' ')||'No restriction found in these checks.'].map(v=>v.replaceAll('|','/').replaceAll('\n',' ')).join(' | ')+' |').join('\n')+'\n\n':''}See-through backend: **${report.decomposition?.used ?? 'not run'}** (requested: ${report.decomposition?.requested}).${report.decomposition?.fallbackReason ? '\n\nLocal fallback: ' + report.decomposition.fallbackReason : ''}\n\n${Object.entries(report.files).map(([k, v]) => `- [${k}](${v})`).join('\n')}\n\nModel analysis is fallible. Structural checks do not certify visual quality.\n\nComponents: See-through semantic decomposition, repository-owned expression and layer preparation with a direct psd2live adapter, and this repository's continuous limb rig. No Cubism Core or physics is included.\n`);
         save();
