@@ -4,9 +4,7 @@
 
 ### Prompt-to-Rig for Anime Characters with Garment Ownership, Held-Object Carriers, and Verified Live2D Export
 
-<a href="https://wacv.thecvf.com/"><img src="https://img.shields.io/badge/WACV-2027-4b44ce?style=for-the-badge&amp;labelColor=241f6b" alt="WACV 2027" height="34"></a>
-
-**Describe a character. Make it move.**
+<p><a href="https://wacv.thecvf.com/"><img src="docs/media/wacv-2027.png" alt="WACV 2027" width="222"></a><br><b>Describe a character. Make it move.</b></p>
 
 ![Paper](https://img.shields.io/badge/Paper-coming%20soon-lightgrey.svg)
 [![Project Website](https://img.shields.io/badge/Project%20Website-1769aa.svg)](https://codewayco.github.io/inkinesis-webpage/)
@@ -24,7 +22,7 @@ https://github.com/user-attachments/assets/59a07596-c1aa-4210-a329-8bc3e9509ae1
 
 [**Watch the showcase · 1.5 min**](docs/media/showcase.mp4) · [Open the local video player](docs/media/showcase.html)
 
-*40 of the 94 characters, read left to right: characters holding objects alternate with empty-handed anime characters, neutral rigs above and the four-second “See it move” sequence below. Arms, right leg, left leg, then head and expressions repeat with the GIF’s angle targets and phase timing (arm targets halved for three characters so their held objects stay in hand); unavailable controls stay still. Actual Inkinesis playback; no generated animation frames.*
+*Neutral rigs above, the same rigs moving below: actual Inkinesis playback, not generated video.*
 
 ## News
 
