@@ -362,3 +362,5 @@ If you use Inkinesis in your work, please cite:
 ## Licensing
 
 Core project code is Apache-2.0. The psd2live adapters have GPL-3.0-only headers and run in a separate process. External software, model weights, SDKs, and user artwork retain their own terms. See [NOTICE](NOTICE) and [asset licensing](LICENSE-ASSETS.md). To cite this project, see [Citation](#citation) or [CITATION.cff](CITATION.cff).
+
+Live2D and Cubism are trademarks of Live2D Inc. Inkinesis is an independent research project and is not affiliated with or endorsed by Live2D Inc.
