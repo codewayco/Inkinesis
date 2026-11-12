@@ -299,6 +299,7 @@ CLI runs write directly to an output directory. UI runs stay temporary until you
 ## Limits
 
 - **One front-facing, full-body character** per prompt. Several characters or unsuitable face views are refused.
+- **Every prompt is wrapped in a fixed drawing brief.** The brief in [`tools/generate/baseOpenAI.ts`](tools/generate/baseOpenAI.ts) asks for a full-body, front-facing pose with the arms and legs clear of the body, closed outlines and an unobstructed face, because the current layer separation and rigging rely on these conditions. You can edit it for other styles or poses; drawings that break these conditions may rig with fewer moving parts or need manual review.
 - **Separated limbs and visible joints** give the best rigs. Hidden joints can be estimated from prepared layers, but a chain stays fixed when the source support or motion checks fail. Existing moving control domains are retained when selecting a fallback proposal; the checks cover sampled poses, not every possible image artifact.
 - **Clothing, facial hair and accessories are preserved**, not simplified to make rigging easier.
 - **The mouth is a measured patch**, not separately articulated teeth and tongue; seams can show at extreme poses or on unusual designs.
