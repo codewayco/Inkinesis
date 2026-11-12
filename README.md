@@ -343,7 +343,7 @@ Inkinesis stands on work we are grateful for:
 - **[See-through](https://github.com/shitagaki-lab/see-through)** for semantic layer and depth decomposition of character illustrations.
 - **[psd2live](https://github.com/tsunehimatoi/psd2live)** for facial keyforms and the Live2D serialization path.
 - **[Inochi2D](https://github.com/Inochi2D/inochi2d)** for the open puppet format and the native runtime used for verification.
-- **[Live2D Cubism SDK](https://www.live2d.com/en/sdk/about/)** for the official Core used in export validation.
+- **[Live2D Cubism SDK](https://www.live2d.com/en/sdk/about/)** for the official Core used in export validation. The Core is not included in this repository; download the Cubism SDK for Web from [Live2D's website](https://www.live2d.com/en/sdk/download/web/).
 - **[eSpeak NG](https://github.com/espeak-ng/espeak-ng)** for phoneme timing behind the speech preview.
 
 ## Citation
